@@ -11,6 +11,8 @@ import Psychology from "./pages/Psychology";
 import RiskManagement from "./pages/RiskManagement";
 import About from "./pages/About";
 import NotFound from "./pages/NotFound";
+import Login from "./pages/Login";
+import Register from "./pages/Register";
 
 const queryClient = new QueryClient();
 
@@ -27,6 +29,8 @@ const App = () => (
           <Route path="/psychology" element={<Psychology />} />
           <Route path="/risk-management" element={<RiskManagement />} />
           <Route path="/about" element={<About />} />
+          <Route path="/login" element={<Login />} />
+          <Route path="/register" element={<Register />} />
           <Route path="*" element={<NotFound />} />
         </Routes>
       </BrowserRouter>
