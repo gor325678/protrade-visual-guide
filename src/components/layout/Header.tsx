@@ -1,5 +1,6 @@
+
 import React from 'react';
-import { Eye, Lock, LogIn, UserPlus } from 'lucide-react';
+import { Eye, Lock, LogIn, UserPlus, BookOpen } from 'lucide-react';
 import { useLocation, Link } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import ChartLine from '@/components/icons/ChartLine';
@@ -27,7 +28,8 @@ const Header = () => {
             { path: '/strategies', label: 'Стратегии' },
             { path: '/indicators', label: 'Индикаторы' },
             { path: '/psychology', label: 'Психология' },
-            { path: '/risk-management', label: 'Риск-менеджмент' }
+            { path: '/risk-management', label: 'Риск-менеджмент' },
+            { path: '/materials-manager', label: 'Материалы' }
           ].map(item => (
             <Link
               key={item.path}
