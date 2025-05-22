@@ -1,6 +1,6 @@
 
 import React from 'react';
-import { ChartBar, TrendingUp } from 'lucide-react';
+import { ChartBar, TrendingUp, LineChart } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { useNavigate } from 'react-router-dom';
 
@@ -63,7 +63,7 @@ const HeroSection = () => {
               description: "Собственные индикаторы и методы технического анализа для точного определения точек входа" 
             },
             { 
-              icon: <ChartLine className="h-6 w-6 text-purple-400" />,
+              icon: <LineChart className="h-6 w-6 text-purple-400" />,
               title: "Риск-менеджмент", 
               description: "Система управления капиталом для защиты депозита и максимизации прибыли" 
             }
