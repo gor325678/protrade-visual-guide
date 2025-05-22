@@ -26,6 +26,14 @@ const initialMaterials: Material[] = [
     type: 'course',
     url: 'https://example.com/course1',
     dateAdded: new Date('2023-03-05')
+  },
+  {
+    id: '4',
+    title: 'График GBP/NZD',
+    description: 'График торговой пары для анализа',
+    type: 'image',
+    imageUrl: '/lovable-uploads/bc061cd0-6147-4c2b-8788-9fbadd5d9608.png',
+    dateAdded: new Date('2023-04-01')
   }
 ];
 
@@ -66,3 +74,9 @@ export const deleteMaterial = (id: string): boolean => {
   materials = materials.filter(material => material.id !== id);
   return materials.length !== initialLength;
 };
+
+// Функция для получения изображений
+export const getImages = (): Material[] => {
+  return materials.filter(material => material.type === 'image');
+};
+

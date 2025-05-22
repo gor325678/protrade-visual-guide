@@ -37,6 +37,7 @@ const MaterialForm: React.FC<MaterialFormProps> = ({
   const [description, setDescription] = useState('');
   const [type, setType] = useState<MaterialType>('video');
   const [url, setUrl] = useState('');
+  const [imageUrl, setImageUrl] = useState('');
 
   useEffect(() => {
     if (editingMaterial) {
@@ -44,6 +45,7 @@ const MaterialForm: React.FC<MaterialFormProps> = ({
       setDescription(editingMaterial.description);
       setType(editingMaterial.type);
       setUrl(editingMaterial.url || '');
+      setImageUrl(editingMaterial.imageUrl || '');
     } else {
       resetForm();
     }
@@ -54,16 +56,21 @@ const MaterialForm: React.FC<MaterialFormProps> = ({
     setDescription('');
     setType('video');
     setUrl('');
+    setImageUrl('');
   };
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    onSave({
+    
+    const materialData: Omit<Material, 'id' | 'dateAdded'> = {
       title,
       description,
       type,
-      url: url.trim() !== '' ? url : undefined
-    });
+      ...(url.trim() !== '' ? { url } : {}),
+      ...(imageUrl.trim() !== '' ? { imageUrl } : {})
+    };
+    
+    onSave(materialData);
     resetForm();
     onClose();
   };
@@ -112,20 +119,37 @@ const MaterialForm: React.FC<MaterialFormProps> = ({
                   <SelectItem value="article">Статья</SelectItem>
                   <SelectItem value="course">Курс</SelectItem>
                   <SelectItem value="ebook">Электронная книга</SelectItem>
+                  <SelectItem value="image">Изображение</SelectItem>
                 </SelectContent>
               </Select>
             </div>
             
-            <div className="space-y-2">
-              <Label htmlFor="url">URL (опционально)</Label>
-              <Input
-                id="url"
-                value={url}
-                onChange={(e) => setUrl(e.target.value)}
-                className="bg-trading-card border-gray-700"
-                placeholder="https://example.com/material"
-              />
-            </div>
+            {type === 'image' ? (
+              <div className="space-y-2">
+                <Label htmlFor="imageUrl">URL изображения</Label>
+                <Input
+                  id="imageUrl"
+                  value={imageUrl}
+                  onChange={(e) => setImageUrl(e.target.value)}
+                  className="bg-trading-card border-gray-700"
+                  placeholder="https://example.com/image.jpg или /lovable-uploads/your-image.png"
+                />
+                <p className="text-xs text-gray-400">
+                  Укажите URL изображения или путь к загруженному изображению (/lovable-uploads/...)
+                </p>
+              </div>
+            ) : (
+              <div className="space-y-2">
+                <Label htmlFor="url">URL (опционально)</Label>
+                <Input
+                  id="url"
+                  value={url}
+                  onChange={(e) => setUrl(e.target.value)}
+                  className="bg-trading-card border-gray-700"
+                  placeholder="https://example.com/material"
+                />
+              </div>
+            )}
           </div>
           
           <DialogFooter>

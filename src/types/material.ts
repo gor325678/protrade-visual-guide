@@ -1,5 +1,5 @@
 
-export type MaterialType = 'video' | 'article' | 'course' | 'ebook';
+export type MaterialType = 'video' | 'article' | 'course' | 'ebook' | 'image';
 
 export interface Material {
   id: string;
@@ -7,5 +7,13 @@ export interface Material {
   description: string;
   type: MaterialType;
   url?: string;
+  imageUrl?: string;
   dateAdded: Date;
 }
+
+export interface CourseModule {
+  id: string;
+  title: string;
+  topics: string[];
+}
+

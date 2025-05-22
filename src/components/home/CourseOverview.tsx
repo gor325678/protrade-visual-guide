@@ -2,64 +2,10 @@
 import React from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { CheckCircle, BookOpen } from 'lucide-react';
+import { getAllModules } from '@/services/courseService';
 
 const CourseOverview = () => {
-  const modules = [
-    {
-      title: "Основы торговли на Форекс",
-      topics: [
-        "Структура и участники рынка Форекс",
-        "Типы ордеров и их исполнение",
-        "Торговые сессии и ликвидность",
-        "Основы технического анализа"
-      ]
-    },
-    {
-      title: "Стратегии ProTrader",
-      topics: [
-        "Трендовые стратегии",
-        "Контртрендовые подходы",
-        "Торговля на пробой",
-        "Свечные паттерны и их интерпретация"
-      ]
-    },
-    {
-      title: "Индикаторы и их применение",
-      topics: [
-        "Собственные индикаторы системы",
-        "Оптимальные настройки для разных рынков",
-        "Фильтрация ложных сигналов",
-        "Комбинирование индикаторов"
-      ]
-    },
-    {
-      title: "Риск-менеджмент",
-      topics: [
-        "Калькуляция рисков на позицию",
-        "Антимартингейл и защита депозита",
-        "Диверсификация торговых инструментов",
-        "Построение торгового портфеля"
-      ]
-    },
-    {
-      title: "Психология трейдинга",
-      topics: [
-        "Контроль эмоций во время торговли",
-        "Дисциплина и следование системе",
-        "Преодоление психологических барьеров",
-        "Дневник трейдера и анализ ошибок"
-      ]
-    },
-    {
-      title: "Продвинутые техники",
-      topics: [
-        "Взаимосвязь рынков и корреляции",
-        "Торговля на новостях и фундаментальный анализ",
-        "Сезонность и циклы рынка",
-        "Автоматизация торговых стратегий"
-      ]
-    }
-  ];
+  const modules = getAllModules();
 
   return (
     <div className="w-full py-12 px-4 no-select">
@@ -73,7 +19,7 @@ const CourseOverview = () => {
         
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {modules.map((module, index) => (
-            <Card key={index} className="bg-trading-card border-gray-800 shadow-lg hover:shadow-blue-900/10 transition-shadow animate-fade-in" style={{ animationDelay: `${index * 100}ms` }}>
+            <Card key={module.id} className="bg-trading-card border-gray-800 shadow-lg hover:shadow-blue-900/10 transition-shadow animate-fade-in" style={{ animationDelay: `${index * 100}ms` }}>
               <CardHeader className="border-b border-gray-800">
                 <CardTitle className="flex items-center gap-2">
                   <BookOpen className="h-5 w-5 text-primary" />

@@ -1,6 +1,6 @@
 
 import React from 'react';
-import { BookOpen, Video, FileText, BookPlus, Trash2, Edit } from 'lucide-react';
+import { BookOpen, Video, FileText, BookPlus, Trash2, Edit, Image } from 'lucide-react';
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Material } from '@/types/material';
@@ -22,6 +22,8 @@ const MaterialCard: React.FC<MaterialCardProps> = ({ material, onEdit, onDelete 
         return <BookOpen className="h-5 w-5" />;
       case 'ebook':
         return <BookPlus className="h-5 w-5" />;
+      case 'image':
+        return <Image className="h-5 w-5" />;
       default:
         return <BookOpen className="h-5 w-5" />;
     }
@@ -43,6 +45,17 @@ const MaterialCard: React.FC<MaterialCardProps> = ({ material, onEdit, onDelete 
       </CardHeader>
       <CardContent>
         <p className="text-sm text-gray-300">{material.description}</p>
+        
+        {material.type === 'image' && material.imageUrl && (
+          <div className="mt-3">
+            <img 
+              src={material.imageUrl} 
+              alt={material.title} 
+              className="w-full h-40 object-cover rounded-md border border-gray-700"
+            />
+          </div>
+        )}
+        
         {material.url && (
           <a 
             href={material.url} 
