@@ -8,6 +8,7 @@ import { useToast } from '@/components/ui/use-toast';
 import { CourseModule } from '@/types/material';
 import ModuleCard from '@/components/course/ModuleCard';
 import ModuleForm from '@/components/course/ModuleForm';
+import ModuleHistoryDialog from '@/components/course/ModuleHistoryDialog';
 import { 
   getAllModules, 
   addModule, 
@@ -19,6 +20,8 @@ const CourseStructure = () => {
   const [modules, setModules] = useState<CourseModule[]>(getAllModules());
   const [isFormOpen, setIsFormOpen] = useState(false);
   const [editingModule, setEditingModule] = useState<CourseModule | undefined>(undefined);
+  const [historyModule, setHistoryModule] = useState<CourseModule | undefined>(undefined);
+  const [isHistoryOpen, setIsHistoryOpen] = useState(false);
   const { toast } = useToast();
 
   const handleAddModule = (moduleData: Omit<CourseModule, 'id'>) => {
@@ -36,10 +39,19 @@ const CourseStructure = () => {
     const updatedModule = updateModule(editingModule.id, moduleData);
     if (updatedModule) {
       setModules(getAllModules());
-      toast({
-        title: "Модуль обновлен",
-        description: `"${updatedModule.title}" успешно обновлен.`,
-      });
+      
+      // Special message for the Forex basics module
+      if (updatedModule.id === '1' || updatedModule.title === "Основы торговли на Форекс") {
+        toast({
+          title: "Модуль обновлен",
+          description: `"${updatedModule.title}" успешно обновлен. Изменения сохранены в истории.`,
+        });
+      } else {
+        toast({
+          title: "Модуль обновлен",
+          description: `"${updatedModule.title}" успешно обновлен.`,
+        });
+      }
     }
   };
 
@@ -59,6 +71,11 @@ const CourseStructure = () => {
     }
   };
 
+  const handleViewHistory = (module: CourseModule) => {
+    setHistoryModule(module);
+    setIsHistoryOpen(true);
+  };
+
   const handleFormClose = () => {
     setIsFormOpen(false);
     setEditingModule(undefined);
@@ -70,6 +87,11 @@ const CourseStructure = () => {
     } else {
       handleAddModule(moduleData);
     }
+  };
+
+  const handleHistoryClose = () => {
+    setIsHistoryOpen(false);
+    setHistoryModule(undefined);
   };
 
   return (
@@ -99,6 +121,7 @@ const CourseStructure = () => {
                 module={module}
                 onEdit={handleEditModule}
                 onDelete={handleDeleteModule}
+                onViewHistory={handleViewHistory}
               />
             ))}
           </div>
@@ -109,6 +132,12 @@ const CourseStructure = () => {
           onClose={handleFormClose}
           onSave={handleFormSave}
           editingModule={editingModule}
+        />
+        
+        <ModuleHistoryDialog 
+          module={historyModule}
+          isOpen={isHistoryOpen}
+          onClose={handleHistoryClose}
         />
       </main>
       

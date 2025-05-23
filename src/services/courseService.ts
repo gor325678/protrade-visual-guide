@@ -1,5 +1,5 @@
 
-import { CourseModule } from '../types/material';
+import { CourseModule, ModuleChange } from '../types/material';
 
 // Начальные данные для модулей курса
 const initialModules: CourseModule[] = [
@@ -11,7 +11,8 @@ const initialModules: CourseModule[] = [
       "Типы ордеров и их исполнение",
       "Торговые сессии и ликвидность",
       "Основы технического анализа"
-    ]
+    ],
+    history: []
   },
   {
     id: '2',
@@ -21,7 +22,8 @@ const initialModules: CourseModule[] = [
       "Контртрендовые подходы",
       "Торговля на пробой",
       "Свечные паттерны и их интерпретация"
-    ]
+    ],
+    history: []
   },
   {
     id: '3',
@@ -31,7 +33,8 @@ const initialModules: CourseModule[] = [
       "Оптимальные настройки для разных рынков",
       "Фильтрация ложных сигналов",
       "Комбинирование индикаторов"
-    ]
+    ],
+    history: []
   },
   {
     id: '4',
@@ -41,7 +44,8 @@ const initialModules: CourseModule[] = [
       "Антимартингейл и защита депозита",
       "Диверсификация торговых инструментов",
       "Построение торгового портфеля"
-    ]
+    ],
+    history: []
   },
   {
     id: '5',
@@ -51,7 +55,8 @@ const initialModules: CourseModule[] = [
       "Дисциплина и следование системе",
       "Преодоление психологических барьеров",
       "Дневник трейдера и анализ ошибок"
-    ]
+    ],
+    history: []
   },
   {
     id: '6',
@@ -61,7 +66,8 @@ const initialModules: CourseModule[] = [
       "Торговля на новостях и фундаментальный анализ",
       "Сезонность и циклы рынка",
       "Автоматизация торговых стратегий"
-    ]
+    ],
+    history: []
   }
 ];
 
@@ -80,20 +86,42 @@ export const getModuleById = (id: string): CourseModule | undefined => {
 export const addModule = (module: Omit<CourseModule, 'id'>): CourseModule => {
   const newModule = {
     ...module,
-    id: Date.now().toString()
+    id: Date.now().toString(),
+    history: []
   };
   
   courseModules = [...courseModules, newModule];
   return newModule;
 };
 
-export const updateModule = (id: string, updates: Partial<Omit<CourseModule, 'id'>>): CourseModule | null => {
+export const updateModule = (id: string, updates: Partial<Omit<CourseModule, 'id' | 'history'>>): CourseModule | null => {
   const index = courseModules.findIndex(module => module.id === id);
   if (index === -1) return null;
   
-  const updatedModule = { ...courseModules[index], ...updates };
-  courseModules = [...courseModules.slice(0, index), updatedModule, ...courseModules.slice(index + 1)];
-  return updatedModule;
+  const currentModule = courseModules[index];
+  
+  // Create a history entry if this is "Основы торговли на Форекс" or has id '1'
+  if (currentModule.id === '1' || currentModule.title === "Основы торговли на Форекс") {
+    const historyEntry: ModuleChange = {
+      date: new Date(),
+      previousTitle: currentModule.title,
+      previousTopics: [...currentModule.topics]
+    };
+    
+    const updatedModule = { 
+      ...currentModule, 
+      ...updates,
+      history: [...(currentModule.history || []), historyEntry]
+    };
+    
+    courseModules = [...courseModules.slice(0, index), updatedModule, ...courseModules.slice(index + 1)];
+    return updatedModule;
+  } else {
+    // For other modules, just update without tracking history
+    const updatedModule = { ...currentModule, ...updates };
+    courseModules = [...courseModules.slice(0, index), updatedModule, ...courseModules.slice(index + 1)];
+    return updatedModule;
+  }
 };
 
 export const deleteModule = (id: string): boolean => {
@@ -102,3 +130,12 @@ export const deleteModule = (id: string): boolean => {
   return courseModules.length !== initialLength;
 };
 
+export const getModuleHistory = (id: string): ModuleChange[] | null => {
+  const module = getModuleById(id);
+  return module?.history || null;
+};
+
+export const getForexBasicsHistory = (): ModuleChange[] => {
+  const forexModule = courseModules.find(m => m.id === '1' || m.title === "Основы торговли на Форекс");
+  return forexModule?.history || [];
+};
