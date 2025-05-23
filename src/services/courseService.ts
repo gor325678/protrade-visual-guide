@@ -1,6 +1,9 @@
 
 import { CourseModule, ModuleChange } from '../types/material';
 
+// Ключи для localStorage
+const MODULE_STORAGE_KEY = 'course_modules';
+
 // Начальные данные для модулей курса
 const initialModules: CourseModule[] = [
   {
@@ -71,8 +74,39 @@ const initialModules: CourseModule[] = [
   }
 ];
 
-// Хранение в памяти
-let courseModules = [...initialModules];
+// Получение модулей из localStorage или использование начальных данных
+const getStoredModules = (): CourseModule[] => {
+  try {
+    const stored = localStorage.getItem(MODULE_STORAGE_KEY);
+    if (stored) {
+      const parsedModules = JSON.parse(stored);
+      
+      // Преобразование строковых дат обратно в объекты Date
+      return parsedModules.map((module: any) => ({
+        ...module,
+        history: module.history ? module.history.map((change: any) => ({
+          ...change,
+          date: new Date(change.date)
+        })) : []
+      }));
+    }
+  } catch (error) {
+    console.error("Ошибка получения модулей из localStorage:", error);
+  }
+  return [...initialModules];
+};
+
+// Сохранение модулей в localStorage
+const saveModulesToStorage = (modules: CourseModule[]) => {
+  try {
+    localStorage.setItem(MODULE_STORAGE_KEY, JSON.stringify(modules));
+  } catch (error) {
+    console.error("Ошибка при сохранении модулей в localStorage:", error);
+  }
+};
+
+// Инициализация модулей из хранилища
+let courseModules = getStoredModules();
 
 // Сервисные функции
 export const getAllModules = (): CourseModule[] => {
@@ -91,6 +125,8 @@ export const addModule = (module: Omit<CourseModule, 'id'>): CourseModule => {
   };
   
   courseModules = [...courseModules, newModule];
+  // Сохранение в localStorage
+  saveModulesToStorage(courseModules);
   return newModule;
 };
 
@@ -115,11 +151,15 @@ export const updateModule = (id: string, updates: Partial<Omit<CourseModule, 'id
     };
     
     courseModules = [...courseModules.slice(0, index), updatedModule, ...courseModules.slice(index + 1)];
+    // Сохранение в localStorage
+    saveModulesToStorage(courseModules);
     return updatedModule;
   } else {
     // For other modules, just update without tracking history
     const updatedModule = { ...currentModule, ...updates };
     courseModules = [...courseModules.slice(0, index), updatedModule, ...courseModules.slice(index + 1)];
+    // Сохранение в localStorage
+    saveModulesToStorage(courseModules);
     return updatedModule;
   }
 };
@@ -127,7 +167,13 @@ export const updateModule = (id: string, updates: Partial<Omit<CourseModule, 'id
 export const deleteModule = (id: string): boolean => {
   const initialLength = courseModules.length;
   courseModules = courseModules.filter(module => module.id !== id);
-  return courseModules.length !== initialLength;
+  
+  // Сохранение в localStorage, если были изменения
+  if (courseModules.length !== initialLength) {
+    saveModulesToStorage(courseModules);
+    return true;
+  }
+  return false;
 };
 
 export const getModuleHistory = (id: string): ModuleChange[] | null => {
