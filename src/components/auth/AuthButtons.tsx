@@ -53,7 +53,15 @@ export const AuthButtons = () => {
         <LogIn className="h-4 w-4" />
         <span>Войти</span>
       </Button>
-      <Button size="sm" onClick={() => loginWithRedirect({ screen_hint: 'signup' })} className="flex items-center space-x-1">
+      <Button 
+        size="sm" 
+        onClick={() => loginWithRedirect({
+          authorizationParams: {
+            screen_hint: 'signup'
+          }
+        })} 
+        className="flex items-center space-x-1"
+      >
         <UserPlus className="h-4 w-4" />
         <span>Регистрация</span>
       </Button>
