@@ -25,11 +25,12 @@ const Header = () => {
         <nav className="hidden md:flex items-center space-x-6">
           {[
             { path: '/', label: 'Обзор' },
-            { path: '/strategies', label: 'Стратегии' },
+            { path: '/beginner-training', label: 'Обучение для начинающих' },
             { path: '/indicators', label: 'Индикаторы' },
             { path: '/psychology', label: 'Психология' },
             { path: '/risk-management', label: 'Риск-менеджмент' },
-            { path: '/materials-manager', label: 'Материалы' }
+            { path: '/materials-manager', label: 'Материалы' },
+            { path: '/course-structure', label: 'Структура курса' }
           ].map(item => (
             <Link
               key={item.path}
