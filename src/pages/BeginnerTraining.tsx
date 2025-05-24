@@ -2,7 +2,7 @@
 import React, { useState, useEffect } from 'react';
 import Header from '@/components/layout/Header';
 import Footer from '@/components/layout/Footer';
-import { BookOpen, CheckCircle, Plus, FileEdit } from 'lucide-react';
+import { BookOpen, CheckCircle, Plus, FileEdit, Video } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle, CardFooter } from '@/components/ui/card';
 import { useToast } from '@/components/ui/use-toast';
@@ -10,18 +10,32 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription, Di
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
 import { Label } from '@/components/ui/label';
+import VideoUploadDialog from '@/components/training/VideoUploadDialog';
+import VideoPlayer from '@/components/training/VideoPlayer';
+
+interface TrainingVideo {
+  id: string;
+  title: string;
+  type: 'local' | 'youtube';
+  url: string;
+  thumbnailUrl?: string;
+}
 
 interface TrainingTopic {
   id: string;
   title: string;
   content: string;
   difficulty: 'beginner' | 'intermediate' | 'advanced';
+  videos?: TrainingVideo[];
 }
 
 const BeginnerTraining = () => {
   const [topics, setTopics] = useState<TrainingTopic[]>([]);
   const [isDialogOpen, setIsDialogOpen] = useState(false);
+  const [isVideoDialogOpen, setIsVideoDialogOpen] = useState(false);
   const [currentTopic, setCurrentTopic] = useState<TrainingTopic | null>(null);
+  const [selectedTopicForVideo, setSelectedTopicForVideo] = useState<string | null>(null);
+  const [playingVideo, setPlayingVideo] = useState<TrainingVideo | null>(null);
   const { toast } = useToast();
 
   // Load topics from localStorage on component mount
@@ -71,6 +85,39 @@ const BeginnerTraining = () => {
   const handleEditTopic = (topic: TrainingTopic) => {
     setCurrentTopic(topic);
     setIsDialogOpen(true);
+  };
+
+  const handleAddVideo = (topicId: string) => {
+    setSelectedTopicForVideo(topicId);
+    setIsVideoDialogOpen(true);
+  };
+
+  const handleVideoAdded = (video: Omit<TrainingVideo, 'id'>) => {
+    if (!selectedTopicForVideo) return;
+    
+    const newVideo: TrainingVideo = {
+      ...video,
+      id: Date.now().toString()
+    };
+    
+    const updatedTopics = topics.map(topic => 
+      topic.id === selectedTopicForVideo 
+        ? { ...topic, videos: [...(topic.videos || []), newVideo] }
+        : topic
+    );
+    
+    setTopics(updatedTopics);
+    setIsVideoDialogOpen(false);
+    setSelectedTopicForVideo(null);
+    
+    toast({
+      title: "Видео добавлено",
+      description: "Видео было успешно добавлено к теме."
+    });
+  };
+
+  const handlePlayVideo = (video: TrainingVideo) => {
+    setPlayingVideo(video);
   };
 
   const handleSaveTopic = (e: React.FormEvent<HTMLFormElement>) => {
@@ -166,9 +213,38 @@ const BeginnerTraining = () => {
                 </div>
               </CardHeader>
               <CardContent className="pt-5">
-                <p className="text-gray-300 line-clamp-4">{topic.content}</p>
+                <p className="text-gray-300 line-clamp-4 mb-4">{topic.content}</p>
+                
+                {topic.videos && topic.videos.length > 0 && (
+                  <div className="space-y-2">
+                    <h4 className="text-sm font-medium text-gray-400">Видео материалы:</h4>
+                    {topic.videos.map((video) => (
+                      <div key={video.id} className="flex items-center gap-2 p-2 bg-gray-800 rounded">
+                        <Video className="h-4 w-4 text-blue-400" />
+                        <span className="text-sm text-gray-300 flex-1">{video.title}</span>
+                        <Button 
+                          size="sm" 
+                          variant="ghost" 
+                          onClick={() => handlePlayVideo(video)}
+                          className="text-blue-400 hover:text-blue-300"
+                        >
+                          Смотреть
+                        </Button>
+                      </div>
+                    ))}
+                  </div>
+                )}
               </CardContent>
-              <CardFooter className="flex justify-end space-x-2 pt-2">
+              <CardFooter className="flex justify-between space-x-2 pt-2">
+                <Button 
+                  variant="outline" 
+                  size="sm" 
+                  onClick={() => handleAddVideo(topic.id)}
+                  className="flex-1"
+                >
+                  <Video className="h-4 w-4 mr-1" />
+                  Добавить видео
+                </Button>
                 <Button 
                   variant="outline" 
                   size="sm" 
@@ -254,6 +330,20 @@ const BeginnerTraining = () => {
             </form>
           </DialogContent>
         </Dialog>
+
+        <VideoUploadDialog
+          isOpen={isVideoDialogOpen}
+          onClose={() => setIsVideoDialogOpen(false)}
+          onVideoAdded={handleVideoAdded}
+        />
+
+        {playingVideo && (
+          <VideoPlayer
+            video={playingVideo}
+            isOpen={!!playingVideo}
+            onClose={() => setPlayingVideo(null)}
+          />
+        )}
       </main>
       
       <Footer />
