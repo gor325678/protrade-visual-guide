@@ -1,4 +1,3 @@
-
 import React, { useEffect, useRef } from 'react';
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
 import { Button } from '@/components/ui/button';
@@ -94,17 +93,6 @@ const VideoPlayer: React.FC<VideoPlayerProps> = ({ video, isOpen, onClose }) => 
 
           <div className="relative">
             {renderVideoContent()}
-            
-            {/* Защитный оверлей для предотвращения скачивания */}
-            <div className="absolute inset-0 pointer-events-none">
-              <div className="absolute top-2 right-2 bg-black/50 px-2 py-1 rounded text-xs text-white">
-                🔒 Защищенный просмотр
-              </div>
-            </div>
-          </div>
-
-          <div className="mt-4 text-sm text-gray-400">
-            <p>Это видео защищено от скачивания и предназначено только для просмотра на сайте.</p>
           </div>
         </DialogContent>
       </Dialog>
