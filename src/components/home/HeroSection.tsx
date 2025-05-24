@@ -3,9 +3,28 @@ import React from 'react';
 import { ChartBar, TrendingUp, LineChart } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { useNavigate } from 'react-router-dom';
+import { useAuth0 } from '@auth0/auth0-react';
+import { useToast } from '@/components/ui/use-toast';
 
 const HeroSection = () => {
   const navigate = useNavigate();
+  const { loginWithRedirect, isAuthenticated } = useAuth0();
+  const { toast } = useToast();
+  
+  const handleStartLearning = () => {
+    if (isAuthenticated) {
+      navigate('/materials-manager');
+    } else {
+      toast({
+        title: "Необходима авторизация",
+        description: "Для доступа к обучающим материалам необходимо войти в систему",
+      });
+      
+      loginWithRedirect({
+        appState: { returnTo: '/materials-manager' }
+      });
+    }
+  };
   
   return (
     <div className="relative w-full py-12 px-4 md:py-20 overflow-hidden no-select">
@@ -33,7 +52,7 @@ const HeroSection = () => {
         
         <div className="flex flex-col sm:flex-row justify-center space-y-4 sm:space-y-0 sm:space-x-4 mb-12">
           <Button 
-            onClick={() => navigate('/strategies')}
+            onClick={handleStartLearning}
             size="lg"
             className="bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 text-white border-none px-8"
           >

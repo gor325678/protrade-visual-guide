@@ -1,9 +1,10 @@
 
 import React from 'react';
-import { Eye, Lock, LogIn, UserPlus, BookOpen } from 'lucide-react';
+import { Eye, Lock, BookOpen } from 'lucide-react';
 import { useLocation, Link } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import ChartLine from '@/components/icons/ChartLine';
+import AuthButtons from '@/components/auth/AuthButtons';
 
 const Header = () => {
   const location = useLocation();
@@ -45,20 +46,7 @@ const Header = () => {
         </nav>
         
         <div className="flex items-center space-x-3">
-          <div className="hidden sm:flex items-center space-x-3">
-            <Button variant="outline" size="sm" asChild>
-              <Link to="/login" className="flex items-center space-x-1">
-                <LogIn className="h-4 w-4" />
-                <span>Войти</span>
-              </Link>
-            </Button>
-            <Button size="sm" asChild>
-              <Link to="/register" className="flex items-center space-x-1">
-                <UserPlus className="h-4 w-4" />
-                <span>Регистрация</span>
-              </Link>
-            </Button>
-          </div>
+          <AuthButtons />
           <div className="flex items-center space-x-1">
             <Eye size={18} className="text-gray-400" />
             <span className="text-xs text-gray-400">Protected View</span>
