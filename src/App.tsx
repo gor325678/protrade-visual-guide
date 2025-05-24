@@ -32,10 +32,13 @@ const App = () => (
       domain={auth0Domain}
       clientId={auth0ClientId}
       authorizationParams={{
-        redirect_uri: window.location.origin,
-        appState: { returnTo: window.location.pathname }
+        redirect_uri: window.location.origin
       }}
       cacheLocation="localstorage"
+      useRefreshTokens={true}
+      onRedirectCallback={(appState) => {
+        window.location.href = appState?.returnTo || window.location.pathname;
+      }}
     >
       <QueryClientProvider client={queryClient}>
         <TooltipProvider>
