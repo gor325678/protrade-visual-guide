@@ -1,44 +1,40 @@
-
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { z } from "zod";
-import { useForm } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { useToast } from "@/hooks/use-toast";
-import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
-import { Input } from "@/components/ui/input";
+import { useAuth0 } from '@auth0/auth0-react';
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
-import { Mail, Lock } from 'lucide-react';
+import { Loader2, LogIn } from 'lucide-react';
 import ChartLine from '@/components/icons/ChartLine';
 import ProtectionOverlay from '@/components/shared/ProtectionOverlay';
 
-const formSchema = z.object({
-  email: z.string().email("Некорректный адрес электронной почты"),
-  password: z.string().min(6, "Пароль должен содержать минимум 6 символов"),
-});
-
 const Login = () => {
-  const { toast } = useToast();
   const navigate = useNavigate();
+  const { loginWithRedirect, isAuthenticated, isLoading } = useAuth0();
   
-  const form = useForm<z.infer<typeof formSchema>>({
-    resolver: zodResolver(formSchema),
-    defaultValues: {
-      email: "",
-      password: "",
-    },
-  });
+  // Якщо користувач вже авторизований, перенаправляємо на головну сторінку
+  useEffect(() => {
+    if (isAuthenticated) {
+      navigate('/');
+    }
+  }, [isAuthenticated, navigate]);
 
-  const onSubmit = (values: z.infer<typeof formSchema>) => {
-    // In a real application, you would authenticate with a backend
-    // For demonstration, we'll just show a success toast and redirect
-    toast({
-      title: "Вход выполнен",
-      description: `Добро пожаловать, ${values.email}`,
+  const handleLogin = () => {
+    loginWithRedirect({
+      appState: { returnTo: '/' },
+      authorizationParams: {
+        redirect_uri: "http://localhost:8082"
+      }
     });
-    navigate("/");
   };
+
+  if (isLoading) {
+    return (
+      <div className="min-h-screen flex items-center justify-center bg-trading-dark">
+        <Loader2 className="h-10 w-10 animate-spin text-primary" />
+        <span className="ml-2 text-white text-lg">Завантаження...</span>
+      </div>
+    );
+  }
 
   return (
     <div className="min-h-screen flex flex-col bg-trading-dark text-white">
@@ -55,70 +51,27 @@ const Login = () => {
                 </span>
               </Link>
             </div>
-            <CardTitle className="text-2xl">Вход в аккаунт</CardTitle>
+            <CardTitle className="text-2xl">Вхід до облікового запису</CardTitle>
             <CardDescription className="text-gray-400">
-              Введите данные для доступа к образовательным материалам
+              Увійдіть для доступу до освітніх матеріалів
             </CardDescription>
           </CardHeader>
           
-          <CardContent>
-            <Form {...form}>
-              <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
-                <FormField
-                  control={form.control}
-                  name="email"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel className="text-gray-300">Электронная почта</FormLabel>
-                      <FormControl>
-                        <div className="relative">
-                          <Mail className="absolute left-3 top-3 h-4 w-4 text-gray-400" />
-                          <Input
-                            placeholder="email@example.com"
-                            className="pl-10"
-                            {...field}
-                          />
-                        </div>
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-                
-                <FormField
-                  control={form.control}
-                  name="password"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel className="text-gray-300">Пароль</FormLabel>
-                      <FormControl>
-                        <div className="relative">
-                          <Lock className="absolute left-3 top-3 h-4 w-4 text-gray-400" />
-                          <Input
-                            type="password"
-                            placeholder="••••••"
-                            className="pl-10"
-                            {...field}
-                          />
-                        </div>
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-                
-                <Button type="submit" className="w-full">
-                  Войти
-                </Button>
-              </form>
-            </Form>
+          <CardContent className="space-y-4">
+            <Button 
+              onClick={handleLogin} 
+              className="w-full flex items-center justify-center space-x-2"
+            >
+              <LogIn className="h-4 w-4" />
+              <span>Увійти через Auth0</span>
+            </Button>
           </CardContent>
           
           <CardFooter className="flex flex-col space-y-2">
             <div className="text-sm text-gray-400 text-center">
-              Еще нет аккаунта?{" "}
+              Ще немає облікового запису?{" "}
               <Link to="/register" className="text-primary hover:underline">
-                Зарегистрироваться
+                Зареєструватися
               </Link>
             </div>
           </CardFooter>

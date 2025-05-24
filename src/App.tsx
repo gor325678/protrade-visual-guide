@@ -1,4 +1,3 @@
-
 import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
@@ -18,21 +17,19 @@ import Register from "./pages/Register";
 import MaterialsManager from "./pages/MaterialsManager";
 import CourseStructure from "./pages/CourseStructure";
 import AuthGuard from "./components/auth/AuthGuard";
+import { auth0Config } from "./lib/auth0-config";
 
 // Create a client
 const queryClient = new QueryClient();
 
-// Auth0 domain and client ID
-const auth0Domain = "dev-rycuhbhc34tcpfor.us.auth0.com";
-const auth0ClientId = "vfejFtpy85i0tIVtFycc31RDUfx5Jyy7";
-
 const App = () => (
   <React.StrictMode>
     <Auth0Provider
-      domain={auth0Domain}
-      clientId={auth0ClientId}
+      domain={auth0Config.domain}
+      clientId={auth0Config.clientId}
       authorizationParams={{
-        redirect_uri: window.location.origin
+        redirect_uri: auth0Config.redirectUri,
+        scope: auth0Config.scope
       }}
       cacheLocation="localstorage"
       useRefreshTokens={true}

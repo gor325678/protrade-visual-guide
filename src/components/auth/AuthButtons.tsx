@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { useAuth0 } from '@auth0/auth0-react';
 import { Button } from '@/components/ui/button';
@@ -39,7 +38,7 @@ export const AuthButtons = () => {
               className="text-red-500 focus:text-red-500 cursor-pointer"
             >
               <LogOut className="mr-2 h-4 w-4" />
-              Выйти
+              Вийти
             </DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>
@@ -49,21 +48,26 @@ export const AuthButtons = () => {
 
   return (
     <div className="hidden sm:flex items-center space-x-3">
-      <Button variant="outline" size="sm" onClick={() => loginWithRedirect()} className="flex items-center space-x-1">
+      <Button variant="outline" size="sm" onClick={() => loginWithRedirect({
+        authorizationParams: {
+          redirect_uri: "http://localhost:8082"
+        }
+      })} className="flex items-center space-x-1">
         <LogIn className="h-4 w-4" />
-        <span>Войти</span>
+        <span>Увійти</span>
       </Button>
       <Button 
         size="sm" 
         onClick={() => loginWithRedirect({
           authorizationParams: {
-            screen_hint: 'signup'
+            screen_hint: 'signup',
+            redirect_uri: "http://localhost:8082"
           }
         })} 
         className="flex items-center space-x-1"
       >
         <UserPlus className="h-4 w-4" />
-        <span>Регистрация</span>
+        <span>Реєстрація</span>
       </Button>
     </div>
   );
