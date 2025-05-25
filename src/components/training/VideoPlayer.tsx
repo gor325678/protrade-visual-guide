@@ -30,11 +30,8 @@ const VideoPlayer: React.FC<VideoPlayerProps> = ({ video, isOpen, onClose }) => 
     if (videoElement) {
       videoElement.addEventListener('contextmenu', handleContextMenu);
       
-      // Отключаем возможность скачивания, но разрешаем полноэкранный режим
-      if ('controlsList' in videoElement) {
-        // @ts-ignore - controlsList существует, но TypeScript его не знает
-        videoElement.controlsList.add('nodownload');
-      }
+      // Отключаем возможность скачивания
+      videoElement.controlsList.add('nodownload');
       
       return () => {
         videoElement.removeEventListener('contextmenu', handleContextMenu);
@@ -64,6 +61,7 @@ const VideoPlayer: React.FC<VideoPlayerProps> = ({ video, isOpen, onClose }) => 
             ref={videoRef}
             src={video.url}
             controls
+            controlsList="nodownload nofullscreen"
             className="w-full h-full rounded bg-black"
             onContextMenu={(e) => e.preventDefault()}
             style={{ pointerEvents: 'auto' }}
