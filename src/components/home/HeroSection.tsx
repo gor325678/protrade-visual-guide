@@ -2,47 +2,12 @@ import React from 'react';
 import { ChartBar, TrendingUp, LineChart } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { useNavigate } from 'react-router-dom';
-import { useAuth0 } from '@auth0/auth0-react';
-import { useToast } from '@/components/ui/use-toast';
 
 const HeroSection = () => {
   const navigate = useNavigate();
-  const { loginWithRedirect, isAuthenticated, user } = useAuth0();
-  const { toast } = useToast();
-  
-  const checkUserAccess = (user: any) => {
-    // Проверяем, есть ли у пользователя доступ к материалам
-    // Можно проверить по email, roles, или custom claims в Auth0
-    const userMetadata = user?.['https://protrader.com/user_metadata'] || {};
-    const hasAccess = userMetadata.paid_access === true || 
-                     user?.email_verified && 
-                     (user?.email?.includes('premium') || userMetadata.subscription === 'active');
-    
-    return hasAccess;
-  };
   
   const handleStartLearning = () => {
-    if (isAuthenticated && user) {
-      // Проверяем доступ пользователя
-      if (checkUserAccess(user)) {
-        navigate('/materials-manager');
-      } else {
-        toast({
-          title: "Доступ ограничен",
-          description: "Для доступа к обучающим материалам необходимо оформить подписку. Свяжитесь с администратором.",
-          variant: "destructive"
-        });
-      }
-    } else {
-      // Если пользователь не авторизован, отправляем на авторизацию
-      loginWithRedirect({
-        authorizationParams: {
-          redirect_uri: window.location.origin,
-          scope: 'openid profile email'
-        },
-        appState: { returnTo: '/materials-manager' }
-      });
-    }
+    navigate('/materials-manager');
   };
   
   return (

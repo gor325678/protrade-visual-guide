@@ -1,10 +1,8 @@
 
 import React from 'react';
-import { Eye, Lock, BookOpen } from 'lucide-react';
+import { Eye, Lock } from 'lucide-react';
 import { useLocation, Link } from 'react-router-dom';
-import { Button } from '@/components/ui/button';
 import ChartLine from '@/components/icons/ChartLine';
-import AuthButtons from '@/components/auth/AuthButtons';
 
 const Header = () => {
   const location = useLocation();
@@ -46,7 +44,6 @@ const Header = () => {
         </nav>
         
         <div className="flex items-center space-x-3">
-          <AuthButtons />
           <div className="flex items-center space-x-1">
             <Eye size={18} className="text-gray-400" />
             <span className="text-xs text-gray-400">Protected View</span>
