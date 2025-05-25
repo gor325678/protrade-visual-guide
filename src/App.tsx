@@ -1,3 +1,4 @@
+
 import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
@@ -34,6 +35,7 @@ const App = () => (
       cacheLocation="localstorage"
       useRefreshTokens={true}
       onRedirectCallback={(appState) => {
+        // Перенаправляем пользователя туда, куда он хотел попасть
         window.location.href = appState?.returnTo || window.location.pathname;
       }}
     >

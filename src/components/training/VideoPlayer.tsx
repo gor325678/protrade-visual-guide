@@ -1,3 +1,4 @@
+
 import React, { useEffect, useRef } from 'react';
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
 import { Button } from '@/components/ui/button';
@@ -29,9 +30,6 @@ const VideoPlayer: React.FC<VideoPlayerProps> = ({ video, isOpen, onClose }) => 
     const videoElement = videoRef.current;
     if (videoElement) {
       videoElement.addEventListener('contextmenu', handleContextMenu);
-      
-      // Отключаем возможность скачивания
-      videoElement.controlsList.add('nodownload');
       
       return () => {
         videoElement.removeEventListener('contextmenu', handleContextMenu);

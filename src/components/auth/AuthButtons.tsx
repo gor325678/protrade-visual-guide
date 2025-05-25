@@ -1,8 +1,8 @@
+
 import React from 'react';
 import { useAuth0 } from '@auth0/auth0-react';
 import { Button } from '@/components/ui/button';
-import { LogIn, UserPlus, User, LogOut } from 'lucide-react';
-import { Link } from 'react-router-dom';
+import { User, LogOut } from 'lucide-react';
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -12,7 +12,7 @@ import {
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 
 export const AuthButtons = () => {
-  const { isAuthenticated, user, loginWithRedirect, logout } = useAuth0();
+  const { isAuthenticated, user, logout } = useAuth0();
 
   if (isAuthenticated && user) {
     return (
@@ -46,31 +46,8 @@ export const AuthButtons = () => {
     );
   }
 
-  return (
-    <div className="hidden sm:flex items-center space-x-3">
-      <Button variant="outline" size="sm" onClick={() => loginWithRedirect({
-        authorizationParams: {
-          redirect_uri: "http://localhost:8082"
-        }
-      })} className="flex items-center space-x-1">
-        <LogIn className="h-4 w-4" />
-        <span>Увійти</span>
-      </Button>
-      <Button 
-        size="sm" 
-        onClick={() => loginWithRedirect({
-          authorizationParams: {
-            screen_hint: 'signup',
-            redirect_uri: "http://localhost:8082"
-          }
-        })} 
-        className="flex items-center space-x-1"
-      >
-        <UserPlus className="h-4 w-4" />
-        <span>Реєстрація</span>
-      </Button>
-    </div>
-  );
+  // Если пользователь не авторизован, не показываем никаких кнопок
+  return null;
 };
 
 export default AuthButtons;
