@@ -1,16 +1,15 @@
-
 import React, { useState } from 'react';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription, DialogFooter } from '@/components/ui/dialog';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { Upload, Youtube } from 'lucide-react';
-import { useToast } from '@/components/ui/use-toast';
+import { Upload, Link, Youtube } from 'lucide-react';
 
 interface TrainingVideo {
+  id: string;
   title: string;
-  type: 'local' | 'youtube';
+  type: 'local' | 'youtube' | 'googledrive';
   url: string;
   thumbnailUrl?: string;
 }
@@ -18,104 +17,52 @@ interface TrainingVideo {
 interface VideoUploadDialogProps {
   isOpen: boolean;
   onClose: () => void;
-  onVideoAdded: (video: TrainingVideo) => void;
+  onVideoAdded: (video: Omit<TrainingVideo, 'id'>) => void;
 }
 
 const VideoUploadDialog: React.FC<VideoUploadDialogProps> = ({ isOpen, onClose, onVideoAdded }) => {
   const [title, setTitle] = useState('');
-  const [youtubeUrl, setYoutubeUrl] = useState('');
-  const [selectedFile, setSelectedFile] = useState<File | null>(null);
-  const [activeTab, setActiveTab] = useState('youtube');
-  const { toast } = useToast();
+  const [url, setUrl] = useState('');
+  const [activeTab, setActiveTab] = useState('googledrive');
 
-  const handleFileSelect = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const file = event.target.files?.[0];
-    if (file) {
-      if (file.type.startsWith('video/')) {
-        setSelectedFile(file);
-        if (!title) {
-          setTitle(file.name.replace(/\.[^/.]+$/, ""));
-        }
-      } else {
-        toast({
-          title: "Неверный формат файла",
-          description: "Пожалуйста, выберите видео файл",
-          variant: "destructive"
-        });
-      }
-    }
-  };
-
-  const extractYouTubeVideoId = (url: string): string | null => {
-    const patterns = [
-      /(?:youtube\.com\/watch\?v=|youtu\.be\/)([^&\n?#]+)/,
-      /youtube\.com\/embed\/([^&\n?#]+)/
-    ];
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
     
-    for (const pattern of patterns) {
-      const match = url.match(pattern);
-      if (match) return match[1];
-    }
-    return null;
-  };
-
-  const handleSubmit = () => {
-    if (!title.trim()) {
-      toast({
-        title: "Заполните название",
-        description: "Название видео обязательно для заполнения",
-        variant: "destructive"
-      });
+    if (!title.trim() || !url.trim()) {
       return;
     }
 
+    let videoType: 'local' | 'youtube' | 'googledrive' = 'googledrive';
+    let processedUrl = url.trim();
+
     if (activeTab === 'youtube') {
-      const videoId = extractYouTubeVideoId(youtubeUrl);
-      if (!videoId) {
-        toast({
-          title: "Неверная ссылка YouTube",
-          description: "Пожалуйста, введите правильную ссылку на YouTube видео",
-          variant: "destructive"
-        });
-        return;
+      videoType = 'youtube';
+      // Extract YouTube video ID from URL
+      const youtubeMatch = processedUrl.match(/(?:youtube\.com\/watch\?v=|youtu\.be\/)([^&\n?#]+)/);
+      if (youtubeMatch) {
+        processedUrl = youtubeMatch[1];
       }
-
-      onVideoAdded({
-        title: title.trim(),
-        type: 'youtube',
-        url: videoId,
-        thumbnailUrl: `https://img.youtube.com/vi/${videoId}/maxresdefault.jpg`
-      });
-    } else {
-      if (!selectedFile) {
-        toast({
-          title: "Выберите файл",
-          description: "Пожалуйста, выберите видео файл для загрузки",
-          variant: "destructive"
-        });
-        return;
-      }
-
-      // Создаем локальный URL для файла
-      const localUrl = URL.createObjectURL(selectedFile);
-      onVideoAdded({
-        title: title.trim(),
-        type: 'local',
-        url: localUrl
-      });
+    } else if (activeTab === 'googledrive') {
+      videoType = 'googledrive';
+      // Keep the full Google Drive URL
     }
 
-    // Сброс формы
+    onVideoAdded({
+      title: title.trim(),
+      type: videoType,
+      url: processedUrl,
+    });
+
+    // Reset form
     setTitle('');
-    setYoutubeUrl('');
-    setSelectedFile(null);
-    onClose();
+    setUrl('');
+    setActiveTab('googledrive');
   };
 
   const handleClose = () => {
     setTitle('');
-    setYoutubeUrl('');
-    setSelectedFile(null);
+    setUrl('');
+    setActiveTab('googledrive');
     onClose();
   };
 
@@ -125,75 +72,79 @@ const VideoUploadDialog: React.FC<VideoUploadDialogProps> = ({ isOpen, onClose, 
         <DialogHeader>
           <DialogTitle>Добавить видео</DialogTitle>
           <DialogDescription>
-            Загрузите видео с компьютера или добавьте ссылку на YouTube
+            Добавьте видео для этой темы обучения
           </DialogDescription>
         </DialogHeader>
 
-        <div className="space-y-4">
-          <div>
-            <Label htmlFor="video-title">Название видео</Label>
-            <Input
-              id="video-title"
-              value={title}
-              onChange={(e) => setTitle(e.target.value)}
-              placeholder="Введите название видео"
-              className="bg-trading-dark border-gray-700"
-            />
-          </div>
+        <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
+          <TabsList className="grid w-full grid-cols-2 bg-gray-800">
+            <TabsTrigger value="googledrive" className="data-[state=active]:bg-trading-dark">
+              <Link className="h-4 w-4 mr-2" />
+              Google Drive
+            </TabsTrigger>
+            <TabsTrigger value="youtube" className="data-[state=active]:bg-trading-dark">
+              <Youtube className="h-4 w-4 mr-2" />
+              YouTube
+            </TabsTrigger>
+          </TabsList>
 
-          <Tabs value={activeTab} onValueChange={setActiveTab}>
-            <TabsList className="grid w-full grid-cols-2 bg-gray-800">
-              <TabsTrigger value="youtube" className="data-[state=active]:bg-red-600">
-                <Youtube className="mr-2 h-4 w-4" />
-                YouTube
-              </TabsTrigger>
-              <TabsTrigger value="local" className="data-[state=active]:bg-blue-600">
-                <Upload className="mr-2 h-4 w-4" />
-                Загрузить
-              </TabsTrigger>
-            </TabsList>
+          <form onSubmit={handleSubmit} className="space-y-4 mt-4">
+            <div>
+              <Label htmlFor="video-title">Название видео</Label>
+              <Input
+                id="video-title"
+                value={title}
+                onChange={(e) => setTitle(e.target.value)}
+                placeholder="Введите название видео"
+                className="bg-trading-dark border-gray-700"
+                required
+              />
+            </div>
 
-            <TabsContent value="youtube" className="space-y-4">
+            <TabsContent value="googledrive" className="space-y-4 mt-0">
               <div>
-                <Label htmlFor="youtube-url">Ссылка на YouTube видео</Label>
+                <Label htmlFor="googledrive-url">Ссылка на Google Drive</Label>
+                <Input
+                  id="googledrive-url"
+                  value={url}
+                  onChange={(e) => setUrl(e.target.value)}
+                  placeholder="https://drive.google.com/file/d/..."
+                  className="bg-trading-dark border-gray-700"
+                  required
+                />
+                <p className="text-xs text-gray-400 mt-1">
+                  Вставьте ссылку на видео из Google Drive (убедитесь, что доступ открыт для просмотра)
+                </p>
+              </div>
+            </TabsContent>
+
+            <TabsContent value="youtube" className="space-y-4 mt-0">
+              <div>
+                <Label htmlFor="youtube-url">Ссылка на YouTube</Label>
                 <Input
                   id="youtube-url"
-                  value={youtubeUrl}
-                  onChange={(e) => setYoutubeUrl(e.target.value)}
+                  value={url}
+                  onChange={(e) => setUrl(e.target.value)}
                   placeholder="https://www.youtube.com/watch?v=..."
                   className="bg-trading-dark border-gray-700"
+                  required
                 />
+                <p className="text-xs text-gray-400 mt-1">
+                  Вставьте ссылку на видео YouTube
+                </p>
               </div>
             </TabsContent>
 
-            <TabsContent value="local" className="space-y-4">
-              <div>
-                <Label htmlFor="video-file">Выберите видео файл</Label>
-                <Input
-                  id="video-file"
-                  type="file"
-                  accept="video/*"
-                  onChange={handleFileSelect}
-                  className="bg-trading-dark border-gray-700"
-                />
-                {selectedFile && (
-                  <p className="text-sm text-gray-400 mt-2">
-                    Выбран файл: {selectedFile.name}
-                  </p>
-                )}
-              </div>
-            </TabsContent>
-          </Tabs>
-        </div>
-
-        <DialogFooter>
-          <Button variant="outline" onClick={handleClose}>
-            Отмена
-          </Button>
-          <Button onClick={handleSubmit} className="bg-green-600 hover:bg-green-700">
-            Добавить видео
-          </Button>
-        </DialogFooter>
+            <DialogFooter className="flex space-x-2">
+              <Button variant="outline" type="button" onClick={handleClose}>
+                Отмена
+              </Button>
+              <Button type="submit" className="bg-green-600 hover:bg-green-700">
+                Добавить видео
+              </Button>
+            </DialogFooter>
+          </form>
+        </Tabs>
       </DialogContent>
     </Dialog>
   );

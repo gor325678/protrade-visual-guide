@@ -8,7 +8,7 @@ import ProtectionOverlay from '@/components/shared/ProtectionOverlay';
 interface TrainingVideo {
   id: string;
   title: string;
-  type: 'local' | 'youtube';
+  type: 'local' | 'youtube' | 'googledrive';
   url: string;
   thumbnailUrl?: string;
 }
@@ -37,6 +37,16 @@ const VideoPlayer: React.FC<VideoPlayerProps> = ({ video, isOpen, onClose }) => 
     }
   }, [video]);
 
+  const getGoogleDriveEmbedUrl = (url: string) => {
+    // Convert Google Drive share link to embed URL
+    const fileIdMatch = url.match(/\/d\/([a-zA-Z0-9-_]+)/);
+    if (fileIdMatch) {
+      const fileId = fileIdMatch[1];
+      return `https://drive.google.com/file/d/${fileId}/preview`;
+    }
+    return url;
+  };
+
   const renderVideoContent = () => {
     if (video.type === 'youtube') {
       return (
@@ -49,6 +59,26 @@ const VideoPlayer: React.FC<VideoPlayerProps> = ({ video, isOpen, onClose }) => 
             allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
             allowFullScreen
             style={{ pointerEvents: 'auto' }}
+          />
+        </div>
+      );
+    } else if (video.type === 'googledrive') {
+      return (
+        <div className="relative w-full h-96">
+          <iframe
+            src={getGoogleDriveEmbedUrl(video.url)}
+            title={video.title}
+            className="w-full h-full rounded"
+            frameBorder="0"
+            allow="autoplay"
+            style={{ pointerEvents: 'auto' }}
+            onContextMenu={(e) => e.preventDefault()}
+          />
+          {/* Additional protection overlay for Google Drive videos */}
+          <div 
+            className="absolute inset-0 pointer-events-none"
+            style={{ background: 'transparent' }}
+            onContextMenu={(e) => e.preventDefault()}
           />
         </div>
       );

@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import Header from '@/components/layout/Header';
 import Footer from '@/components/layout/Footer';
@@ -16,7 +15,7 @@ import VideoPlayer from '@/components/training/VideoPlayer';
 interface TrainingVideo {
   id: string;
   title: string;
-  type: 'local' | 'youtube';
+  type: 'local' | 'youtube' | 'googledrive';
   url: string;
   thumbnailUrl?: string;
 }
@@ -61,7 +60,7 @@ const BeginnerTraining = () => {
         {
           id: '3',
           title: 'Типы графиков',
-          content: 'Существует несколько типов графиков для анализа движения цены: линейный график, график баров, японские свечи и график Ренко. Каждый тип имеет свои преимущества и особенности отображения ценовой информации.',
+          content: 'Существует несколько типов графиков для анализа движения цены: линейный график, график баров, японские свечи и график Рenko. Каждый тип имеет свои преимущества и особенности отображения ценовой информации.',
           difficulty: 'beginner'
         }
       ];
@@ -221,7 +220,13 @@ const BeginnerTraining = () => {
                     {topic.videos.map((video) => (
                       <div key={video.id} className="flex items-center gap-2 p-2 bg-gray-800 rounded">
                         <Video className="h-4 w-4 text-blue-400" />
-                        <span className="text-sm text-gray-300 flex-1">{video.title}</span>
+                        <div className="flex-1">
+                          <span className="text-sm text-gray-300 block">{video.title}</span>
+                          <span className="text-xs text-gray-500">
+                            {video.type === 'googledrive' ? 'Google Drive' : 
+                             video.type === 'youtube' ? 'YouTube' : 'Локальное'}
+                          </span>
+                        </div>
                         <Button 
                           size="sm" 
                           variant="ghost" 
