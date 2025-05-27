@@ -1,3 +1,4 @@
+
 import React from 'react';
 import { ChartBar, TrendingUp, LineChart } from 'lucide-react';
 import { Button } from '@/components/ui/button';
@@ -14,6 +15,16 @@ const HeroSection = () => {
     <div className="relative w-full py-12 px-4 md:py-20 overflow-hidden no-select">
       {/* Background gradient */}
       <div className="absolute inset-0 bg-gradient-to-br from-trading-dark via-trading-dark to-purple-900/20 z-0" />
+      
+      {/* Hero image */}
+      <div className="absolute right-0 top-0 w-1/2 h-full opacity-20 z-0">
+        <img 
+          src="/lovable-uploads/a7a07a1f-0f0d-453b-8d07-32767312672d.png" 
+          alt="Professional trader" 
+          className="w-full h-full object-cover object-left"
+        />
+        <div className="absolute inset-0 bg-gradient-to-l from-transparent to-trading-dark"></div>
+      </div>
       
       {/* Animated grid lines */}
       <div className="absolute inset-0 bg-[linear-gradient(rgba(86,70,252,0.05)_1px,transparent_1px),linear-gradient(90deg,rgba(86,70,252,0.05)_1px,transparent_1px)] bg-[size:24px_24px] [mask-image:radial-gradient(ellipse_50%_50%_at_50%_50%,#000_70%,transparent_100%)]" />
