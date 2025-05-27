@@ -64,7 +64,7 @@ const VideoPlayer: React.FC<VideoPlayerProps> = ({ video, isOpen, onClose }) => 
       );
     } else if (video.type === 'googledrive') {
       return (
-        <div className="relative w-full h-96">
+        <div className="relative w-full h-96 overflow-hidden">
           <iframe
             src={getGoogleDriveEmbedUrl(video.url)}
             title={video.title}
@@ -74,6 +74,8 @@ const VideoPlayer: React.FC<VideoPlayerProps> = ({ video, isOpen, onClose }) => 
             style={{ pointerEvents: 'auto' }}
             onContextMenu={(e) => e.preventDefault()}
           />
+          {/* Overlay to hide the "open in new window" icon */}
+          <div className="absolute top-0 right-0 w-12 h-12 bg-gray-900 pointer-events-none z-10"></div>
           {/* Additional protection overlay for Google Drive videos */}
           <div 
             className="absolute inset-0 pointer-events-none"
