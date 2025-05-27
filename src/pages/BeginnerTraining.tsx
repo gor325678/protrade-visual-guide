@@ -201,15 +201,10 @@ const BeginnerTraining = () => {
           {topics.map((topic) => (
             <Card key={topic.id} className="bg-trading-card border-gray-800 shadow-lg hover:shadow-blue-900/10 transition-shadow overflow-hidden">
               <CardHeader className="border-b border-gray-800">
-                <div className="flex justify-between items-start">
-                  <CardTitle className="flex items-center gap-2">
-                    <BookOpen className="h-5 w-5 text-primary" />
-                    <span>{topic.title}</span>
-                  </CardTitle>
-                  <span className={`px-2 py-1 rounded text-xs font-medium ${getDifficultyColor(topic.difficulty)}`}>
-                    {getDifficultyText(topic.difficulty)}
-                  </span>
-                </div>
+                <CardTitle className="flex items-center gap-2">
+                  <BookOpen className="h-5 w-5 text-primary" />
+                  <span>{topic.title}</span>
+                </CardTitle>
               </CardHeader>
               <CardContent className="pt-5">
                 <p className="text-gray-300 line-clamp-4 mb-4">{topic.content}</p>
