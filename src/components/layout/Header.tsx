@@ -25,7 +25,7 @@ const Header = () => {
           {[
             { path: '/', label: 'Обзор' },
             { path: '/beginner-training', label: 'Обучение для начинающих' },
-            { path: '/indicators', label: 'Индикаторы' },
+            { path: '/my-courses', label: 'Мои курсы' },
             { path: '/psychology', label: 'Психология' },
             { path: '/risk-management', label: 'Риск-менеджмент' },
             { path: '/materials-manager', label: 'Материалы' },
