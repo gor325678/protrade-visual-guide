@@ -1,8 +1,8 @@
 
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
 import { Button } from '@/components/ui/button';
-import { X } from 'lucide-react';
+import { X, AlertTriangle } from 'lucide-react';
 import ProtectionOverlay from '@/components/shared/ProtectionOverlay';
 
 interface TrainingVideo {
@@ -21,6 +21,7 @@ interface VideoPlayerProps {
 
 const VideoPlayer: React.FC<VideoPlayerProps> = ({ video, isOpen, onClose }) => {
   const videoRef = useRef<HTMLVideoElement>(null);
+  const [showWarning, setShowWarning] = useState(false);
 
   useEffect(() => {
     const handleContextMenu = (e: MouseEvent) => {
@@ -36,6 +37,54 @@ const VideoPlayer: React.FC<VideoPlayerProps> = ({ video, isOpen, onClose }) => 
       };
     }
   }, [video]);
+
+  // Track window focus and tab switching
+  useEffect(() => {
+    if (!isOpen) return;
+
+    const handleVisibilityChange = () => {
+      if (document.hidden) {
+        // Tab became hidden - pause video if it's local
+        if (video.type === 'local' && videoRef.current) {
+          videoRef.current.pause();
+        }
+        setShowWarning(true);
+        
+        // Hide warning after 3 seconds when user returns
+        setTimeout(() => {
+          if (!document.hidden) {
+            setShowWarning(false);
+          }
+        }, 3000);
+      } else {
+        // Tab became visible again
+        setTimeout(() => setShowWarning(false), 500);
+      }
+    };
+
+    const handleWindowBlur = () => {
+      // Window lost focus
+      if (video.type === 'local' && videoRef.current) {
+        videoRef.current.pause();
+      }
+      setShowWarning(true);
+    };
+
+    const handleWindowFocus = () => {
+      // Window gained focus
+      setTimeout(() => setShowWarning(false), 500);
+    };
+
+    document.addEventListener('visibilitychange', handleVisibilityChange);
+    window.addEventListener('blur', handleWindowBlur);
+    window.addEventListener('focus', handleWindowFocus);
+
+    return () => {
+      document.removeEventListener('visibilitychange', handleVisibilityChange);
+      window.removeEventListener('blur', handleWindowBlur);
+      window.removeEventListener('focus', handleWindowFocus);
+    };
+  }, [isOpen, video.type]);
 
   const getGoogleDriveEmbedUrl = (url: string) => {
     // Convert Google Drive share link to embed URL
@@ -123,6 +172,20 @@ const VideoPlayer: React.FC<VideoPlayerProps> = ({ video, isOpen, onClose }) => 
 
           <div className="relative">
             {renderVideoContent()}
+            
+            {/* Warning overlay when user switches tabs */}
+            {showWarning && (
+              <div className="absolute inset-0 bg-black/80 flex items-center justify-center z-20 rounded">
+                <div className="bg-red-600 border border-red-500 px-6 py-4 rounded-lg text-center">
+                  <AlertTriangle className="h-8 w-8 text-white mx-auto mb-2" />
+                  <h3 className="text-lg font-bold text-white mb-1">Внимание!</h3>
+                  <p className="text-white text-sm">
+                    Обнаружен переход на другую вкладку.<br />
+                    Видео приостановлено для защиты контента.
+                  </p>
+                </div>
+              </div>
+            )}
           </div>
         </DialogContent>
       </Dialog>
