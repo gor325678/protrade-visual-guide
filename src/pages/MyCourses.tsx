@@ -7,11 +7,12 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Progress } from '@/components/ui/progress';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
+import { useLanguage } from '@/contexts/LanguageContext';
 
 interface Course {
   id: string;
-  title: string;
-  description: string;
+  titleKey: string;
+  descriptionKey: string;
   progress: number;
   totalLessons: number;
   completedLessons: number;
@@ -23,14 +24,15 @@ interface Course {
 
 const MyCourses = () => {
   const [courses, setCourses] = useState<Course[]>([]);
+  const { t } = useLanguage();
 
   useEffect(() => {
     // Инициализируем курсы
     const initialCourses: Course[] = [
       {
         id: '1',
-        title: 'Big trading course',
-        description: 'Крупнейший бесплатный курс по трейдингу от практикующих трейдеров. За 8 модулей ты получишь системные знания, разберешься в рынках и поймешь, какой стиль торговли подходит именно тебе.',
+        titleKey: 'course.big-trading-title',
+        descriptionKey: 'course.big-trading-description',
         progress: 22,
         totalLessons: 37,
         completedLessons: 8,
@@ -51,6 +53,15 @@ const MyCourses = () => {
     }
   };
 
+  const getTranslatedStatus = (status: string) => {
+    switch(status) {
+      case 'В процессе': return t('mycourses.status.in-progress');
+      case 'Завершен': return t('mycourses.status.completed');
+      case 'Не начат': return t('mycourses.status.not-started');
+      default: return status;
+    }
+  };
+
   return (
     <div className="min-h-screen flex flex-col bg-trading-dark text-white">
       <Header />
@@ -58,10 +69,10 @@ const MyCourses = () => {
       <main className="flex-grow container mx-auto px-4 py-8">
         <div className="flex items-center gap-2 text-sm text-gray-400 mb-6">
           <span>🏠</span>
-          <span>Мои курсы</span>
+          <span>{t('mycourses.breadcrumb')}</span>
         </div>
 
-        <h1 className="text-3xl font-bold mb-8">Мои курсы</h1>
+        <h1 className="text-3xl font-bold mb-8">{t('mycourses.title')}</h1>
         
         <div className="grid gap-6">
           {courses.map((course) => (
@@ -83,36 +94,36 @@ const MyCourses = () => {
                   <div className="flex-grow">
                     <div className="flex justify-between items-start mb-4">
                       <div>
-                        <h2 className="text-2xl font-bold mb-2">{course.title}</h2>
+                        <h2 className="text-2xl font-bold mb-2">{t(course.titleKey)}</h2>
                         <div className="flex items-center gap-4 text-gray-400 text-sm mb-3">
                           <span className="flex items-center gap-1">
                             <BookOpen className="h-4 w-4" />
-                            {course.totalLessons} Уроков
+                            {course.totalLessons} {t('mycourses.lessons')}
                           </span>
                           <span className="flex items-center gap-1">
                             <CheckCircle className="h-4 w-4" />
-                            {course.totalTests} Тестов
+                            {course.totalTests} {t('mycourses.tests')}
                           </span>
                         </div>
                       </div>
                       <div className="flex items-center gap-2">
                         <Badge className={`${getStatusColor(course.status)} border-0`}>
-                          {course.blocks} блока
+                          {course.blocks} {t('mycourses.blocks')}
                         </Badge>
                         <Badge className="bg-green-100 text-green-800 border-0">
-                          {course.status}
+                          {getTranslatedStatus(course.status)}
                         </Badge>
                       </div>
                     </div>
 
                     <p className="text-gray-300 text-sm mb-4 line-clamp-2">
-                      {course.description}
+                      {t(course.descriptionKey)}
                     </p>
 
                     {/* Progress Section */}
                     <div className="mb-4">
                       <div className="flex justify-between items-center mb-2">
-                        <span className="text-sm text-gray-400">Прогресс Курса:</span>
+                        <span className="text-sm text-gray-400">{t('mycourses.progress')}</span>
                         <span className="text-sm font-medium">{course.progress}%</span>
                       </div>
                       <Progress value={course.progress} className="h-2" />
@@ -121,7 +132,7 @@ const MyCourses = () => {
                     {/* Continue Button */}
                     <div className="flex justify-end">
                       <Button className="bg-transparent border border-gray-600 text-gray-300 hover:bg-gray-800 hover:text-white">
-                        Продолжить курс
+                        {t('mycourses.continue')}
                         <span className="ml-1">→</span>
                       </Button>
                     </div>
@@ -135,9 +146,9 @@ const MyCourses = () => {
         {courses.length === 0 && (
           <div className="text-center p-10 border border-dashed border-gray-700 rounded-lg">
             <Clock className="h-12 w-12 text-gray-400 mx-auto mb-4" />
-            <p className="text-gray-400 mb-4">У вас пока нет активных курсов</p>
+            <p className="text-gray-400 mb-4">{t('mycourses.no-courses')}</p>
             <Button className="bg-blue-600 hover:bg-blue-700">
-              Найти курсы
+              {t('mycourses.find-courses')}
             </Button>
           </div>
         )}

@@ -3,9 +3,12 @@ import React from 'react';
 import { Eye, Lock } from 'lucide-react';
 import { useLocation, Link } from 'react-router-dom';
 import ChartLine from '@/components/icons/ChartLine';
+import LanguageSwitcher from '@/components/ui/LanguageSwitcher';
+import { useLanguage } from '@/contexts/LanguageContext';
 
 const Header = () => {
   const location = useLocation();
+  const { t } = useLanguage();
   
   const isActive = (path: string) => {
     return location.pathname === path;
@@ -23,13 +26,13 @@ const Header = () => {
         
         <nav className="hidden md:flex items-center space-x-6">
           {[
-            { path: '/', label: 'Обзор' },
-            { path: '/beginner-training', label: 'Обучение для начинающих' },
-            { path: '/my-courses', label: 'Мои курсы' },
-            { path: '/psychology', label: 'Психология' },
-            { path: '/risk-management', label: 'Риск-менеджмент' },
-            { path: '/materials-manager', label: 'Материалы' },
-            { path: '/course-structure', label: 'Структура курса' }
+            { path: '/', labelKey: 'nav.overview' },
+            { path: '/beginner-training', labelKey: 'nav.beginner-training' },
+            { path: '/my-courses', labelKey: 'nav.my-courses' },
+            { path: '/psychology', labelKey: 'nav.psychology' },
+            { path: '/risk-management', labelKey: 'nav.risk-management' },
+            { path: '/materials-manager', labelKey: 'nav.materials' },
+            { path: '/course-structure', labelKey: 'nav.course-structure' }
           ].map(item => (
             <Link
               key={item.path}
@@ -38,15 +41,16 @@ const Header = () => {
                 isActive(item.path) ? 'text-primary border-b-2 border-primary pb-1' : 'text-gray-400'
               }`}
             >
-              {item.label}
+              {t(item.labelKey)}
             </Link>
           ))}
         </nav>
         
-        <div className="flex items-center space-x-3">
+        <div className="flex items-center space-x-4">
+          <LanguageSwitcher />
           <div className="flex items-center space-x-1">
             <Eye size={18} className="text-gray-400" />
-            <span className="text-xs text-gray-400">Protected View</span>
+            <span className="text-xs text-gray-400">{t('nav.protected-view')}</span>
             <Lock size={16} className="text-gray-400 ml-1" />
           </div>
         </div>
