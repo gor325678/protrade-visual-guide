@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import Header from '@/components/layout/Header';
 import Footer from '@/components/layout/Footer';
@@ -9,6 +8,7 @@ import { CourseModule } from '@/types/material';
 import ModuleCard from '@/components/course/ModuleCard';
 import ModuleForm from '@/components/course/ModuleForm';
 import ModuleHistoryDialog from '@/components/course/ModuleHistoryDialog';
+import { useLanguage } from '@/contexts/LanguageContext';
 import { 
   getAllModules, 
   addModule, 
@@ -17,6 +17,7 @@ import {
 } from '@/services/courseService';
 
 const CourseStructure = () => {
+  const { t } = useLanguage();
   const [modules, setModules] = useState<CourseModule[]>(getAllModules());
   const [isFormOpen, setIsFormOpen] = useState(false);
   const [editingModule, setEditingModule] = useState<CourseModule | undefined>(undefined);
@@ -28,8 +29,8 @@ const CourseStructure = () => {
     const newModule = addModule(moduleData);
     setModules(getAllModules());
     toast({
-      title: "Модуль добавлен",
-      description: `"${newModule.title}" успешно добавлен в структуру курса.`,
+      title: t('course-structure.module-added'),
+      description: `"${newModule.title}" ${t('course-structure.module-added-desc')}`,
     });
   };
 
@@ -43,13 +44,13 @@ const CourseStructure = () => {
       // Special message for the Forex basics module
       if (updatedModule.id === '1' || updatedModule.title === "Основы торговли на Форекс") {
         toast({
-          title: "Модуль обновлен",
-          description: `"${updatedModule.title}" успешно обновлен. Изменения сохранены в истории.`,
+          title: t('course-structure.module-updated'),
+          description: `"${updatedModule.title}" ${t('course-structure.module-updated-history')}`,
         });
       } else {
         toast({
-          title: "Модуль обновлен",
-          description: `"${updatedModule.title}" успешно обновлен.`,
+          title: t('course-structure.module-updated'),
+          description: `"${updatedModule.title}" ${t('course-structure.module-updated-desc')}`,
         });
       }
     }
@@ -65,8 +66,8 @@ const CourseStructure = () => {
     if (success) {
       setModules(getAllModules());
       toast({
-        title: "Модуль удален",
-        description: "Модуль был успешно удален из структуры курса.",
+        title: t('course-structure.module-deleted'),
+        description: t('course-structure.module-deleted-desc'),
       });
     }
   };
@@ -100,17 +101,17 @@ const CourseStructure = () => {
       
       <main className="flex-grow container mx-auto px-4 py-8">
         <div className="flex justify-between items-center mb-8">
-          <h1 className="text-2xl font-bold">Управление структурой курса</h1>
+          <h1 className="text-2xl font-bold">{t('course-structure.title')}</h1>
           <Button onClick={() => setIsFormOpen(true)}>
-            <Plus className="mr-2 h-4 w-4" /> Добавить модуль
+            <Plus className="mr-2 h-4 w-4" /> {t('course-structure.add')}
           </Button>
         </div>
         
         {modules.length === 0 ? (
           <div className="text-center p-10 border border-dashed border-gray-700 rounded-lg">
-            <p className="text-gray-400">Модули курса отсутствуют. Добавьте свой первый модуль.</p>
+            <p className="text-gray-400">{t('course-structure.no-modules')}</p>
             <Button className="mt-4" onClick={() => setIsFormOpen(true)}>
-              <Plus className="mr-2 h-4 w-4" /> Добавить модуль
+              <Plus className="mr-2 h-4 w-4" /> {t('course-structure.add')}
             </Button>
           </div>
         ) : (

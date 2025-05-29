@@ -11,6 +11,7 @@ import { Textarea } from '@/components/ui/textarea';
 import { Label } from '@/components/ui/label';
 import VideoUploadDialog from '@/components/training/VideoUploadDialog';
 import VideoPlayer from '@/components/training/VideoPlayer';
+import { useLanguage } from '@/contexts/LanguageContext';
 
 interface TrainingVideo {
   id: string;
@@ -29,6 +30,7 @@ interface TrainingTopic {
 }
 
 const BeginnerTraining = () => {
+  const { t } = useLanguage();
   const [topics, setTopics] = useState<TrainingTopic[]>([]);
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   const [isVideoDialogOpen, setIsVideoDialogOpen] = useState(false);
@@ -110,8 +112,8 @@ const BeginnerTraining = () => {
     setSelectedTopicForVideo(null);
     
     toast({
-      title: "Видео добавлено",
-      description: "Видео было успешно добавлено к теме."
+      title: t('beginner.video-added'),
+      description: t('beginner.video-added-desc')
     });
   };
 
@@ -133,8 +135,8 @@ const BeginnerTraining = () => {
       );
       setTopics(updatedTopics);
       toast({
-        title: "Тема обновлена",
-        description: "Учебная тема была успешно обновлена."
+        title: t('beginner.topic-updated'),
+        description: t('beginner.topic-updated-desc')
       });
     } else {
       // Add new topic
@@ -146,8 +148,8 @@ const BeginnerTraining = () => {
       };
       setTopics([...topics, newTopic]);
       toast({
-        title: "Тема добавлена",
-        description: "Новая учебная тема была успешно добавлена."
+        title: t('beginner.topic-added'),
+        description: t('beginner.topic-added-desc')
       });
     }
     
@@ -159,8 +161,8 @@ const BeginnerTraining = () => {
     setTopics(updatedTopics);
     localStorage.setItem('beginner_training_topics', JSON.stringify(updatedTopics));
     toast({
-      title: "Тема удалена",
-      description: "Учебная тема была удалена из системы."
+      title: t('beginner.topic-deleted'),
+      description: t('beginner.topic-deleted-desc')
     });
   };
 
@@ -189,11 +191,11 @@ const BeginnerTraining = () => {
       <main className="flex-grow container mx-auto px-4 py-8">
         <div className="flex justify-between items-center mb-8">
           <div>
-            <h1 className="text-3xl font-bold mb-2">Обучение для начинающих</h1>
-            <p className="text-gray-400">Базовые знания и концепции для тех, кто только начинает знакомство с торговлей на Форекс</p>
+            <h1 className="text-3xl font-bold mb-2">{t('beginner.title')}</h1>
+            <p className="text-gray-400">{t('beginner.subtitle')}</p>
           </div>
           <Button onClick={handleAddTopic} className="bg-green-600 hover:bg-green-700">
-            <Plus className="mr-2 h-4 w-4" /> Добавить тему
+            <Plus className="mr-2 h-4 w-4" /> {t('beginner.add-topic')}
           </Button>
         </div>
         
@@ -211,7 +213,7 @@ const BeginnerTraining = () => {
                 
                 {topic.videos && topic.videos.length > 0 && (
                   <div className="space-y-2">
-                    <h4 className="text-sm font-medium text-gray-400">Видео материалы:</h4>
+                    <h4 className="text-sm font-medium text-gray-400">{t('beginner.video-materials')}</h4>
                     {topic.videos.map((video) => (
                       <div key={video.id} className="flex items-center gap-2 p-2 bg-gray-800 rounded">
                         <Video className="h-4 w-4 text-blue-400" />
@@ -228,7 +230,7 @@ const BeginnerTraining = () => {
                           onClick={() => handlePlayVideo(video)}
                           className="text-blue-400 hover:text-blue-300"
                         >
-                          Смотреть
+                          {t('beginner.watch')}
                         </Button>
                       </div>
                     ))}
@@ -243,7 +245,7 @@ const BeginnerTraining = () => {
                   className="flex-1"
                 >
                   <Video className="h-4 w-4 mr-1" />
-                  Добавить видео
+                  {t('beginner.add-video')}
                 </Button>
                 <Button 
                   variant="outline" 
@@ -251,14 +253,14 @@ const BeginnerTraining = () => {
                   onClick={() => handleEditTopic(topic)}
                 >
                   <FileEdit className="h-4 w-4 mr-1" />
-                  Изменить
+                  {t('beginner.edit')}
                 </Button>
                 <Button 
                   variant="destructive" 
                   size="sm" 
                   onClick={() => handleDeleteTopic(topic.id)}
                 >
-                  Удалить
+                  {t('beginner.delete')}
                 </Button>
               </CardFooter>
             </Card>
@@ -267,9 +269,9 @@ const BeginnerTraining = () => {
         
         {topics.length === 0 && (
           <div className="text-center p-10 border border-dashed border-gray-700 rounded-lg">
-            <p className="text-gray-400">Темы для обучения отсутствуют. Добавьте вашу первую тему.</p>
+            <p className="text-gray-400">{t('beginner.no-topics')}</p>
             <Button className="mt-4" onClick={handleAddTopic}>
-              <Plus className="mr-2 h-4 w-4" /> Добавить тему
+              <Plus className="mr-2 h-4 w-4" /> {t('beginner.add-topic')}
             </Button>
           </div>
         )}
@@ -277,16 +279,16 @@ const BeginnerTraining = () => {
         <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
           <DialogContent className="bg-trading-card border-gray-800 text-white">
             <DialogHeader>
-              <DialogTitle>{currentTopic ? "Редактировать тему" : "Добавить новую тему"}</DialogTitle>
+              <DialogTitle>{currentTopic ? t('beginner.edit-topic') : t('beginner.add-new-topic')}</DialogTitle>
               <DialogDescription>
                 {currentTopic 
-                  ? "Внесите изменения в учебную тему и сохраните их." 
-                  : "Заполните информацию для новой учебной темы."}
+                  ? t('beginner.edit-description')
+                  : t('beginner.add-description')}
               </DialogDescription>
             </DialogHeader>
             <form onSubmit={handleSaveTopic} className="space-y-4">
               <div>
-                <Label htmlFor="title">Название темы</Label>
+                <Label htmlFor="title">{t('beginner.topic-title')}</Label>
                 <Input 
                   id="title" 
                   name="title" 
@@ -296,7 +298,7 @@ const BeginnerTraining = () => {
                 />
               </div>
               <div>
-                <Label htmlFor="content">Содержание</Label>
+                <Label htmlFor="content">{t('beginner.content')}</Label>
                 <Textarea 
                   id="content" 
                   name="content" 
@@ -307,24 +309,24 @@ const BeginnerTraining = () => {
                 />
               </div>
               <div>
-                <Label htmlFor="difficulty">Уровень сложности</Label>
+                <Label htmlFor="difficulty">{t('beginner.difficulty')}</Label>
                 <select 
                   id="difficulty" 
                   name="difficulty" 
                   defaultValue={currentTopic?.difficulty || "beginner"}
                   className="w-full rounded-md p-2 bg-trading-dark border border-gray-700"
                 >
-                  <option value="beginner">Начинающий</option>
-                  <option value="intermediate">Средний</option>
-                  <option value="advanced">Продвинутый</option>
+                  <option value="beginner">{t('beginner.difficulty.beginner')}</option>
+                  <option value="intermediate">{t('beginner.difficulty.intermediate')}</option>
+                  <option value="advanced">{t('beginner.difficulty.advanced')}</option>
                 </select>
               </div>
               <DialogFooter className="pt-4">
                 <Button variant="outline" type="button" onClick={() => setIsDialogOpen(false)}>
-                  Отмена
+                  {t('beginner.cancel')}
                 </Button>
                 <Button type="submit" className="bg-green-600 hover:bg-green-700">
-                  {currentTopic ? "Сохранить изменения" : "Добавить тему"}
+                  {currentTopic ? t('beginner.save-changes') : t('beginner.add-topic-btn')}
                 </Button>
               </DialogFooter>
             </form>

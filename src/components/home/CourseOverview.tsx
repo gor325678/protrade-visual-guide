@@ -3,17 +3,19 @@ import React from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { CheckCircle, BookOpen } from 'lucide-react';
 import { getAllModules } from '@/services/courseService';
+import { useLanguage } from '@/contexts/LanguageContext';
 
 const CourseOverview = () => {
+  const { t } = useLanguage();
   const modules = getAllModules();
 
   return (
     <div className="w-full py-12 px-4 no-select">
       <div className="max-w-7xl mx-auto">
         <div className="text-center mb-12">
-          <h2 className="text-3xl font-bold mb-4">Структура курса</h2>
+          <h2 className="text-3xl font-bold mb-4">{t('home.course-structure')}</h2>
           <p className="text-gray-400 max-w-3xl mx-auto">
-            Комплексная программа обучения, охватывающая все аспекты торговли на Форекс — от базовых концепций до продвинутых стратегий и психологии трейдинга
+            {t('home.course-description')}
           </p>
         </div>
         
