@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import Header from '@/components/layout/Header';
 import Footer from '@/components/layout/Footer';
@@ -7,7 +6,6 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Separator } from '@/components/ui/separator';
-import { Badge } from '@/components/ui/badge';
 import { CreditCard, Shield, Lock, ArrowLeft } from 'lucide-react';
 import { useLanguage } from '@/contexts/LanguageContext';
 
@@ -25,18 +23,16 @@ const Checkout = () => {
     billingAddress: ''
   });
 
-  // Моковые данные корзины (в реальном приложении будут из состояния)
+  // Данные корзины с курсом из каталога
   const cartItems = [
     {
       id: '1',
-      title: 'Полный курс трейдинга Форекс',
-      price: 4999,
-      originalPrice: 7999
+      title: 'Система ProTrader Systems',
+      price: 1700
     }
   ];
 
   const subtotal = cartItems.reduce((sum, item) => sum + item.price, 0);
-  const discount = cartItems.reduce((sum, item) => sum + (item.originalPrice ? item.originalPrice - item.price : 0), 0);
   const total = subtotal;
 
   const handleInputChange = (field: string, value: string) => {
@@ -227,21 +223,9 @@ const Checkout = () => {
                     <div key={item.id} className="flex justify-between items-start">
                       <div className="flex-1">
                         <h4 className="font-medium">{item.title}</h4>
-                        {item.originalPrice && (
-                          <div className="flex items-center gap-2 mt-1">
-                            <Badge variant="secondary" className="bg-red-100 text-red-800">
-                              Скидка ₽{(item.originalPrice - item.price).toLocaleString()}
-                            </Badge>
-                          </div>
-                        )}
                       </div>
                       <div className="text-right">
-                        <div className="font-semibold">₽{item.price.toLocaleString()}</div>
-                        {item.originalPrice && (
-                          <div className="text-sm text-gray-500 line-through">
-                            ₽{item.originalPrice.toLocaleString()}
-                          </div>
-                        )}
+                        <div className="font-semibold">${item.price}</div>
                       </div>
                     </div>
                   ))}
@@ -251,28 +235,18 @@ const Checkout = () => {
                   <div className="space-y-2">
                     <div className="flex justify-between">
                       <span>Подытог:</span>
-                      <span>₽{subtotal.toLocaleString()}</span>
+                      <span>${subtotal}</span>
                     </div>
-                    {discount > 0 && (
-                      <div className="flex justify-between text-green-500">
-                        <span>Скидка:</span>
-                        <span>-₽{discount.toLocaleString()}</span>
-                      </div>
-                    )}
                   </div>
 
                   <Separator className="bg-gray-700" />
 
                   <div className="flex justify-between text-lg font-bold">
                     <span>Итого:</span>
-                    <span>₽{total.toLocaleString()}</span>
+                    <span>${total}</span>
                   </div>
 
                   <div className="space-y-3 pt-4">
-                    <div className="flex items-center gap-2 text-sm text-gray-400">
-                      <Shield className="h-4 w-4 text-green-500" />
-                      30-дневная гарантия возврата денег
-                    </div>
                     <div className="flex items-center gap-2 text-sm text-gray-400">
                       <Lock className="h-4 w-4 text-blue-500" />
                       Пожизненный доступ к курсу
