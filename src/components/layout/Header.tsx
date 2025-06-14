@@ -27,6 +27,7 @@ const Header = () => {
         <nav className="hidden md:flex items-center space-x-6">
           {[
             { path: '/', labelKey: 'nav.overview' },
+            { path: '/courses', labelKey: 'Каталог курсов трейдинга' },
             { path: '/beginner-training', labelKey: 'nav.beginner-training' },
             { path: '/my-courses', labelKey: 'nav.my-courses' },
             { path: '/psychology', labelKey: 'nav.psychology' },
@@ -41,7 +42,7 @@ const Header = () => {
                 isActive(item.path) ? 'text-primary border-b-2 border-primary pb-1' : 'text-gray-400'
               }`}
             >
-              {t(item.labelKey)}
+              {item.labelKey.startsWith('nav.') ? t(item.labelKey) : item.labelKey}
             </Link>
           ))}
         </nav>
