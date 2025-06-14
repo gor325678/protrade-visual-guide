@@ -15,6 +15,10 @@ import About from "./pages/About";
 import NotFound from "./pages/NotFound";
 import MaterialsManager from "./pages/MaterialsManager";
 import CourseStructure from "./pages/CourseStructure";
+import Courses from "./pages/Courses";
+import Checkout from "./pages/Checkout";
+import PaymentSuccess from "./pages/PaymentSuccess";
+import Account from "./pages/Account";
 
 // Create a client
 const queryClient = new QueryClient();
@@ -36,6 +40,10 @@ const App = () => (
               <Route path="/about" element={<About />} />
               <Route path="/materials-manager" element={<MaterialsManager />} />
               <Route path="/course-structure" element={<CourseStructure />} />
+              <Route path="/courses" element={<Courses />} />
+              <Route path="/checkout" element={<Checkout />} />
+              <Route path="/payment-success" element={<PaymentSuccess />} />
+              <Route path="/account" element={<Account />} />
               <Route path="*" element={<NotFound />} />
             </Routes>
           </BrowserRouter>
