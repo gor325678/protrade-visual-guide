@@ -14,7 +14,7 @@ const ChartPreview = () => {
           </p>
         </div>
         
-        <div className="relative bg-trading-dark border border-gray-800 rounded-xl p-4 overflow-hidden">
+        <div className="relative bg-trading-dark border border-gray-800 rounded-xl p-4 overflow-hidden max-w-fit mx-auto">
           <div className="absolute top-4 left-4 z-10 flex gap-2">
             <div className="px-3 py-1 bg-trading-card rounded-md border border-gray-800 text-sm font-medium text-gray-300">
               GBP/USD
@@ -44,7 +44,7 @@ const ChartPreview = () => {
             <img 
               src="/lovable-uploads/e3150010-676f-47ab-90d7-681f3065484a.png" 
               alt="GBP/USD торговый график с отмеченными точками входа" 
-              className="w-full rounded-md border border-gray-800 max-h-[500px] object-contain bg-black"
+              className="rounded-md border border-gray-800 bg-black block"
             />
           </div>
           
