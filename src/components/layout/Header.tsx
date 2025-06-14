@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { Eye, Lock } from 'lucide-react';
 import { useLocation, Link } from 'react-router-dom';
@@ -31,7 +30,6 @@ const Header = () => {
             { path: '/beginner-training', labelKey: 'nav.beginner-training' },
             { path: '/my-courses', labelKey: 'nav.my-courses' },
             { path: '/psychology', labelKey: 'nav.psychology' },
-            { path: '/risk-management', labelKey: 'nav.risk-management' },
             { path: '/materials-manager', labelKey: 'nav.materials' },
             { path: '/course-structure', labelKey: 'nav.course-structure' }
           ].map(item => (

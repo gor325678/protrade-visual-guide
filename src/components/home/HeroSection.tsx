@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { ChartBar, TrendingUp, LineChart } from 'lucide-react';
 import { Button } from '@/components/ui/button';
@@ -8,7 +7,7 @@ const HeroSection = () => {
   const navigate = useNavigate();
   
   const handleStartLearning = () => {
-    navigate('/materials-manager');
+    navigate('/courses');
   };
   
   return (
