@@ -1,3 +1,4 @@
+
 import React, { useState } from 'react';
 import Header from '@/components/layout/Header';
 import Footer from '@/components/layout/Footer';
@@ -34,6 +35,15 @@ const Checkout = () => {
 
   const subtotal = cartItems.reduce((sum, item) => sum + item.price, 0);
   const total = subtotal;
+
+  // Актуальные курсы валют (примерные на текущую дату)
+  const exchangeRates = {
+    usdToRub: 93, // 1 USD = 93 RUB
+    usdToUah: 41  // 1 USD = 41 UAH
+  };
+
+  const priceInRub = Math.round(total * exchangeRates.usdToRub);
+  const priceInUah = Math.round(total * exchangeRates.usdToUah);
 
   const handleInputChange = (field: string, value: string) => {
     setFormData(prev => ({
@@ -207,7 +217,7 @@ const Checkout = () => {
                   className="w-full bg-green-600 hover:bg-green-700"
                 >
                   <Lock className="mr-2 h-5 w-5" />
-                  Завершить покупку - ₽{total.toLocaleString()}
+                  Завершить покупку - ${total}
                 </Button>
               </form>
             </div>
@@ -241,9 +251,21 @@ const Checkout = () => {
 
                   <Separator className="bg-gray-700" />
 
-                  <div className="flex justify-between text-lg font-bold">
-                    <span>Итого:</span>
-                    <span>${total}</span>
+                  <div className="space-y-2">
+                    <div className="flex justify-between text-lg font-bold">
+                      <span>Итого:</span>
+                      <span>${total}</span>
+                    </div>
+                    <div className="space-y-1 text-sm text-gray-400">
+                      <div className="flex justify-between">
+                        <span>В рублях:</span>
+                        <span>{priceInRub.toLocaleString()} ₽</span>
+                      </div>
+                      <div className="flex justify-between">
+                        <span>В гривнах:</span>
+                        <span>{priceInUah.toLocaleString()} ₴</span>
+                      </div>
+                    </div>
                   </div>
 
                   <div className="space-y-3 pt-4">
