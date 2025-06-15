@@ -1,31 +1,9 @@
 
-import { createClient } from '@supabase/supabase-js';
+import { supabase } from '@/integrations/supabase/client';
 import { Material, MaterialType } from '../types/material';
-
-// Initialize Supabase client
-const supabaseUrl = import.meta.env.VITE_SUPABASE_URL;
-const supabaseAnonKey = import.meta.env.VITE_SUPABASE_ANON_KEY;
-
-console.log('Supabase URL:', supabaseUrl);
-console.log('Supabase Key exists:', !!supabaseAnonKey);
-
-const isSupabaseConfigured = !!(supabaseUrl && supabaseAnonKey);
-
-let supabase: any = null;
-
-if (isSupabaseConfigured) {
-  supabase = createClient(supabaseUrl, supabaseAnonKey);
-} else {
-  console.error('Missing Supabase environment variables. Please configure VITE_SUPABASE_URL and VITE_SUPABASE_ANON_KEY');
-}
 
 // Database operations
 export const getAllMaterials = async (): Promise<Material[]> => {
-  if (!isSupabaseConfigured) {
-    console.warn('Supabase not configured, returning empty array');
-    return [];
-  }
-
   try {
     const { data, error } = await supabase
       .from('materials')
@@ -53,11 +31,6 @@ export const getAllMaterials = async (): Promise<Material[]> => {
 };
 
 export const getMaterialById = async (id: string): Promise<Material | undefined> => {
-  if (!isSupabaseConfigured) {
-    console.warn('Supabase not configured');
-    return undefined;
-  }
-
   try {
     const { data, error } = await supabase
       .from('materials')
@@ -88,11 +61,6 @@ export const getMaterialById = async (id: string): Promise<Material | undefined>
 };
 
 export const addMaterial = async (material: Omit<Material, 'id' | 'dateAdded'>): Promise<Material | null> => {
-  if (!isSupabaseConfigured) {
-    console.warn('Supabase not configured');
-    return null;
-  }
-
   try {
     const { data, error } = await supabase
       .from('materials')
@@ -129,11 +97,6 @@ export const addMaterial = async (material: Omit<Material, 'id' | 'dateAdded'>):
 };
 
 export const updateMaterial = async (id: string, updates: Partial<Omit<Material, 'id' | 'dateAdded'>>): Promise<Material | null> => {
-  if (!isSupabaseConfigured) {
-    console.warn('Supabase not configured');
-    return null;
-  }
-
   try {
     const updateData: any = {};
     if (updates.title !== undefined) updateData.title = updates.title;
@@ -172,11 +135,6 @@ export const updateMaterial = async (id: string, updates: Partial<Omit<Material,
 };
 
 export const deleteMaterial = async (id: string): Promise<boolean> => {
-  if (!isSupabaseConfigured) {
-    console.warn('Supabase not configured');
-    return false;
-  }
-
   try {
     const { error } = await supabase
       .from('materials')
@@ -196,11 +154,6 @@ export const deleteMaterial = async (id: string): Promise<boolean> => {
 };
 
 export const getImages = async (): Promise<Material[]> => {
-  if (!isSupabaseConfigured) {
-    console.warn('Supabase not configured, returning empty array');
-    return [];
-  }
-
   try {
     const { data, error } = await supabase
       .from('materials')
@@ -229,11 +182,6 @@ export const getImages = async (): Promise<Material[]> => {
 };
 
 export const uploadFile = async (file: File, bucket: string = 'materials'): Promise<string | null> => {
-  if (!isSupabaseConfigured) {
-    console.warn('Supabase not configured');
-    return null;
-  }
-
   try {
     const fileExt = file.name.split('.').pop();
     const fileName = `${Math.random().toString(36).substring(2)}-${Date.now()}.${fileExt}`;
