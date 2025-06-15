@@ -1,4 +1,3 @@
-
 import { createClient } from '@supabase/supabase-js';
 import { Material, MaterialType } from '../types/material';
 
@@ -6,215 +5,273 @@ import { Material, MaterialType } from '../types/material';
 const supabaseUrl = import.meta.env.VITE_SUPABASE_URL;
 const supabaseAnonKey = import.meta.env.VITE_SUPABASE_ANON_KEY;
 
+console.log('Supabase URL:', supabaseUrl);
+console.log('Supabase Key exists:', !!supabaseAnonKey);
+
 if (!supabaseUrl || !supabaseAnonKey) {
-  throw new Error('Missing Supabase environment variables');
-}
-
-const supabase = createClient(supabaseUrl, supabaseAnonKey);
-
-// Database operations
-export const getAllMaterials = async (): Promise<Material[]> => {
-  try {
-    const { data, error } = await supabase
-      .from('materials')
-      .select('*')
-      .order('date_added', { ascending: false });
-
-    if (error) {
-      console.error('Error fetching materials:', error);
-      throw error;
-    }
-
-    return data?.map(item => ({
-      id: item.id,
-      title: item.title,
-      description: item.description,
-      type: item.type as MaterialType,
-      url: item.url,
-      imageUrl: item.image_url,
-      dateAdded: new Date(item.date_added)
-    })) || [];
-  } catch (error) {
-    console.error('Error in getAllMaterials:', error);
-    return [];
-  }
-};
-
-export const getMaterialById = async (id: string): Promise<Material | undefined> => {
-  try {
-    const { data, error } = await supabase
-      .from('materials')
-      .select('*')
-      .eq('id', id)
-      .single();
-
-    if (error) {
-      console.error('Error fetching material:', error);
-      return undefined;
-    }
-
-    if (!data) return undefined;
-
-    return {
-      id: data.id,
-      title: data.title,
-      description: data.description,
-      type: data.type as MaterialType,
-      url: data.url,
-      imageUrl: data.image_url,
-      dateAdded: new Date(data.date_added)
-    };
-  } catch (error) {
-    console.error('Error in getMaterialById:', error);
-    return undefined;
-  }
-};
-
-export const addMaterial = async (material: Omit<Material, 'id' | 'dateAdded'>): Promise<Material | null> => {
-  try {
-    const { data, error } = await supabase
-      .from('materials')
-      .insert({
-        title: material.title,
-        description: material.description,
-        type: material.type,
-        url: material.url || null,
-        image_url: material.imageUrl || null
+  console.error('Missing Supabase environment variables. Please configure VITE_SUPABASE_URL and VITE_SUPABASE_ANON_KEY');
+  // Создаем фиктивный клиент для предотвращения ошибок
+  const mockClient = {
+    from: () => ({
+      select: () => ({ data: [], error: null }),
+      insert: () => ({ data: null, error: new Error('Supabase not configured') }),
+      update: () => ({ data: null, error: new Error('Supabase not configured') }),
+      delete: () => ({ error: new Error('Supabase not configured') }),
+      eq: () => ({ data: null, error: new Error('Supabase not configured') }),
+      order: () => ({ data: [], error: null }),
+      single: () => ({ data: null, error: new Error('Supabase not configured') })
+    }),
+    storage: {
+      from: () => ({
+        upload: () => ({ data: null, error: new Error('Supabase not configured') }),
+        getPublicUrl: () => ({ data: { publicUrl: '' } })
       })
-      .select()
-      .single();
-
-    if (error) {
-      console.error('Error adding material:', error);
-      throw error;
     }
+  };
+  
+  // Экспортируем mock функции
+  export const getAllMaterials = async (): Promise<Material[]> => {
+    console.warn('Supabase not configured, returning empty array');
+    return [];
+  };
 
-    if (!data) return null;
+  export const getMaterialById = async (id: string): Promise<Material | undefined> => {
+    console.warn('Supabase not configured');
+    return undefined;
+  };
 
-    return {
-      id: data.id,
-      title: data.title,
-      description: data.description,
-      type: data.type as MaterialType,
-      url: data.url,
-      imageUrl: data.image_url,
-      dateAdded: new Date(data.date_added)
-    };
-  } catch (error) {
-    console.error('Error in addMaterial:', error);
-    throw error;
-  }
-};
+  export const addMaterial = async (material: Omit<Material, 'id' | 'dateAdded'>): Promise<Material | null> => {
+    console.warn('Supabase not configured');
+    return null;
+  };
 
-export const updateMaterial = async (id: string, updates: Partial<Omit<Material, 'id' | 'dateAdded'>>): Promise<Material | null> => {
-  try {
-    const updateData: any = {};
-    if (updates.title !== undefined) updateData.title = updates.title;
-    if (updates.description !== undefined) updateData.description = updates.description;
-    if (updates.type !== undefined) updateData.type = updates.type;
-    if (updates.url !== undefined) updateData.url = updates.url || null;
-    if (updates.imageUrl !== undefined) updateData.image_url = updates.imageUrl || null;
+  export const updateMaterial = async (id: string, updates: Partial<Omit<Material, 'id' | 'dateAdded'>>): Promise<Material | null> => {
+    console.warn('Supabase not configured');
+    return null;
+  };
 
-    const { data, error } = await supabase
-      .from('materials')
-      .update(updateData)
-      .eq('id', id)
-      .select()
-      .single();
-
-    if (error) {
-      console.error('Error updating material:', error);
-      throw error;
-    }
-
-    if (!data) return null;
-
-    return {
-      id: data.id,
-      title: data.title,
-      description: data.description,
-      type: data.type as MaterialType,
-      url: data.url,
-      imageUrl: data.image_url,
-      dateAdded: new Date(data.date_added)
-    };
-  } catch (error) {
-    console.error('Error in updateMaterial:', error);
-    throw error;
-  }
-};
-
-export const deleteMaterial = async (id: string): Promise<boolean> => {
-  try {
-    const { error } = await supabase
-      .from('materials')
-      .delete()
-      .eq('id', id);
-
-    if (error) {
-      console.error('Error deleting material:', error);
-      throw error;
-    }
-
-    return true;
-  } catch (error) {
-    console.error('Error in deleteMaterial:', error);
+  export const deleteMaterial = async (id: string): Promise<boolean> => {
+    console.warn('Supabase not configured');
     return false;
-  }
-};
+  };
 
-// Функция для получения изображений
-export const getImages = async (): Promise<Material[]> => {
-  try {
-    const { data, error } = await supabase
-      .from('materials')
-      .select('*')
-      .eq('type', 'image')
-      .order('date_added', { ascending: false });
+  export const getImages = async (): Promise<Material[]> => {
+    console.warn('Supabase not configured, returning empty array');
+    return [];
+  };
 
-    if (error) {
-      console.error('Error fetching images:', error);
+  export const uploadFile = async (file: File, bucket: string = 'materials'): Promise<string | null> => {
+    console.warn('Supabase not configured');
+    return null;
+  };
+} else {
+  // Настоящая инициализация Supabase
+  const supabase = createClient(supabaseUrl, supabaseAnonKey);
+
+  // Database operations
+  export const getAllMaterials = async (): Promise<Material[]> => {
+    try {
+      const { data, error } = await supabase
+        .from('materials')
+        .select('*')
+        .order('date_added', { ascending: false });
+
+      if (error) {
+        console.error('Error fetching materials:', error);
+        throw error;
+      }
+
+      return data?.map(item => ({
+        id: item.id,
+        title: item.title,
+        description: item.description,
+        type: item.type as MaterialType,
+        url: item.url,
+        imageUrl: item.image_url,
+        dateAdded: new Date(item.date_added)
+      })) || [];
+    } catch (error) {
+      console.error('Error in getAllMaterials:', error);
       return [];
     }
+  };
 
-    return data?.map(item => ({
-      id: item.id,
-      title: item.title,
-      description: item.description,
-      type: item.type as MaterialType,
-      url: item.url,
-      imageUrl: item.image_url,
-      dateAdded: new Date(item.date_added)
-    })) || [];
-  } catch (error) {
-    console.error('Error in getImages:', error);
-    return [];
-  }
-};
+  export const getMaterialById = async (id: string): Promise<Material | undefined> => {
+    try {
+      const { data, error } = await supabase
+        .from('materials')
+        .select('*')
+        .eq('id', id)
+        .single();
 
-// Функция для загрузки файла в Supabase Storage
-export const uploadFile = async (file: File, bucket: string = 'materials'): Promise<string | null> => {
-  try {
-    const fileExt = file.name.split('.').pop();
-    const fileName = `${Math.random().toString(36).substring(2)}-${Date.now()}.${fileExt}`;
+      if (error) {
+        console.error('Error fetching material:', error);
+        return undefined;
+      }
 
-    const { data, error } = await supabase.storage
-      .from(bucket)
-      .upload(fileName, file);
+      if (!data) return undefined;
 
-    if (error) {
-      console.error('Error uploading file:', error);
+      return {
+        id: data.id,
+        title: data.title,
+        description: data.description,
+        type: data.type as MaterialType,
+        url: data.url,
+        imageUrl: data.image_url,
+        dateAdded: new Date(data.date_added)
+      };
+    } catch (error) {
+      console.error('Error in getMaterialById:', error);
+      return undefined;
+    }
+  };
+
+  export const addMaterial = async (material: Omit<Material, 'id' | 'dateAdded'>): Promise<Material | null> => {
+    try {
+      const { data, error } = await supabase
+        .from('materials')
+        .insert({
+          title: material.title,
+          description: material.description,
+          type: material.type,
+          url: material.url || null,
+          image_url: material.imageUrl || null
+        })
+        .select()
+        .single();
+
+      if (error) {
+        console.error('Error adding material:', error);
+        throw error;
+      }
+
+      if (!data) return null;
+
+      return {
+        id: data.id,
+        title: data.title,
+        description: data.description,
+        type: data.type as MaterialType,
+        url: data.url,
+        imageUrl: data.image_url,
+        dateAdded: new Date(data.date_added)
+      };
+    } catch (error) {
+      console.error('Error in addMaterial:', error);
       throw error;
     }
+  };
 
-    // Получаем публичный URL
-    const { data: urlData } = supabase.storage
-      .from(bucket)
-      .getPublicUrl(data.path);
+  export const updateMaterial = async (id: string, updates: Partial<Omit<Material, 'id' | 'dateAdded'>>): Promise<Material | null> => {
+    try {
+      const updateData: any = {};
+      if (updates.title !== undefined) updateData.title = updates.title;
+      if (updates.description !== undefined) updateData.description = updates.description;
+      if (updates.type !== undefined) updateData.type = updates.type;
+      if (updates.url !== undefined) updateData.url = updates.url || null;
+      if (updates.imageUrl !== undefined) updateData.image_url = updates.imageUrl || null;
 
-    return urlData.publicUrl;
-  } catch (error) {
-    console.error('Error in uploadFile:', error);
-    return null;
-  }
-};
+      const { data, error } = await supabase
+        .from('materials')
+        .update(updateData)
+        .eq('id', id)
+        .select()
+        .single();
+
+      if (error) {
+        console.error('Error updating material:', error);
+        throw error;
+      }
+
+      if (!data) return null;
+
+      return {
+        id: data.id,
+        title: data.title,
+        description: data.description,
+        type: data.type as MaterialType,
+        url: data.url,
+        imageUrl: data.image_url,
+        dateAdded: new Date(data.date_added)
+      };
+    } catch (error) {
+      console.error('Error in updateMaterial:', error);
+      throw error;
+    }
+  };
+
+  export const deleteMaterial = async (id: string): Promise<boolean> => {
+    try {
+      const { error } = await supabase
+        .from('materials')
+        .delete()
+        .eq('id', id);
+
+      if (error) {
+        console.error('Error deleting material:', error);
+        throw error;
+      }
+
+      return true;
+    } catch (error) {
+      console.error('Error in deleteMaterial:', error);
+      return false;
+    }
+  };
+
+  // Функция для получения изображений
+  export const getImages = async (): Promise<Material[]> => {
+    try {
+      const { data, error } = await supabase
+        .from('materials')
+        .select('*')
+        .eq('type', 'image')
+        .order('date_added', { ascending: false });
+
+      if (error) {
+        console.error('Error fetching images:', error);
+        return [];
+      }
+
+      return data?.map(item => ({
+        id: item.id,
+        title: item.title,
+        description: item.description,
+        type: item.type as MaterialType,
+        url: item.url,
+        imageUrl: item.image_url,
+        dateAdded: new Date(item.date_added)
+      })) || [];
+    } catch (error) {
+      console.error('Error in getImages:', error);
+      return [];
+    }
+  };
+
+  // Функция для загрузки файла в Supabase Storage
+  export const uploadFile = async (file: File, bucket: string = 'materials'): Promise<string | null> => {
+    try {
+      const fileExt = file.name.split('.').pop();
+      const fileName = `${Math.random().toString(36).substring(2)}-${Date.now()}.${fileExt}`;
+
+      const { data, error } = await supabase.storage
+        .from(bucket)
+        .upload(fileName, file);
+
+      if (error) {
+        console.error('Error uploading file:', error);
+        throw error;
+      }
+
+      // Получаем публичный URL
+      const { data: urlData } = supabase.storage
+        .from(bucket)
+        .getPublicUrl(data.path);
+
+      return urlData.publicUrl;
+    } catch (error) {
+      console.error('Error in uploadFile:', error);
+      return null;
+    }
+  };
+}
