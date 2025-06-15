@@ -70,6 +70,7 @@ const MaterialForm: React.FC<MaterialFormProps> = ({
       ...(imageUrl.trim() !== '' ? { imageUrl } : {})
     };
     
+    console.log('Saving material data:', materialData);
     onSave(materialData);
     resetForm();
     onClose();
@@ -140,14 +141,17 @@ const MaterialForm: React.FC<MaterialFormProps> = ({
               </div>
             ) : (
               <div className="space-y-2">
-                <Label htmlFor="url">URL (опционально)</Label>
+                <Label htmlFor="url">URL {type === 'course' ? 'курса' : 'материала'}</Label>
                 <Input
                   id="url"
                   value={url}
                   onChange={(e) => setUrl(e.target.value)}
                   className="bg-trading-card border-gray-700"
-                  placeholder="https://example.com/material"
+                  placeholder={type === 'course' ? "https://example.com/course" : "https://example.com/material"}
                 />
+                <p className="text-xs text-gray-400">
+                  {type === 'course' ? 'Ссылка на страницу курса' : 'Ссылка на материал (опционально)'}
+                </p>
               </div>
             )}
           </div>
