@@ -1,82 +1,220 @@
 
+import { createClient } from '@supabase/supabase-js';
 import { Material, MaterialType } from '../types/material';
 
-// Initial dummy data
-const initialMaterials: Material[] = [
-  {
-    id: '1',
-    title: 'Основы технического анализа',
-    description: 'Введение в теханализ для начинающих трейдеров',
-    type: 'video',
-    url: 'https://example.com/video1',
-    dateAdded: new Date('2023-01-15')
-  },
-  {
-    id: '2',
-    title: 'Свечные паттерны',
-    description: 'Как распознавать и использовать японские свечные модели',
-    type: 'article',
-    url: 'https://example.com/article1',
-    dateAdded: new Date('2023-02-10')
-  },
-  {
-    id: '3',
-    title: 'Полный курс по Price Action',
-    description: 'Торговля на основе ценового действия без индикаторов',
-    type: 'course',
-    url: 'https://example.com/course1',
-    dateAdded: new Date('2023-03-05')
-  },
-  {
-    id: '4',
-    title: 'График GBP/NZD',
-    description: 'График торговой пары для анализа',
-    type: 'image',
-    imageUrl: '/lovable-uploads/bc061cd0-6147-4c2b-8788-9fbadd5d9608.png',
-    dateAdded: new Date('2023-04-01')
+// Initialize Supabase client
+const supabaseUrl = import.meta.env.VITE_SUPABASE_URL;
+const supabaseAnonKey = import.meta.env.VITE_SUPABASE_ANON_KEY;
+
+if (!supabaseUrl || !supabaseAnonKey) {
+  throw new Error('Missing Supabase environment variables');
+}
+
+const supabase = createClient(supabaseUrl, supabaseAnonKey);
+
+// Database operations
+export const getAllMaterials = async (): Promise<Material[]> => {
+  try {
+    const { data, error } = await supabase
+      .from('materials')
+      .select('*')
+      .order('date_added', { ascending: false });
+
+    if (error) {
+      console.error('Error fetching materials:', error);
+      throw error;
+    }
+
+    return data?.map(item => ({
+      id: item.id,
+      title: item.title,
+      description: item.description,
+      type: item.type as MaterialType,
+      url: item.url,
+      imageUrl: item.image_url,
+      dateAdded: new Date(item.date_added)
+    })) || [];
+  } catch (error) {
+    console.error('Error in getAllMaterials:', error);
+    return [];
   }
-];
-
-// In-memory storage
-let materials = [...initialMaterials];
-
-// Service functions
-export const getAllMaterials = (): Material[] => {
-  return [...materials];
 };
 
-export const getMaterialById = (id: string): Material | undefined => {
-  return materials.find(material => material.id === id);
+export const getMaterialById = async (id: string): Promise<Material | undefined> => {
+  try {
+    const { data, error } = await supabase
+      .from('materials')
+      .select('*')
+      .eq('id', id)
+      .single();
+
+    if (error) {
+      console.error('Error fetching material:', error);
+      return undefined;
+    }
+
+    if (!data) return undefined;
+
+    return {
+      id: data.id,
+      title: data.title,
+      description: data.description,
+      type: data.type as MaterialType,
+      url: data.url,
+      imageUrl: data.image_url,
+      dateAdded: new Date(data.date_added)
+    };
+  } catch (error) {
+    console.error('Error in getMaterialById:', error);
+    return undefined;
+  }
 };
 
-export const addMaterial = (material: Omit<Material, 'id' | 'dateAdded'>): Material => {
-  const newMaterial = {
-    ...material,
-    id: Date.now().toString(), // Simple ID generation
-    dateAdded: new Date()
-  };
-  
-  materials = [...materials, newMaterial];
-  return newMaterial;
+export const addMaterial = async (material: Omit<Material, 'id' | 'dateAdded'>): Promise<Material | null> => {
+  try {
+    const { data, error } = await supabase
+      .from('materials')
+      .insert({
+        title: material.title,
+        description: material.description,
+        type: material.type,
+        url: material.url || null,
+        image_url: material.imageUrl || null
+      })
+      .select()
+      .single();
+
+    if (error) {
+      console.error('Error adding material:', error);
+      throw error;
+    }
+
+    if (!data) return null;
+
+    return {
+      id: data.id,
+      title: data.title,
+      description: data.description,
+      type: data.type as MaterialType,
+      url: data.url,
+      imageUrl: data.image_url,
+      dateAdded: new Date(data.date_added)
+    };
+  } catch (error) {
+    console.error('Error in addMaterial:', error);
+    throw error;
+  }
 };
 
-export const updateMaterial = (id: string, updates: Partial<Omit<Material, 'id' | 'dateAdded'>>): Material | null => {
-  const index = materials.findIndex(material => material.id === id);
-  if (index === -1) return null;
-  
-  const updatedMaterial = { ...materials[index], ...updates };
-  materials = [...materials.slice(0, index), updatedMaterial, ...materials.slice(index + 1)];
-  return updatedMaterial;
+export const updateMaterial = async (id: string, updates: Partial<Omit<Material, 'id' | 'dateAdded'>>): Promise<Material | null> => {
+  try {
+    const updateData: any = {};
+    if (updates.title !== undefined) updateData.title = updates.title;
+    if (updates.description !== undefined) updateData.description = updates.description;
+    if (updates.type !== undefined) updateData.type = updates.type;
+    if (updates.url !== undefined) updateData.url = updates.url || null;
+    if (updates.imageUrl !== undefined) updateData.image_url = updates.imageUrl || null;
+
+    const { data, error } = await supabase
+      .from('materials')
+      .update(updateData)
+      .eq('id', id)
+      .select()
+      .single();
+
+    if (error) {
+      console.error('Error updating material:', error);
+      throw error;
+    }
+
+    if (!data) return null;
+
+    return {
+      id: data.id,
+      title: data.title,
+      description: data.description,
+      type: data.type as MaterialType,
+      url: data.url,
+      imageUrl: data.image_url,
+      dateAdded: new Date(data.date_added)
+    };
+  } catch (error) {
+    console.error('Error in updateMaterial:', error);
+    throw error;
+  }
 };
 
-export const deleteMaterial = (id: string): boolean => {
-  const initialLength = materials.length;
-  materials = materials.filter(material => material.id !== id);
-  return materials.length !== initialLength;
+export const deleteMaterial = async (id: string): Promise<boolean> => {
+  try {
+    const { error } = await supabase
+      .from('materials')
+      .delete()
+      .eq('id', id);
+
+    if (error) {
+      console.error('Error deleting material:', error);
+      throw error;
+    }
+
+    return true;
+  } catch (error) {
+    console.error('Error in deleteMaterial:', error);
+    return false;
+  }
 };
 
 // Функция для получения изображений
-export const getImages = (): Material[] => {
-  return materials.filter(material => material.type === 'image');
+export const getImages = async (): Promise<Material[]> => {
+  try {
+    const { data, error } = await supabase
+      .from('materials')
+      .select('*')
+      .eq('type', 'image')
+      .order('date_added', { ascending: false });
+
+    if (error) {
+      console.error('Error fetching images:', error);
+      return [];
+    }
+
+    return data?.map(item => ({
+      id: item.id,
+      title: item.title,
+      description: item.description,
+      type: item.type as MaterialType,
+      url: item.url,
+      imageUrl: item.image_url,
+      dateAdded: new Date(item.date_added)
+    })) || [];
+  } catch (error) {
+    console.error('Error in getImages:', error);
+    return [];
+  }
 };
 
+// Функция для загрузки файла в Supabase Storage
+export const uploadFile = async (file: File, bucket: string = 'materials'): Promise<string | null> => {
+  try {
+    const fileExt = file.name.split('.').pop();
+    const fileName = `${Math.random().toString(36).substring(2)}-${Date.now()}.${fileExt}`;
+
+    const { data, error } = await supabase.storage
+      .from(bucket)
+      .upload(fileName, file);
+
+    if (error) {
+      console.error('Error uploading file:', error);
+      throw error;
+    }
+
+    // Получаем публичный URL
+    const { data: urlData } = supabase.storage
+      .from(bucket)
+      .getPublicUrl(data.path);
+
+    return urlData.publicUrl;
+  } catch (error) {
+    console.error('Error in uploadFile:', error);
+    return null;
+  }
+};

@@ -1,4 +1,5 @@
-import React, { useState } from 'react';
+
+import React, { useState, useEffect } from 'react';
 import Header from '@/components/layout/Header';
 import Footer from '@/components/layout/Footer';
 import { Button } from '@/components/ui/button';
@@ -17,29 +18,72 @@ import {
 
 const MaterialsManager = () => {
   const { t } = useLanguage();
-  const [materials, setMaterials] = useState<Material[]>(getAllMaterials());
+  const [materials, setMaterials] = useState<Material[]>([]);
   const [isFormOpen, setIsFormOpen] = useState(false);
   const [editingMaterial, setEditingMaterial] = useState<Material | undefined>(undefined);
+  const [isLoading, setIsLoading] = useState(true);
   const { toast } = useToast();
 
-  const handleAddMaterial = (materialData: Omit<Material, 'id' | 'dateAdded'>) => {
-    const newMaterial = addMaterial(materialData);
-    setMaterials(getAllMaterials());
-    toast({
-      title: t('materials.added'),
-      description: `"${newMaterial.title}" ${t('materials.added-desc')}`,
-    });
+  // Загрузка материалов при монтировании компонента
+  useEffect(() => {
+    loadMaterials();
+  }, []);
+
+  const loadMaterials = async () => {
+    try {
+      setIsLoading(true);
+      const data = await getAllMaterials();
+      setMaterials(data);
+    } catch (error) {
+      console.error('Error loading materials:', error);
+      toast({
+        title: 'Ошибка',
+        description: 'Не удалось загрузить материалы',
+        variant: 'destructive',
+      });
+    } finally {
+      setIsLoading(false);
+    }
   };
 
-  const handleUpdateMaterial = (materialData: Omit<Material, 'id' | 'dateAdded'>) => {
+  const handleAddMaterial = async (materialData: Omit<Material, 'id' | 'dateAdded'>) => {
+    try {
+      const newMaterial = await addMaterial(materialData);
+      if (newMaterial) {
+        await loadMaterials(); // Перезагружаем список
+        toast({
+          title: t('materials.added'),
+          description: `"${newMaterial.title}" ${t('materials.added-desc')}`,
+        });
+      }
+    } catch (error) {
+      console.error('Error adding material:', error);
+      toast({
+        title: 'Ошибка',
+        description: 'Не удалось добавить материал',
+        variant: 'destructive',
+      });
+    }
+  };
+
+  const handleUpdateMaterial = async (materialData: Omit<Material, 'id' | 'dateAdded'>) => {
     if (!editingMaterial) return;
     
-    const updatedMaterial = updateMaterial(editingMaterial.id, materialData);
-    if (updatedMaterial) {
-      setMaterials(getAllMaterials());
+    try {
+      const updatedMaterial = await updateMaterial(editingMaterial.id, materialData);
+      if (updatedMaterial) {
+        await loadMaterials(); // Перезагружаем список
+        toast({
+          title: t('materials.updated'),
+          description: `"${updatedMaterial.title}" ${t('materials.updated-desc')}`,
+        });
+      }
+    } catch (error) {
+      console.error('Error updating material:', error);
       toast({
-        title: t('materials.updated'),
-        description: `"${updatedMaterial.title}" ${t('materials.updated-desc')}`,
+        title: 'Ошибка',
+        description: 'Не удалось обновить материал',
+        variant: 'destructive',
       });
     }
   };
@@ -49,13 +93,22 @@ const MaterialsManager = () => {
     setIsFormOpen(true);
   };
 
-  const handleDeleteMaterial = (id: string) => {
-    const success = deleteMaterial(id);
-    if (success) {
-      setMaterials(getAllMaterials());
+  const handleDeleteMaterial = async (id: string) => {
+    try {
+      const success = await deleteMaterial(id);
+      if (success) {
+        await loadMaterials(); // Перезагружаем список
+        toast({
+          title: t('materials.deleted'),
+          description: t('materials.deleted-desc'),
+        });
+      }
+    } catch (error) {
+      console.error('Error deleting material:', error);
       toast({
-        title: t('materials.deleted'),
-        description: t('materials.deleted-desc'),
+        title: 'Ошибка',
+        description: 'Не удалось удалить материал',
+        variant: 'destructive',
       });
     }
   };
@@ -72,6 +125,20 @@ const MaterialsManager = () => {
       handleAddMaterial(materialData);
     }
   };
+
+  if (isLoading) {
+    return (
+      <div className="min-h-screen flex flex-col bg-trading-dark text-white">
+        <Header />
+        <main className="flex-grow container mx-auto px-4 py-8">
+          <div className="text-center p-10">
+            <p className="text-gray-400">Загрузка материалов...</p>
+          </div>
+        </main>
+        <Footer />
+      </div>
+    );
+  }
 
   return (
     <div className="min-h-screen flex flex-col bg-trading-dark text-white">
