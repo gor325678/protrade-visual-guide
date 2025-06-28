@@ -6,6 +6,8 @@ import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { ShoppingCart, Star, Clock, Users, CheckCircle } from 'lucide-react';
 import { useLanguage } from '@/contexts/LanguageContext';
+import { useStripePayment } from '@/hooks/useStripePayment';
+import { useToast } from '@/components/ui/use-toast';
 
 interface Course {
   id: string;
@@ -24,6 +26,9 @@ interface Course {
 const Courses = () => {
   const { t } = useLanguage();
   const [cart, setCart] = useState<string[]>([]);
+  const [processingPayment, setProcessingPayment] = useState<string | null>(null);
+  const { createPaymentIntent } = useStripePayment();
+  const { toast } = useToast();
 
   const courses: Course[] = [
     {
@@ -47,9 +52,63 @@ const Courses = () => {
     }
   ];
 
-  const addToCart = (courseId: string) => {
-    if (!cart.includes(courseId)) {
-      setCart([...cart, courseId]);
+  const addToCart = async (courseId: string) => {
+    if (cart.includes(courseId)) {
+      // Если курс уже в корзине, переходим к оплате
+      await handlePurchase(courseId);
+      return;
+    }
+
+    setCart([...cart, courseId]);
+    toast({
+      title: 'Курс добавлен в корзину',
+      description: 'Теперь вы можете перейти к оплате',
+    });
+  };
+
+  const handlePurchase = async (courseId: string) => {
+    const course = courses.find(c => c.id === courseId);
+    if (!course) return;
+
+    setProcessingPayment(courseId);
+
+    try {
+      // Создаем PaymentIntent через Supabase Edge Function
+      const response = await fetch(`${import.meta.env.VITE_SUPABASE_URL}/functions/v1/create-payment-intent`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${import.meta.env.VITE_SUPABASE_ANON_KEY}`,
+        },
+        body: JSON.stringify({
+          amount: course.price,
+          currency: 'usd',
+          courseId: course.id,
+        }),
+      });
+
+      if (!response.ok) {
+        throw new Error('Failed to create payment intent');
+      }
+
+      const { clientSecret } = await response.json();
+
+      // Сохраняем clientSecret в localStorage для использования на странице оплаты
+      localStorage.setItem('stripe_client_secret', clientSecret);
+      localStorage.setItem('course_for_purchase', JSON.stringify(course));
+
+      // Переходим на страницу оплаты
+      window.location.href = '/checkout';
+
+    } catch (error) {
+      console.error('Error creating payment:', error);
+      toast({
+        title: 'Ошибка',
+        description: 'Не удалось создать платеж. Попробуйте еще раз.',
+        variant: 'destructive',
+      });
+    } finally {
+      setProcessingPayment(null);
     }
   };
 
@@ -82,18 +141,6 @@ const Courses = () => {
             Выберите курс, который поможет вам стать успешным трейдером. 
             Все курсы включают практические задания и пожизненный доступ к материалам.
           </p>
-          {cart.length > 0 && (
-            <div className="mt-6">
-              <Button 
-                size="lg" 
-                className="bg-green-600 hover:bg-green-700"
-                onClick={() => window.location.href = '/checkout'}
-              >
-                <ShoppingCart className="mr-2 h-5 w-5" />
-                Корзина ({cart.length}) - Перейти к оформлению
-              </Button>
-            </div>
-          )}
         </div>
 
         <div className="flex justify-center">
@@ -158,12 +205,17 @@ const Courses = () => {
                   <Button 
                     className="w-full bg-blue-600 hover:bg-blue-700"
                     onClick={() => addToCart(course.id)}
-                    disabled={cart.includes(course.id)}
+                    disabled={processingPayment === course.id}
                   >
-                    {cart.includes(course.id) ? (
+                    {processingPayment === course.id ? (
+                      <>
+                        <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-white mr-2"></div>
+                        Обработка...
+                      </>
+                    ) : cart.includes(course.id) ? (
                       <>
                         <CheckCircle className="mr-2 h-4 w-4" />
-                        Добавлено в корзину
+                        Перейти к оплате
                       </>
                     ) : (
                       <>
