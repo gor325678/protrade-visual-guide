@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import Header from '@/components/layout/Header';
 import Footer from '@/components/layout/Footer';
@@ -68,44 +67,63 @@ const Courses = () => {
 
   const handlePurchase = async (courseId: string) => {
     const course = courses.find(c => c.id === courseId);
-    if (!course) return;
+    if (!course) {
+      console.error('Course not found:', courseId);
+      return;
+    }
 
     setProcessingPayment(courseId);
+    console.log('=== STARTING PAYMENT PROCESS ===');
+    console.log('Course:', course.title);
+    console.log('Price:', course.price);
 
     try {
-      console.log('Создание платежного намерения для курса:', course.title);
+      console.log('Calling create-payment-intent function...');
       
-      // Используем Supabase Edge Function для создания PaymentIntent
+      const requestBody = {
+        amount: course.price,
+        currency: 'usd',
+        courseId: course.id,
+      };
+      console.log('Request body:', requestBody);
+
       const { data, error } = await supabase.functions.invoke('create-payment-intent', {
-        body: {
-          amount: course.price,
-          currency: 'usd',
-          courseId: course.id,
-        },
+        body: requestBody,
       });
 
+      console.log('Function response data:', data);
+      console.log('Function response error:', error);
+
       if (error) {
-        console.error('Ошибка при вызове Edge функции:', error);
-        throw error;
+        console.error('Supabase function error:', error);
+        throw new Error(error.message || 'Failed to create payment intent');
       }
 
       if (!data?.clientSecret) {
-        throw new Error('Не получен clientSecret от сервера');
+        console.error('No clientSecret in response:', data);
+        throw new Error('No client secret received from server');
       }
 
-      console.log('PaymentIntent успешно создан');
+      console.log('Payment intent created successfully');
+      console.log('Client secret received:', data.clientSecret.substring(0, 20) + '...');
 
-      // Сохраняем clientSecret в localStorage для использования на странице оплаты
+      // Сохраняем данные для страницы оплаты
       localStorage.setItem('stripe_client_secret', data.clientSecret);
       localStorage.setItem('course_for_purchase', JSON.stringify(course));
 
+      console.log('Data saved to localStorage, redirecting to checkout...');
+      
       // Переходим на страницу оплаты
       window.location.href = '/checkout';
 
     } catch (error) {
-      console.error('Ошибка при создании платежа:', error);
+      console.error('=== PAYMENT ERROR ===');
+      console.error('Error type:', typeof error);
+      console.error('Error message:', error.message);
+      console.error('Full error:', error);
+      
       toast({
-        title: 'Ошибка',
+        title: 'Ошибка оплаты',
         description: error.message || 'Не удалось создать платеж. Попробуйте еще раз.',
         variant: 'destructive',
       });
