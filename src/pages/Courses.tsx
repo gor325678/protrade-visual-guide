@@ -6,7 +6,6 @@ import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { ShoppingCart, Star, Clock, Users, CheckCircle } from 'lucide-react';
 import { useLanguage } from '@/contexts/LanguageContext';
-import { useStripePayment } from '@/hooks/useStripePayment';
 import { useToast } from '@/components/ui/use-toast';
 
 interface Course {
@@ -27,7 +26,6 @@ const Courses = () => {
   const { t } = useLanguage();
   const [cart, setCart] = useState<string[]>([]);
   const [processingPayment, setProcessingPayment] = useState<string | null>(null);
-  const { createPaymentIntent } = useStripePayment();
   const { toast } = useToast();
 
   const courses: Course[] = [
@@ -73,12 +71,20 @@ const Courses = () => {
     setProcessingPayment(courseId);
 
     try {
+      // Проверяем наличие переменных окружения
+      const supabaseUrl = import.meta.env.VITE_SUPABASE_URL;
+      const supabaseAnonKey = import.meta.env.VITE_SUPABASE_ANON_KEY;
+
+      if (!supabaseUrl || !supabaseAnonKey) {
+        throw new Error('Supabase configuration missing');
+      }
+
       // Создаем PaymentIntent через Supabase Edge Function
-      const response = await fetch(`${import.meta.env.VITE_SUPABASE_URL}/functions/v1/create-payment-intent`, {
+      const response = await fetch(`${supabaseUrl}/functions/v1/create-payment-intent`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
-          'Authorization': `Bearer ${import.meta.env.VITE_SUPABASE_ANON_KEY}`,
+          'Authorization': `Bearer ${supabaseAnonKey}`,
         },
         body: JSON.stringify({
           amount: course.price,
