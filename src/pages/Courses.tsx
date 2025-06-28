@@ -1,3 +1,4 @@
+
 import React, { useState } from 'react';
 import Header from '@/components/layout/Header';
 import Footer from '@/components/layout/Footer';
@@ -7,6 +8,7 @@ import { Badge } from '@/components/ui/badge';
 import { ShoppingCart, Star, Clock, Users, CheckCircle } from 'lucide-react';
 import { useLanguage } from '@/contexts/LanguageContext';
 import { useToast } from '@/components/ui/use-toast';
+import { supabase } from '@/integrations/supabase/client';
 
 interface Course {
   id: string;
@@ -71,46 +73,40 @@ const Courses = () => {
     setProcessingPayment(courseId);
 
     try {
-      // Проверяем наличие переменных окружения
-      const supabaseUrl = import.meta.env.VITE_SUPABASE_URL;
-      const supabaseAnonKey = import.meta.env.VITE_SUPABASE_ANON_KEY;
-
-      if (!supabaseUrl || !supabaseAnonKey) {
-        throw new Error('Supabase configuration missing');
-      }
-
-      // Создаем PaymentIntent через Supabase Edge Function
-      const response = await fetch(`${supabaseUrl}/functions/v1/create-payment-intent`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': `Bearer ${supabaseAnonKey}`,
-        },
-        body: JSON.stringify({
+      console.log('Создание платежного намерения для курса:', course.title);
+      
+      // Используем Supabase Edge Function для создания PaymentIntent
+      const { data, error } = await supabase.functions.invoke('create-payment-intent', {
+        body: {
           amount: course.price,
           currency: 'usd',
           courseId: course.id,
-        }),
+        },
       });
 
-      if (!response.ok) {
-        throw new Error('Failed to create payment intent');
+      if (error) {
+        console.error('Ошибка при вызове Edge функции:', error);
+        throw error;
       }
 
-      const { clientSecret } = await response.json();
+      if (!data?.clientSecret) {
+        throw new Error('Не получен clientSecret от сервера');
+      }
+
+      console.log('PaymentIntent успешно создан');
 
       // Сохраняем clientSecret в localStorage для использования на странице оплаты
-      localStorage.setItem('stripe_client_secret', clientSecret);
+      localStorage.setItem('stripe_client_secret', data.clientSecret);
       localStorage.setItem('course_for_purchase', JSON.stringify(course));
 
       // Переходим на страницу оплаты
       window.location.href = '/checkout';
 
     } catch (error) {
-      console.error('Error creating payment:', error);
+      console.error('Ошибка при создании платежа:', error);
       toast({
         title: 'Ошибка',
-        description: 'Не удалось создать платеж. Попробуйте еще раз.',
+        description: error.message || 'Не удалось создать платеж. Попробуйте еще раз.',
         variant: 'destructive',
       });
     } finally {
