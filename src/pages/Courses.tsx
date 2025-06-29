@@ -53,7 +53,6 @@ const Courses = () => {
 
   const addToCart = async (courseId: string) => {
     if (cart.includes(courseId)) {
-      // Если курс уже в корзине, переходим к оплате
       await handlePurchase(courseId);
       return;
     }
@@ -75,17 +74,16 @@ const Courses = () => {
     setProcessingPayment(courseId);
     console.log('=== STARTING PAYMENT PROCESS ===');
     console.log('Course:', course.title);
-    console.log('Price:', course.price);
+    console.log('Price in USD:', course.price);
+    console.log('Amount to be sent to Stripe (should be in cents):', course.price * 100);
 
     try {
-      console.log('Calling create-payment-intent function...');
-      
       const requestBody = {
-        amount: course.price,
+        amount: course.price, // Отправляем в долларах, Edge Function конвертирует в центы
         currency: 'usd',
         courseId: course.id,
       };
-      console.log('Request body:', requestBody);
+      console.log('Request body being sent:', requestBody);
 
       const { data, error } = await supabase.functions.invoke('create-payment-intent', {
         body: requestBody,
@@ -104,16 +102,13 @@ const Courses = () => {
         throw new Error('No client secret received from server');
       }
 
-      console.log('Payment intent created successfully');
+      console.log('Payment intent created successfully for $' + course.price);
       console.log('Client secret received:', data.clientSecret.substring(0, 20) + '...');
 
-      // Сохраняем данные для страницы оплаты
       localStorage.setItem('stripe_client_secret', data.clientSecret);
       localStorage.setItem('course_for_purchase', JSON.stringify(course));
 
       console.log('Data saved to localStorage, redirecting to checkout...');
-      
-      // Переходим на страницу оплаты
       window.location.href = '/checkout';
 
     } catch (error) {
@@ -219,6 +214,9 @@ const Courses = () => {
                   <div className="flex items-center justify-between mb-4">
                     <div>
                       <span className="text-2xl font-bold text-green-400">${course.price}</span>
+                      <div className="text-sm text-gray-400">
+                        ≈ {Math.round(course.price * 93).toLocaleString()} ₽
+                      </div>
                     </div>
                   </div>
 

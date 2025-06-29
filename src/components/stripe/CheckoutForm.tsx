@@ -1,3 +1,4 @@
+
 import React, { useState } from 'react';
 import {
   useStripe,
@@ -30,6 +31,8 @@ const CheckoutForm: React.FC<CheckoutFormProps> = ({ amount, currency, onSuccess
     }
 
     setIsLoading(true);
+    console.log('=== PROCESSING PAYMENT ===');
+    console.log('Amount being processed:', amount, 'cents (', amount / 100, 'USD)');
 
     try {
       const { error } = await stripe.confirmPayment({
@@ -40,15 +43,18 @@ const CheckoutForm: React.FC<CheckoutFormProps> = ({ amount, currency, onSuccess
       });
 
       if (error) {
+        console.error('Payment confirmation error:', error);
         toast({
           title: 'Ошибка оплаты',
           description: error.message || 'Произошла ошибка при обработке платежа',
           variant: 'destructive',
         });
       } else {
+        console.log('Payment confirmed successfully');
         onSuccess();
       }
     } catch (err) {
+      console.error('Unexpected payment error:', err);
       toast({
         title: 'Ошибка',
         description: 'Произошла неожиданная ошибка',
@@ -58,6 +64,8 @@ const CheckoutForm: React.FC<CheckoutFormProps> = ({ amount, currency, onSuccess
       setIsLoading(false);
     }
   };
+
+  const displayAmount = amount / 100; // Конвертируем центы обратно в доллары для отображения
 
   return (
     <Card className="bg-trading-card border-gray-800">
@@ -93,7 +101,7 @@ const CheckoutForm: React.FC<CheckoutFormProps> = ({ amount, currency, onSuccess
             ) : (
               <>
                 <Lock className="mr-2 h-4 w-4" />
-                Оплатить ${amount / 100}
+                Оплатить ${displayAmount}
               </>
             )}
           </Button>

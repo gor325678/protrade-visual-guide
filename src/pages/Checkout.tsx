@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect } from 'react';
 import Header from '@/components/layout/Header';
 import Footer from '@/components/layout/Footer';
@@ -21,25 +22,30 @@ const Checkout = () => {
   const [course, setCourse] = useState<Course | null>(null);
 
   useEffect(() => {
-    // Получаем данные из localStorage
     const storedClientSecret = localStorage.getItem('stripe_client_secret');
     const storedCourse = localStorage.getItem('course_for_purchase');
+
+    console.log('=== CHECKOUT PAGE LOADED ===');
+    console.log('Stored client secret:', storedClientSecret ? 'Found' : 'Not found');
+    console.log('Stored course:', storedCourse ? 'Found' : 'Not found');
 
     if (storedClientSecret) {
       setClientSecret(storedClientSecret);
     }
 
     if (storedCourse) {
-      setCourse(JSON.parse(storedCourse));
+      const courseData = JSON.parse(storedCourse);
+      setCourse(courseData);
+      console.log('Course data loaded:', courseData);
+      console.log('Course price:', courseData.price, 'USD');
     }
   }, []);
 
   const handlePaymentSuccess = () => {
-    // Очищаем localStorage
+    console.log('=== PAYMENT SUCCESS ===');
     localStorage.removeItem('stripe_client_secret');
     localStorage.removeItem('course_for_purchase');
     
-    // Переходим на страницу успеха
     window.location.href = '/payment-success';
   };
 
@@ -58,14 +64,18 @@ const Checkout = () => {
     );
   }
 
-  // Актуальные курсы валют (примерные на текущую дату)
   const exchangeRates = {
-    usdToRub: 93, // 1 USD = 93 RUB
-    usdToUah: 41  // 1 USD = 41 UAH
+    usdToRub: 93,
+    usdToUah: 41
   };
 
   const priceInRub = Math.round(course.price * exchangeRates.usdToRub);
   const priceInUah = Math.round(course.price * exchangeRates.usdToUah);
+
+  console.log('=== CHECKOUT RENDER ===');
+  console.log('Course price USD:', course.price);
+  console.log('Price in RUB:', priceInRub);
+  console.log('Amount for Stripe (cents):', course.price * 100);
 
   return (
     <div className="min-h-screen flex flex-col bg-trading-dark text-white">
@@ -86,18 +96,16 @@ const Checkout = () => {
           </div>
 
           <div className="grid gap-8 lg:grid-cols-3">
-            {/* Форма оплаты Stripe */}
             <div className="lg:col-span-2">
               <StripeProvider clientSecret={clientSecret}>
                 <CheckoutForm
-                  amount={course.price * 100} // Stripe работает с центами
+                  amount={course.price * 100} // Передаем в центах
                   currency="usd"
                   onSuccess={handlePaymentSuccess}
                 />
               </StripeProvider>
             </div>
 
-            {/* Сводка заказа */}
             <div className="lg:col-span-1">
               <Card className="bg-trading-card border-gray-800 sticky top-4">
                 <CardHeader>
