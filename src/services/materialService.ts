@@ -5,6 +5,7 @@ import { Material, MaterialType } from '../types/material';
 // Database operations
 export const getAllMaterials = async (): Promise<Material[]> => {
   try {
+    console.log('Fetching materials from Supabase...');
     const { data, error } = await supabase
       .from('materials')
       .select('*')
@@ -15,6 +16,7 @@ export const getAllMaterials = async (): Promise<Material[]> => {
       throw error;
     }
 
+    console.log('Materials fetched successfully:', data?.length || 0);
     return data?.map(item => ({
       id: item.id,
       title: item.title,
@@ -62,6 +64,7 @@ export const getMaterialById = async (id: string): Promise<Material | undefined>
 
 export const addMaterial = async (material: Omit<Material, 'id' | 'dateAdded'>): Promise<Material | null> => {
   try {
+    console.log('Adding material to Supabase:', material);
     const { data, error } = await supabase
       .from('materials')
       .insert({
@@ -79,8 +82,12 @@ export const addMaterial = async (material: Omit<Material, 'id' | 'dateAdded'>):
       throw error;
     }
 
-    if (!data) return null;
+    if (!data) {
+      console.warn('No data returned from insert operation');
+      return null;
+    }
 
+    console.log('Material added successfully:', data);
     return {
       id: data.id,
       title: data.title,
