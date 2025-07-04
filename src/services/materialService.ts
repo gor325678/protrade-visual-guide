@@ -5,6 +5,8 @@ import { Material, MaterialType } from '../types/material';
 export const getAllMaterials = async (): Promise<Material[]> => {
   try {
     console.log('Fetching materials from Supabase...');
+    console.log('Supabase URL:', supabase.supabaseUrl);
+    
     const { data, error } = await supabase
       .from('materials')
       .select('*')
@@ -12,6 +14,8 @@ export const getAllMaterials = async (): Promise<Material[]> => {
 
     if (error) {
       console.error('Error fetching materials:', error);
+      console.error('Error code:', error.code);
+      console.error('Error message:', error.message);
       throw error;
     }
 
@@ -64,6 +68,7 @@ export const getMaterialById = async (id: string): Promise<Material | undefined>
 export const addMaterial = async (material: Omit<Material, 'id' | 'dateAdded'>): Promise<Material | null> => {
   try {
     console.log('Adding material to Supabase:', material);
+    console.log('Supabase client configured for URL:', supabase.supabaseUrl);
     
     // Подготавливаем данные для вставки
     const insertData = {
@@ -74,7 +79,18 @@ export const addMaterial = async (material: Omit<Material, 'id' | 'dateAdded'>):
       image_url: material.imageUrl || null
     };
     
-    console.log('Insert data:', insertData);
+    console.log('Insert data prepared:', insertData);
+    
+    // Проверим подключение к базе данных
+    const { count, error: countError } = await supabase
+      .from('materials')
+      .select('*', { count: 'exact', head: true });
+      
+    if (countError) {
+      console.error('Connection test failed:', countError);
+    } else {
+      console.log('Connection test successful, current materials count:', count);
+    }
     
     const { data, error } = await supabase
       .from('materials')
@@ -83,12 +99,11 @@ export const addMaterial = async (material: Omit<Material, 'id' | 'dateAdded'>):
       .single();
 
     if (error) {
-      console.error('Supabase error:', error);
-      console.error('Error details:', {
+      console.error('Supabase insert error:', {
+        code: error.code,
         message: error.message,
         details: error.details,
-        hint: error.hint,
-        code: error.code
+        hint: error.hint
       });
       throw error;
     }
@@ -109,7 +124,7 @@ export const addMaterial = async (material: Omit<Material, 'id' | 'dateAdded'>):
       dateAdded: new Date(data.date_added)
     };
   } catch (error) {
-    console.error('Error in addMaterial:', error);
+    console.error('Error in addMaterial function:', error);
     throw error;
   }
 };
