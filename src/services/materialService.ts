@@ -1,4 +1,3 @@
-
 import { supabase } from '@/integrations/supabase/client';
 import { Material, MaterialType } from '../types/material';
 
@@ -65,20 +64,32 @@ export const getMaterialById = async (id: string): Promise<Material | undefined>
 export const addMaterial = async (material: Omit<Material, 'id' | 'dateAdded'>): Promise<Material | null> => {
   try {
     console.log('Adding material to Supabase:', material);
+    
+    // Подготавливаем данные для вставки
+    const insertData = {
+      title: material.title,
+      description: material.description,
+      type: material.type,
+      url: material.url || null,
+      image_url: material.imageUrl || null
+    };
+    
+    console.log('Insert data:', insertData);
+    
     const { data, error } = await supabase
       .from('materials')
-      .insert({
-        title: material.title,
-        description: material.description,
-        type: material.type,
-        url: material.url || null,
-        image_url: material.imageUrl || null
-      })
+      .insert(insertData)
       .select()
       .single();
 
     if (error) {
-      console.error('Error adding material:', error);
+      console.error('Supabase error:', error);
+      console.error('Error details:', {
+        message: error.message,
+        details: error.details,
+        hint: error.hint,
+        code: error.code
+      });
       throw error;
     }
 
