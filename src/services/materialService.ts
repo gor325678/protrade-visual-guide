@@ -5,7 +5,6 @@ import { Material, MaterialType } from '../types/material';
 export const getAllMaterials = async (): Promise<Material[]> => {
   try {
     console.log('Fetching materials from Supabase...');
-    console.log('Supabase URL:', supabase.supabaseUrl);
     
     const { data, error } = await supabase
       .from('materials')
@@ -68,7 +67,6 @@ export const getMaterialById = async (id: string): Promise<Material | undefined>
 export const addMaterial = async (material: Omit<Material, 'id' | 'dateAdded'>): Promise<Material | null> => {
   try {
     console.log('Adding material to Supabase:', material);
-    console.log('Supabase client configured for URL:', supabase.supabaseUrl);
     
     // Подготавливаем данные для вставки
     const insertData = {
