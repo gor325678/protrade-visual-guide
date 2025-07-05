@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import Header from '@/components/layout/Header';
 import Footer from '@/components/layout/Footer';
@@ -14,7 +13,7 @@ import {
   addMaterial, 
   updateMaterial, 
   deleteMaterial 
-} from '@/services/materialService';
+} from '@/services/materials';
 
 const MaterialsManager = () => {
   const { t } = useLanguage();
