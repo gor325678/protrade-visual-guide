@@ -73,7 +73,7 @@ serve(async (req) => {
 
     console.log('Creating payment intent...')
     const paymentIntent = await stripe.paymentIntents.create({
-      amount: Math.round(amount * 100), // Stripe работает с центами
+      amount: Math.round(amount), // Amount уже в центах
       currency,
       automatic_payment_methods: {
         enabled: true,
