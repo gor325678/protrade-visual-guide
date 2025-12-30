@@ -231,11 +231,11 @@ export const ru = {
     'hero.subtitle': 'Перестаньте угадывать направление цены. Мы даем алгоритм, который превращает рыночный шум в четкие точки входа с понятным риском.',
     'hero.start': 'Начать обучение',
     'hero.about': 'О системе',
-    'hero.features.strategies.title': 'Проверенные стратегии',
+    'hero.features.strategies.title': 'Математическое преимущество',
     'hero.features.strategies.desc': 'Торговые системы, проверенные на реальных рынках с высоким процентом успешных сделок',
-    'hero.features.indicators.title': 'Индикаторы и анализ',
-    'hero.features.indicators.desc': 'Собственные индикаторы и методы технического анализа для точного определения точек входа',
-    'hero.features.risk.title': 'Риск-менеджмент',
+    'hero.features.indicators.title': 'Авторские алгоритмы',
+    'hero.features.indicators.desc': 'Уникальные индикаторы, разработанные нашей командой для точного анализа рынка',
+    'hero.features.risk.title': 'Защита капитала',
     'hero.features.risk.desc': 'Система управления капиталом для защиты депозита и максимизации прибыли',
 
     // Profile & Account

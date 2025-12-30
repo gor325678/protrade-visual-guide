@@ -129,6 +129,15 @@
     transform-style: preserve-3d;
   }
 
+  .text-3d-cyan {
+    display: inline-block;
+    transform: perspective(1000px) rotateX(10deg) translateY(0);
+    text-shadow: 0 10px 0 #0e7490,
+      0 20px 10px rgba(0, 0, 0, 0.5),
+      0 20px 20px rgba(0, 0, 0, 0.3);
+    transform-style: preserve-3d;
+  }
+
   @keyframes fog-flow {
     0% {
       transform: translateX(-10%) translateY(0) scale(1.1);

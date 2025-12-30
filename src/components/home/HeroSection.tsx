@@ -43,7 +43,7 @@ const HeroSection = () => {
           </span>
         </div>
 
-        <h1 className="text-6xl md:text-8xl lg:text-9xl font-black mb-10 tracking-tight bg-clip-text text-transparent bg-gradient-to-r from-white via-white to-cyan-400 text-3d-static pb-4 drop-shadow-[0_0_25px_rgba(34,211,238,0.5)]">
+        <h1 className="text-6xl md:text-8xl lg:text-9xl font-black mb-10 tracking-tight bg-clip-text text-transparent bg-gradient-to-r from-white via-white to-cyan-400 text-3d-cyan pb-4 drop-shadow-[0_0_25px_rgba(34,211,238,0.3)]">
           {t('hero.title')}
         </h1>
 
@@ -55,7 +55,7 @@ const HeroSection = () => {
           <Button
             onClick={handleStartLearning}
             size="lg"
-            className="bg-gradient-to-r from-lime-400 to-emerald-400 hover:from-lime-500 hover:to-emerald-500 text-black font-bold text-lg border-none px-10 py-6 shadow-[0_0_20px_rgba(163,230,53,0.5)] transition-all duration-300 hover:scale-105"
+            className="bg-lime-500 hover:bg-lime-400 text-black font-black text-lg border-none px-10 py-6 shadow-[0_0_20px_rgba(132,204,22,0.6)] transition-all duration-300 hover:scale-105 hover:shadow-[0_0_30px_rgba(132,204,22,0.8)]"
           >
             {t('hero.start')}
           </Button>
@@ -90,14 +90,14 @@ const HeroSection = () => {
           ].map((feature, index) => (
             <div
               key={index}
-              className="flex flex-col items-center p-5 bg-trading-card border border-gray-800 rounded-lg animate-fade-in"
+              className="flex flex-col items-center p-6 bg-white/5 backdrop-blur-md border border-white/10 rounded-2xl animate-fade-in group hover:border-cyan-400/50 hover:shadow-[0_0_30px_rgba(34,211,238,0.15)] transition-all duration-300 hover:-translate-y-2"
               style={{ animationDelay: `${index * 150}ms` }}
             >
-              <div className="p-3 mb-4 rounded-full bg-gray-800">
+              <div className="p-4 mb-4 rounded-xl bg-gradient-to-br from-white/10 to-transparent border border-white/5 group-hover:scale-110 group-hover:rotate-3 transition-transform duration-300">
                 {feature.icon}
               </div>
-              <h3 className="text-lg font-semibold mb-2 text-gray-100">{feature.title}</h3>
-              <p className="text-sm text-gray-400 text-center">{feature.description}</p>
+              <h3 className="text-xl font-bold mb-3 text-gray-100 group-hover:text-cyan-400 transition-colors">{feature.title}</h3>
+              <p className="text-sm text-gray-400 text-center leading-relaxed font-light">{feature.description}</p>
             </div>
           ))}
         </div>
