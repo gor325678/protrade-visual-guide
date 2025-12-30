@@ -10,14 +10,7 @@ const ChartPreview = () => {
   return (
     <div className="w-full py-12 px-4 no-select">
       <div className="max-w-7xl mx-auto">
-        <div className="text-center mb-12">
-          <h2 className="text-4xl md:text-5xl font-bold mb-6 text-white leading-tight">
-            {t('home.chart.headline')}
-          </h2>
-          <p className="text-xl md:text-2xl text-gray-300 max-w-3xl mx-auto font-medium">
-            {t('home.chart.subheadline')}
-          </p>
-        </div>
+        {/* Header removed as it was moved to TradingSection */}
 
         <div className="relative bg-trading-dark border border-gray-800 rounded-xl p-4 overflow-hidden max-w-fit mx-auto">
 

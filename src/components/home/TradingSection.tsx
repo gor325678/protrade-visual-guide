@@ -17,6 +17,15 @@ const TradingSection = () => {
           {t('trading.effectiveness')}
         </div>
 
+        <div className="text-center mb-8">
+          <h2 className="text-3xl md:text-5xl font-bold mb-4 text-white leading-tight">
+            {t('home.chart.headline')}
+          </h2>
+          <p className="text-lg md:text-2xl text-gray-300 max-w-3xl mx-auto font-medium">
+            {t('home.chart.subheadline')}
+          </p>
+        </div>
+
         {/* Trading Report */}
         <TradingReport />
       </div>
