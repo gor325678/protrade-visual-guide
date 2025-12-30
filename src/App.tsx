@@ -7,7 +7,7 @@ import React from 'react';
 import { LanguageProvider } from './contexts/LanguageContext';
 import Index from "./pages/Index";
 import BeginnerTraining from "./pages/BeginnerTraining";
-import MyCourses from "./pages/MyCourses";
+
 import Psychology from "./pages/Psychology";
 import RiskManagement from "./pages/RiskManagement";
 import About from "./pages/About";
@@ -18,6 +18,10 @@ import Courses from "./pages/Courses";
 import Checkout from "./pages/Checkout";
 import PaymentSuccess from "./pages/PaymentSuccess";
 import Account from "./pages/Account";
+import PublicOffer from "./pages/PublicOffer";
+import PrivacyPolicy from "./pages/PrivacyPolicy";
+import EligibleClients from "./pages/EligibleClients";
+import ScrollToTop from "./components/utils/ScrollToTop";
 
 // Create a client
 const queryClient = new QueryClient({
@@ -37,10 +41,11 @@ const App = () => {
           <Toaster />
           <Sonner />
           <BrowserRouter>
+            <ScrollToTop />
             <Routes>
               <Route path="/" element={<Index />} />
               <Route path="/beginner-training" element={<BeginnerTraining />} />
-              <Route path="/my-courses" element={<MyCourses />} />
+
               <Route path="/psychology" element={<Psychology />} />
               <Route path="/risk-management" element={<RiskManagement />} />
               <Route path="/about" element={<About />} />
@@ -50,6 +55,11 @@ const App = () => {
               <Route path="/checkout" element={<Checkout />} />
               <Route path="/payment-success" element={<PaymentSuccess />} />
               <Route path="/account" element={<Account />} />
+
+              {/* Legal Pages */}
+              <Route path="/public-offer" element={<PublicOffer />} />
+              <Route path="/privacy-policy" element={<PrivacyPolicy />} />
+              <Route path="/eligible-clients" element={<EligibleClients />} />
               <Route path="*" element={<NotFound />} />
             </Routes>
           </BrowserRouter>

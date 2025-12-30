@@ -95,4 +95,26 @@
   .glow-text {
     text-shadow: 0 0 10px rgba(79, 70, 229, 0.7);
   }
+
+  /* 3D Text Animation */
+  @keyframes text-3d-float {
+    0%, 100% {
+      transform: perspective(1000px) rotateX(10deg) translateY(0);
+      text-shadow: 0 10px 0 #3b0764, 
+                   0 20px 10px rgba(0,0,0,0.5),
+                   0 20px 20px rgba(0,0,0,0.3);
+    }
+    50% {
+      transform: perspective(1000px) rotateX(0deg) translateY(-10px);
+      text-shadow: 0 5px 0 #3b0764, 
+                   0 10px 10px rgba(0,0,0,0.5),
+                   0 10px 20px rgba(0,0,0,0.3);
+    }
+  }
+
+  .animate-3d-float {
+    display: inline-block;
+    animation: text-3d-float 4s ease-in-out infinite;
+    transform-style: preserve-3d;
+  }
 }

@@ -8,21 +8,27 @@ import ChartPreview from '../components/home/ChartPreview';
 import TradingSection from '../components/home/TradingSection';
 import AnalyticsSection from '../components/home/AnalyticsSection';
 import ProtectionOverlay from '../components/shared/ProtectionOverlay';
+import QuizSection from '../components/home/QuizSection';
+import ProblemSolutionSection from '../components/home/ProblemSolutionSection';
+import FAQSection from '../components/home/FAQSection';
 
 const Index = () => {
   return (
     <div className="min-h-screen flex flex-col bg-trading-dark text-white no-select no-drag">
       <ProtectionOverlay />
       <Header />
-      
+
       <main className="flex-grow">
         <HeroSection />
+        <QuizSection />
         <TradingSection />
         <CourseOverview />
         <AnalyticsSection />
+        <ProblemSolutionSection />
         <ChartPreview />
+        <FAQSection />
       </main>
-      
+
       <Footer />
     </div>
   );

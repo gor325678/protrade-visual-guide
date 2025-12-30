@@ -10,7 +10,7 @@ const PaymentSuccess = () => {
   return (
     <div className="min-h-screen flex flex-col bg-trading-dark text-white">
       <Header />
-      
+
       <main className="flex-grow container mx-auto px-4 py-8">
         <div className="max-w-4xl mx-auto text-center">
           <div className="mb-8">
@@ -116,15 +116,15 @@ const PaymentSuccess = () => {
           </div>
 
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <Button 
-              size="lg" 
+            <Button
+              size="lg"
               className="bg-green-600 hover:bg-green-700"
-              onClick={() => window.location.href = '/my-courses'}
+              onClick={() => window.location.href = '/account'}
             >
-              Мои курсы
+              Личный кабинет
             </Button>
-            <Button 
-              variant="outline" 
+            <Button
+              variant="outline"
               size="lg"
               className="border-gray-700"
               onClick={() => window.location.href = '/courses'}
@@ -134,7 +134,7 @@ const PaymentSuccess = () => {
           </div>
         </div>
       </main>
-      
+
       <Footer />
     </div>
   );
