@@ -237,6 +237,8 @@ export const ru = {
     'hero.features.indicators.desc': 'Уникальные индикаторы, разработанные нашей командой для точного анализа рынка',
     'hero.features.risk.title': 'Защита капитала',
     'hero.features.risk.desc': 'Система управления капиталом для защиты депозита и максимизации прибыли',
+    'home.chart.headline': 'Вот как выглядит скучный профессиональный трейдинг.',
+    'home.chart.subheadline': 'Никаких американских горок. Только рост.',
 
     // Profile & Account
     'profile.info': 'Информация профиля',

@@ -3,14 +3,19 @@ import React from 'react';
 import { TrendingUp, TrendingDown } from 'lucide-react';
 import { Card, CardContent } from '@/components/ui/card';
 
+import { useLanguage } from '@/contexts/LanguageContext';
+
 const ChartPreview = () => {
+  const { t } = useLanguage();
   return (
     <div className="w-full py-12 px-4 no-select">
       <div className="max-w-7xl mx-auto">
         <div className="text-center mb-12">
-          <h2 className="text-3xl font-bold mb-4">Торговые инструменты</h2>
-          <p className="text-gray-400 max-w-3xl mx-auto">
-            Профессиональные инструменты анализа и торговли, разработанные опытными трейдерами
+          <h2 className="text-4xl md:text-5xl font-bold mb-6 text-white leading-tight">
+            {t('home.chart.headline')}
+          </h2>
+          <p className="text-xl md:text-2xl text-gray-300 max-w-3xl mx-auto font-medium">
+            {t('home.chart.subheadline')}
           </p>
         </div>
 
