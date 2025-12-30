@@ -31,14 +31,19 @@ const HeroSection = () => {
       <div className="absolute inset-0 bg-[linear-gradient(rgba(86,70,252,0.05)_1px,transparent_1px),linear-gradient(90deg,rgba(86,70,252,0.05)_1px,transparent_1px)] bg-[size:24px_24px] [mask-image:radial-gradient(ellipse_50%_50%_at_50%_50%,#000_70%,transparent_100%)]" />
 
       <div className="relative max-w-5xl mx-auto text-center z-10">
-        <div className="inline-block mb-4 px-4 py-1 bg-gradient-to-r from-blue-500/10 to-purple-500/10 rounded-full border border-blue-500/20">
-          <div className="flex items-center space-x-2">
-            <TrendingUp size={16} className="text-blue-400" />
-            <span className="text-sm font-medium text-blue-400">{t('hero.badge')}</span>
-          </div>
+        {/* Left Side Mist Effect */}
+        <div className="absolute top-1/2 left-0 -translate-y-1/2 w-1/3 h-full pointer-events-none overflow-hidden -z-10 opacity-60">
+          <div className="absolute inset-0 bg-blue-500/10 blur-[80px] animate-fog-flow rounded-full mix-blend-screen" />
+          <div className="absolute top-1/4 left-0 w-full h-1/2 bg-purple-500/10 blur-[60px] animate-fog-flow animation-delay-2000 rounded-full mix-blend-screen" />
         </div>
 
-        <h1 className="text-4xl md:text-6xl lg:text-7xl font-black mb-10 tracking-tight bg-clip-text text-transparent bg-gradient-to-r from-[#818cf8] to-[#c084fc] animate-3d-float pb-4 drop-shadow-[0_0_25px_rgba(129,140,248,0.5)]">
+        <div className="inline-block mb-4 px-4 py-1.5 rounded-full bg-white/5 border border-white/10 backdrop-blur-sm animate-fade-in">
+          <span className="text-trading-accent font-medium text-sm md:text-base">
+            {t('hero.badge')}
+          </span>
+        </div>
+
+        <h1 className="text-6xl md:text-8xl lg:text-9xl font-black mb-10 tracking-tight bg-clip-text text-transparent bg-gradient-to-r from-white via-white to-cyan-400 text-3d-static pb-4 drop-shadow-[0_0_25px_rgba(34,211,238,0.5)]">
           {t('hero.title')}
         </h1>
 
@@ -50,7 +55,7 @@ const HeroSection = () => {
           <Button
             onClick={handleStartLearning}
             size="lg"
-            className="bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 text-white border-none px-8"
+            className="bg-gradient-to-r from-lime-400 to-emerald-400 hover:from-lime-500 hover:to-emerald-500 text-black font-bold text-lg border-none px-10 py-6 shadow-[0_0_20px_rgba(163,230,53,0.5)] transition-all duration-300 hover:scale-105"
           >
             {t('hero.start')}
           </Button>

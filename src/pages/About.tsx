@@ -12,11 +12,14 @@ const About = () => {
       <Header />
       <main className="flex-grow p-6">
         <div className="max-w-4xl mx-auto space-y-12">
-          {/* Hero Section */}
           <div className="text-center space-y-6 animate-fade-in relative">
-            <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[500px] h-[500px] bg-trading-accent/10 rounded-full blur-[100px] -z-10" />
-            <h1 className="text-4xl md:text-5xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-trading-accent to-trading-secondary">
-              {t('about.title')}
+            <div className="inline-block mb-4 px-4 py-1.5 rounded-full bg-white/5 border border-white/10 backdrop-blur-sm animate-fade-in">
+              <span className="text-trading-accent font-medium text-sm md:text-base">
+                Профессиональная торговая система
+              </span>
+            </div>
+            <h1 className="text-5xl md:text-7xl font-black bg-clip-text text-transparent bg-gradient-to-r from-[#818cf8] to-[#c084fc] text-3d-static pb-4 drop-shadow-[0_0_25px_rgba(129,140,248,0.5)]">
+              ProTrader Systems
             </h1>
             <p className="text-xl text-gray-300 max-w-2xl mx-auto leading-relaxed">
               {t('about.intro')}
@@ -71,9 +74,9 @@ const About = () => {
             </a>
           </div>
         </div>
-      </main>
+      </main >
       <Footer />
-    </div>
+    </div >
   );
 };
 
