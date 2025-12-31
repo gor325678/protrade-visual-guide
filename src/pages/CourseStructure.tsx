@@ -9,11 +9,11 @@ import ModuleCard from '@/components/course/ModuleCard';
 import ModuleForm from '@/components/course/ModuleForm';
 import ModuleHistoryDialog from '@/components/course/ModuleHistoryDialog';
 import { useLanguage } from '@/contexts/LanguageContext';
-import { 
-  getAllModules, 
-  addModule, 
-  updateModule, 
-  deleteModule 
+import {
+  getAllModules,
+  addModule,
+  updateModule,
+  deleteModule
 } from '@/services/courseService';
 
 const CourseStructure = () => {
@@ -36,11 +36,11 @@ const CourseStructure = () => {
 
   const handleUpdateModule = (moduleData: Omit<CourseModule, 'id'>) => {
     if (!editingModule) return;
-    
+
     const updatedModule = updateModule(editingModule.id, moduleData);
     if (updatedModule) {
       setModules(getAllModules());
-      
+
       // Special message for the Forex basics module
       if (updatedModule.id === '1' || updatedModule.title === "Основы торговли на Форекс") {
         toast({
@@ -98,7 +98,7 @@ const CourseStructure = () => {
   return (
     <div className="min-h-screen flex flex-col bg-trading-dark text-white">
       <Header />
-      
+
       <main className="flex-grow container mx-auto px-4 py-8">
         <div className="flex justify-between items-center mb-8">
           <h1 className="text-2xl font-bold">{t('course-structure.title')}</h1>
@@ -106,7 +106,7 @@ const CourseStructure = () => {
             <Plus className="mr-2 h-4 w-4" /> {t('course-structure.add')}
           </Button>
         </div>
-        
+
         {modules.length === 0 ? (
           <div className="text-center p-10 border border-dashed border-gray-700 rounded-lg">
             <p className="text-gray-400">{t('course-structure.no-modules')}</p>
@@ -127,23 +127,29 @@ const CourseStructure = () => {
             ))}
           </div>
         )}
-        
+
+        <div className="mt-12 max-w-4xl mx-auto text-center">
+          <p className="text-lg text-gray-300 leading-relaxed italic">
+            "Обучение в этой системе напоминает сборку высокоточного механизма: сначала вы изучаете каждую деталь (индикаторы), затем понимаете среду, в которой он работает (режимы цены), и только после этого приступаете к запуску (входам) сопровождению и управлению процессом (выходам)."
+          </p>
+        </div>
+
         <ModuleForm
           open={isFormOpen}
           onClose={handleFormClose}
           onSave={handleFormSave}
           editingModule={editingModule}
         />
-        
-        <ModuleHistoryDialog 
+
+        <ModuleHistoryDialog
           module={historyModule}
           isOpen={isHistoryOpen}
           onClose={handleHistoryClose}
         />
-      </main>
-      
+      </main >
+
       <Footer />
-    </div>
+    </div >
   );
 };
 
