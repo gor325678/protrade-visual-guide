@@ -1,11 +1,13 @@
 
-import React from 'react';
+import React, { useRef, useEffect, useState } from 'react';
 import { Badge } from "@/components/ui/badge";
 import { Separator } from "@/components/ui/separator";
 import { useLanguage } from '@/contexts/LanguageContext';
 
 const ProblemSolutionSection = () => {
     const { t } = useLanguage();
+    const containerRef = useRef<HTMLDivElement>(null);
+    const [progress, setProgress] = useState(0);
 
     const problemsSolutions = [
         {
@@ -58,76 +60,173 @@ const ProblemSolutionSection = () => {
         },
     ];
 
+    useEffect(() => {
+        const handleScroll = () => {
+            if (!containerRef.current) return;
+            const { top, height } = containerRef.current.getBoundingClientRect();
+            const windowHeight = window.innerHeight;
+
+            // Start animating when the section is at the top of the viewport
+            // We want the pinning to happen roughly when top is near 0.
+            const scrolled = -top;
+            const totalScrollable = height - windowHeight;
+
+            if (totalScrollable <= 0) return;
+
+            // Calculate 0..1 progress
+            const rawProgress = Math.max(0, Math.min(1, scrolled / totalScrollable));
+
+            // Optimization: Only update if changed significantly
+            setProgress(rawProgress);
+        };
+
+        window.addEventListener('scroll', handleScroll);
+        // Call once to init
+        handleScroll();
+        return () => window.removeEventListener('scroll', handleScroll);
+    }, []);
+
+    // Layout configuration
+    // We want a long scroll area.
+    // Each card gets a 'segment' of the scroll.
+    const segmentLength = 1 / problemsSolutions.length;
+
     return (
-        <section className="bg-trading-dark relative">
-            <div className="container mx-auto px-4 pt-10 pb-4">
-                <h2 className="text-3xl md:text-5xl font-bold text-center mb-2 bg-clip-text text-transparent bg-gradient-to-r from-blue-400 to-emerald-400 pb-2">
-                    {t('problems.title')}
-                </h2>
-                <h3 className="text-xl md:text-3xl text-center font-normal text-gray-400 mb-6">
-                    {t('problems.subtitle')}
-                </h3>
-            </div>
+        <section
+            ref={containerRef}
+            className="bg-trading-dark relative"
+            style={{ height: `${problemsSolutions.length * 80 + 100}vh` }} // Dynamic height
+        >
+            <div className="sticky top-0 h-screen overflow-hidden flex flex-col justify-center">
 
-            <div className="w-full relative">
-                {problemsSolutions.map((item, index) => (
-                    <Card key={index} item={item} index={index} total={problemsSolutions.length} />
-                ))}
-            </div>
+                {/* Header - Stays at top */}
+                <div className="absolute top-8 left-0 right-0 z-30 transition-opacity duration-300"
+                    style={{ opacity: Math.max(0, 1 - progress * 4) }}>
+                    {/* Fades out as we scroll deep? Or stays? User said "Problem/Solution section". 
+                         Usually header stays or scrolls away. If sticky container is h-screen, header inside it stays.
+                         Let's keep it visible but maybe fade slightly if cards go over it. 
+                         Actually, if cards go UP, they go over header. So header should be z-30 (above cards?).
+                         No, card moves UP, covering header? 
+                         If card moves up, it goes off screen.
+                         Let's keep header z-index low?
+                     */}
+                    <div className="container mx-auto px-4">
+                        <h2 className="text-3xl md:text-5xl font-bold text-center mb-2 bg-clip-text text-transparent bg-gradient-to-r from-blue-400 to-emerald-400 pb-2">
+                            {t('problems.title')}
+                        </h2>
+                        <h3 className="text-xl md:text-3xl text-center font-normal text-gray-400">
+                            {t('problems.subtitle')}
+                        </h3>
+                    </div>
+                </div>
 
-            <div className="h-20"></div> {/* Spacer at bottom */}
+                {/* Cards Container */}
+                <div className="w-full h-full flex items-center justify-center relative perspective-1000">
+                    {problemsSolutions.map((item, index) => {
+                        // Calculate this card's specific progress
+                        // total cards = N
+                        // progress 0..1
+                        const globalPos = progress * (problemsSolutions.length);
+                        const offset = globalPos - index;
+
+                        // offset < 0: Upcoming
+                        // offset 0..1: Active (Moving up)
+                        // offset > 1: Done (Moved up)
+
+                        let style: React.CSSProperties = {
+                            position: 'absolute',
+                            zIndex: problemsSolutions.length - index,
+                            transition: 'transform 0.1s linear, opacity 0.1s linear, filter 0.2s',
+                            willChange: 'transform, opacity',
+                            // Center using flex parent, but absolute needs explicit coords if we want robust animation
+                            // actually flex center + absolute works if we don't set top/left
+                        };
+
+                        if (offset < 0) {
+                            // Upcoming: Wait at center.
+                            // Add slight scale variance for "stack" look
+                            const dist = -offset;
+                            // dist 1 means 1 full card away.
+                            // Stack them behind: Scale down, translate down slightly?
+                            // User: "Appear from middle". 
+                            // So they sit in middle.
+                            if (dist > 2) {
+                                // Far away: Hidden or very small
+                                style.opacity = 0;
+                                style.transform = `scale(0.8) translateY(100px)`;
+                                style.pointerEvents = 'none';
+                            } else {
+                                // Approaching:
+                                style.opacity = Math.max(0, 1 - dist * 0.5);
+                                style.transform = `scale(${0.9 + (1 - dist) * 0.1}) translateY(${dist * 20}px)`;
+                            }
+                        } else if (offset >= 0) {
+                            // Active or Past
+                            // Move UP (-Y) and Shrink
+                            // offset 0 -> 1
+                            const moveUp = offset * 120; // 120% of card height? Or viewport? 
+                            // Use units relative to card roughly (say 400px)
+                            style.transform = `translateY(-${moveUp}%) scale(${1 - offset * 0.1})`;
+                            style.opacity = 1 - (offset * 0.5); // Fade out as it goes up
+
+                            if (offset > 1.5) {
+                                style.opacity = 0;
+                                style.pointerEvents = 'none';
+                            }
+                        }
+
+                        return (
+                            <Card
+                                key={index}
+                                item={item}
+                                index={index}
+                                total={problemsSolutions.length}
+                                style={style}
+                            />
+                        );
+                    })}
+                </div>
+            </div>
         </section>
     );
 };
 
-const Card = ({ item, index, total }: { item: any, index: number, total: number }) => {
+const Card = ({ item, index, total, style }: { item: any, index: number, total: number, style?: React.CSSProperties }) => {
     const { t } = useLanguage();
-
-    // Calculate rotation based on index to create a scattered look
-    // Using simple math to generate deterministic "random" rotation between -6 and 6 degrees
-    const rotation = ((index * 7 + 3) % 13) - 6;
-
-    // Slight random-looking offset
-    const xOffset = ((index * 13 + 7) % 20) - 10;
 
     return (
         <div
-            className="sticky top-0 h-screen flex items-center justify-center sticky-card-container"
-            style={{
-                zIndex: index + 1,
-            }}
+            className="w-full max-w-5xl flex flex-col items-center p-4" // Wrapper for positioning
+            style={style}
         >
             <div
-                className="w-full max-w-4xl p-10 md:p-14 rounded-[2.5rem] bg-[#0F0F0F] border border-gray-800/80 flex flex-col items-center relative group shadow-2xl transition-all duration-500 transform"
-                style={{
-                    marginTop: `${index * 15}px`, // Reduced vertical stagger
-                    transform: `rotate(${rotation}deg) translateX(${xOffset}px)`,
-                }}
+                className="w-full p-10 md:p-14 rounded-[2.5rem] bg-[#0F0F0F] border border-gray-800/80 flex flex-col items-center relative group shadow-2xl animate-float-card"
+            // Kept animate-float-card for the idle bobbing effect
             >
                 {/* Problem Section */}
                 <div className="flex flex-col items-center w-full">
                     <Badge variant="outline" className="mb-4 text-red-500 border-red-500/20 bg-red-500/10 px-4 py-1 rounded-full text-base font-medium">
                         {t('problems.badge.problem')}
                     </Badge>
-                    <h3 className="text-2xl md:text-4xl font-bold text-white mb-4 text-center">
+                    <h3 className="text-2xl md:text-3xl font-bold text-white mb-2 text-center">
                         {item.problem}
                     </h3>
-                    <p className="text-lg md:text-xl text-gray-400 leading-relaxed mb-8 text-center max-w-3xl">
+                    <p className="text-lg text-gray-400 leading-relaxed mb-6 text-center max-w-3xl">
                         {item.problemDesc}
                     </p>
                 </div>
 
-                <Separator className="bg-gray-800 my-8 w-full" />
+                <Separator className="bg-gray-800 my-6 w-full" />
 
                 {/* Solution Section */}
                 <div className="flex flex-col items-center w-full">
                     <Badge variant="outline" className="mb-4 text-emerald-500 border-emerald-500/20 bg-emerald-500/10 px-4 py-1 rounded-full text-base font-medium">
                         {t('problems.badge.solution')}
                     </Badge>
-                    <h3 className="text-2xl md:text-4xl font-bold text-emerald-400 mb-4 text-center">
+                    <h3 className="text-2xl md:text-3xl font-bold text-emerald-400 mb-2 text-center">
                         {item.solution}
                     </h3>
-                    <p className="text-lg md:text-xl text-gray-400 leading-relaxed text-center max-w-3xl">
+                    <p className="text-lg text-gray-400 leading-relaxed text-center max-w-3xl">
                         {item.solutionDesc}
                     </p>
                 </div>
