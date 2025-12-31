@@ -15,7 +15,7 @@ const AnalyticsSection = () => {
             Используйте профессиональные инструменты анализа для принятия обоснованных торговых решений
           </p>
         </div>
-        
+
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
           {/* Left side - Content */}
           <div className="space-y-6">
@@ -63,24 +63,20 @@ const AnalyticsSection = () => {
               ))}
             </div>
           </div>
-          
+
           {/* Right side - Image */}
           <div className="relative">
             <div className="relative rounded-xl overflow-hidden border border-gray-800">
-              <img 
-                src="/lovable-uploads/cc2b5ae9-e199-45de-b86f-79807e893c3e.png" 
-                alt="Trader making analysis" 
+              <img
+                src="/images/premium_trading_setup.png"
+                alt="Premium trading analytics monitoring setup"
                 className="w-full h-[600px] object-cover"
               />
               <div className="absolute inset-0 bg-gradient-to-t from-purple-900/30 to-transparent"></div>
             </div>
-            
+
             {/* Floating info card */}
-            <div className="absolute -bottom-6 -left-6 bg-trading-card border border-gray-800 rounded-lg p-4 max-w-xs">
-              <div className="text-sm text-gray-400 mb-1">Время анализа</div>
-              <div className="text-2xl font-bold text-white mb-1">2.5 часа</div>
-              <div className="text-xs text-gray-500">Ежедневная подготовка к торгам</div>
-            </div>
+
           </div>
         </div>
       </div>
