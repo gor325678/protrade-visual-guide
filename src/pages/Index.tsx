@@ -11,6 +11,7 @@ import ProtectionOverlay from '../components/shared/ProtectionOverlay';
 import QuizSection from '../components/home/QuizSection';
 import ProblemSolutionSection from '../components/home/ProblemSolutionSection';
 import FAQSection from '../components/home/FAQSection';
+import InfoSection from '../components/home/InfoSection';
 
 const Index = () => {
   return (
@@ -27,6 +28,7 @@ const Index = () => {
         <ProblemSolutionSection />
         <ChartPreview />
         <FAQSection />
+        <InfoSection />
       </main>
 
       <Footer />
