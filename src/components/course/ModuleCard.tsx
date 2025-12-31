@@ -32,12 +32,32 @@ const ModuleCard: React.FC<ModuleCardProps> = ({ module, onEdit, onDelete, onVie
       </CardHeader>
       <CardContent className="pt-5">
         <ul className="space-y-3">
-          {module.topics.map((topic, topicIndex) => (
-            <li key={topicIndex} className="flex items-start">
-              <CheckCircle className="h-5 w-5 text-trading-bull mr-2 shrink-0 mt-0.5" />
-              <span className="text-sm text-gray-300">{topic}</span>
-            </li>
-          ))}
+          {module.topics.map((topic, topicIndex) => {
+            const separatorIndex = topic.indexOf(':');
+            let title = topic;
+            let description = '';
+
+            if (separatorIndex !== -1) {
+              title = topic.substring(0, separatorIndex + 1);
+              description = topic.substring(separatorIndex + 1);
+            }
+
+            return (
+              <li key={topicIndex} className="flex items-start">
+                <CheckCircle className="h-5 w-5 text-trading-bull mr-2 shrink-0 mt-0.5" />
+                <span className="text-sm text-gray-300">
+                  {separatorIndex !== -1 ? (
+                    <>
+                      <strong className="text-white block mb-1">{title}</strong>
+                      <span className="text-gray-400">{description}</span>
+                    </>
+                  ) : (
+                    topic
+                  )}
+                </span>
+              </li>
+            );
+          })}
         </ul>
       </CardContent>
       <CardFooter className="flex justify-end space-x-2 pt-2">
