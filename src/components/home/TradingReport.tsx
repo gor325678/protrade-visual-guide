@@ -178,7 +178,7 @@ const TradingReport = () => {
                             <tr>
                                 <td>2025.05.22</td>
                                 <td><span className="ptr-badge badge-buy">buy</span></td>
-                                <td>0.03</td>
+                                <td>0.01</td>
                                 <td>gbpjpy</td>
                                 <td>192.721</td>
                                 <td className="text-green">+10.61</td>
