@@ -200,7 +200,7 @@ const Card = ({ item, index, total, style }: { item: any, index: number, total: 
             style={style}
         >
             <div
-                className="w-full px-4 py-10 md:px-8 md:py-14 rounded-[3rem] bg-[#1A1A1A] border border-gray-800 flex flex-col items-center relative group shadow-2xl animate-float-card"
+                className="w-auto max-w-5xl px-6 py-10 md:px-12 md:py-14 rounded-[3rem] bg-[#1A1A1A] border border-gray-800 flex flex-col items-center relative group shadow-2xl animate-float-card mx-4"
             // Kept animate-float-card for the idle bobbing effect
             >
                 {/* Problem Section */}
