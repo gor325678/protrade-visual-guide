@@ -12,26 +12,6 @@ const FAQSection = () => {
     const { t } = useLanguage();
     const totalQuestions = 30;
 
-    // Split questions into two columns roughly
-    const midPoint = Math.ceil(totalQuestions / 2);
-    const firstColIndices = Array.from({ length: midPoint }, (_, i) => i + 1);
-    const secondColIndices = Array.from({ length: totalQuestions - midPoint }, (_, i) => midPoint + i + 1);
-
-    const renderAccordionItem = (index: number) => (
-        <AccordionItem
-            key={index}
-            value={`item-${index}`}
-            className="bg-trading-card/50 border border-white/5 rounded-xl px-4 py-1 mb-4 hover:border-trading-accent/30 transition-all duration-300"
-        >
-            <AccordionTrigger className="text-left text-base md:text-lg font-medium hover:no-underline hover:text-trading-accent">
-                {t(`faq.q${index}`)}
-            </AccordionTrigger>
-            <AccordionContent className="text-gray-400 text-sm md:text-base leading-relaxed">
-                {t(`faq.a${index}`)}
-            </AccordionContent>
-        </AccordionItem>
-    );
-
     return (
         <section className="py-20 bg-black relative overflow-hidden">
             {/* Background decoration */}
@@ -42,18 +22,27 @@ const FAQSection = () => {
                     <h2 className="text-3xl md:text-5xl font-bold mb-6 bg-clip-text text-transparent bg-gradient-to-r from-white to-gray-400">
                         {t('faq.title')}
                     </h2>
-                    <p className="text-xl text-gray-500 max-w-2xl mx-auto">
+                    <p className="text-xl md:text-2xl text-gray-500 max-w-3xl mx-auto">
                         {t('faq.subtitle')}
                     </p>
                 </div>
 
-                <div className="grid md:grid-cols-2 gap-x-8 items-start">
-                    <Accordion type="single" collapsible className="w-full">
-                        {firstColIndices.map(index => renderAccordionItem(index))}
-                    </Accordion>
-
-                    <Accordion type="single" collapsible className="w-full">
-                        {secondColIndices.map(index => renderAccordionItem(index))}
+                <div className="max-w-5xl mx-auto">
+                    <Accordion type="single" collapsible className="w-full space-y-4">
+                        {Array.from({ length: totalQuestions }).map((_, i) => (
+                            <AccordionItem
+                                key={i}
+                                value={`item-${i + 1}`}
+                                className="bg-trading-card/50 border border-white/5 rounded-2xl px-8 py-4 hover:border-trading-accent/30 transition-all duration-300"
+                            >
+                                <AccordionTrigger className="text-left text-lg md:text-2xl font-medium hover:no-underline hover:text-trading-accent">
+                                    {t(`faq.q${i + 1}`)}
+                                </AccordionTrigger>
+                                <AccordionContent className="text-gray-400 text-base md:text-xl leading-relaxed mt-2">
+                                    {t(`faq.a${i + 1}`)}
+                                </AccordionContent>
+                            </AccordionItem>
+                        ))}
                     </Accordion>
                 </div>
             </div>

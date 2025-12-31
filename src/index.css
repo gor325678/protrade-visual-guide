@@ -158,4 +158,21 @@
   .animate-fog-flow {
     animation: fog-flow 20s ease-in-out infinite;
   }
+
+  @keyframes float-card {
+
+    0%,
+    100% {
+      transform: translateY(0px);
+    }
+
+    50% {
+      transform: translateY(-20px);
+    }
+  }
+
+  /* Utility class to be composed with other transforms */
+  .animate-float-card {
+    animation: float-card 6s ease-in-out infinite;
+  }
 }
