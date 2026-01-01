@@ -9,10 +9,9 @@ const PhilosophySection = () => {
         <section className="w-full bg-trading-dark pb-20 relative overflow-hidden">
             {/* 1. Full Width Image Banner */}
             <div className="w-full h-[65vh] md:h-[90vh] relative">
-                <div className="absolute inset-0 bg-gradient-to-b from-transparent to-trading-dark/90 z-10" />
                 <img
-                    src="/images/philosophy_vintage.jpg"
-                    alt="Trading Philosophy - Compass and Discipline"
+                    src="/images/philosophy_setup.png"
+                    alt="Trading Philosophy - Modern Setup"
                     className="w-full h-full object-cover"
                 />
             </div>
