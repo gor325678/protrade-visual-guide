@@ -55,8 +55,8 @@ const PhilosophySection = () => {
                     <div className="absolute -inset-1 bg-gradient-to-r from-purple-600 to-blue-600 rounded-2xl blur opacity-25 group-hover:opacity-50 transition duration-1000 group-hover:duration-200"></div>
                     <div className="relative rounded-2xl overflow-hidden shadow-2xl border border-white/10">
                         <img
-                            src="/images/trading_philosophy.png"
-                            alt="Abstract Trading Philosophy"
+                            src="/images/philosophy_vintage.jpg"
+                            alt="Trading Philosophy - Compass and Discipline"
                             className="w-full h-auto object-cover transform hover:scale-105 transition duration-700"
                         />
                         <div className="absolute inset-0 bg-gradient-to-t from-trading-dark/80 via-transparent to-transparent" />
