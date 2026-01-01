@@ -32,10 +32,7 @@ const Header = () => {
               { path: '/', labelKey: 'nav.overview' },
               { path: '/courses', labelKey: 'Каталог курсов трейдинга' },
               { path: '/beginner-training', labelKey: 'nav.beginner-training' },
-
-              { path: '/psychology', labelKey: 'nav.psychology' },
-              { path: '/materials-manager', labelKey: 'nav.materials' },
-              { path: '/course-structure', labelKey: 'nav.course-structure' }
+              { path: '/psychology', labelKey: 'nav.psychology' }
             ].map(item => (
               <Link
                 key={item.path}

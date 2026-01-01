@@ -73,8 +73,23 @@ const PhilosophySection = () => {
                                 </div>
                             </div>
                         </div>
-                    </div>
 
+                        {/* Quote Block */}
+                        <div className="max-w-4xl mx-auto mt-12 mb-8">
+                            <blockquote className="relative p-8 bg-gradient-to-r from-purple-900/20 to-blue-900/20 rounded-2xl border border-white/5">
+                                <div className="absolute top-0 left-0 transform -translate-x-4 -translate-y-4">
+                                    <span className="text-6xl text-purple-500/20 font-serif">"</span>
+                                </div>
+                                <p className="relative z-10 text-xl md:text-2xl text-center text-gray-200 font-light italic leading-relaxed">
+                                    Обучение в этой системе напоминает сборку высокоточного механизма: сначала вы изучаете каждую деталь (индикаторы), затем понимаете среду, в которой он работает (режимы цены), и только после этого приступаете к запуску (входам) сопровождению и управлению процессом (выходам).
+                                </p>
+                                <div className="absolute bottom-0 right-0 transform translate-x-4 translate-y-4">
+                                    <span className="text-6xl text-purple-500/20 font-serif">"</span>
+                                </div>
+                            </blockquote>
+                        </div>
+
+                    </div>
                 </div>
             </div>
         </section>
