@@ -10,8 +10,8 @@ const PhilosophySection = () => {
             {/* 1. Full Width Image Banner */}
             <div className="w-full h-[65vh] md:h-[90vh] relative">
                 <img
-                    src="/images/philosophy_setup.png"
-                    alt="Trading Philosophy - Modern Setup"
+                    src="/images/philosophy_vintage.jpg"
+                    alt="Trading Philosophy - Compass and Discipline"
                     className="w-full h-full object-cover"
                 />
             </div>
