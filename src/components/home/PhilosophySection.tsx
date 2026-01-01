@@ -8,7 +8,7 @@ const PhilosophySection = () => {
     return (
         <section className="w-full bg-trading-dark pb-20 relative overflow-hidden">
             {/* 1. Full Width Image Banner */}
-            <div className="w-full h-[50vh] md:h-[70vh] relative">
+            <div className="w-full h-[65vh] md:h-[90vh] relative">
                 <div className="absolute inset-0 bg-gradient-to-b from-transparent to-trading-dark/90 z-10" />
                 <img
                     src="/images/philosophy_vintage.jpg"
@@ -18,10 +18,10 @@ const PhilosophySection = () => {
             </div>
 
             {/* 2. Content Container - Centered */}
-            <div className="max-w-5xl mx-auto px-4 relative z-20 -mt-32 md:-mt-48">
+            <div className="max-w-5xl mx-auto px-4 relative z-20 -mt-20 md:-mt-32">
 
                 {/* Discipline & Risk Badge - Featured Card */}
-                <div className="bg-black/60 backdrop-blur-xl border border-white/10 rounded-2xl p-6 md:p-8 mb-12 shadow-2xl animate-fade-in-up">
+                <div className="w-fit mx-auto bg-black/60 backdrop-blur-xl border border-white/10 rounded-2xl p-4 md:p-6 mb-12 shadow-2xl animate-fade-in-up">
                     <div className="flex flex-col md:flex-row items-center justify-center space-y-4 md:space-y-0 md:space-x-8 text-center md:text-left">
                         <div className="p-4 bg-yellow-500/10 rounded-full">
                             <Shield className="w-12 h-12 text-yellow-500" />
