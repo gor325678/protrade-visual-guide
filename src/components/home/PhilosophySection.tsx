@@ -6,74 +6,77 @@ const PhilosophySection = () => {
     const { t } = useLanguage();
 
     return (
-        <section className="w-full py-20 px-4 bg-trading-dark relative overflow-hidden">
-            {/* Background decoration */}
-            <div className="absolute top-0 right-0 w-1/3 h-full bg-gradient-to-l from-purple-900/10 to-transparent pointer-events-none" />
+        <section className="w-full bg-trading-dark pb-20 relative overflow-hidden">
+            {/* 1. Full Width Image Banner */}
+            <div className="w-full h-[50vh] md:h-[70vh] relative">
+                <div className="absolute inset-0 bg-gradient-to-b from-transparent to-trading-dark/90 z-10" />
+                <img
+                    src="/images/philosophy_vintage.jpg"
+                    alt="Trading Philosophy - Compass and Discipline"
+                    className="w-full h-full object-cover"
+                />
+            </div>
 
-            <div className="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-12 items-center relative z-10">
+            {/* 2. Content Container - Centered */}
+            <div className="max-w-5xl mx-auto px-4 relative z-20 -mt-32 md:-mt-48">
 
-                {/* Text Content */}
-                <div className="space-y-8 animate-fade-in-right">
-                    <div className="space-y-4">
-                        <h2 className="text-3xl md:text-5xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-white to-purple-400 leading-tight">
-                            Философия и цели <br />
-                            <span className="text-white">системы ProTrader Systems</span>
-                        </h2>
-                        <div className="h-1 w-20 bg-purple-500 rounded-full" />
-                    </div>
-
-                    <div className="space-y-6 text-lg text-gray-300 leading-relaxed font-light">
-                        <p>
-                            Торговая система <span className="text-white font-medium">ProTrader Systems</span> представляет собой комплексный, основанный на строгих правилах подход к трейдингу. Ее основная цель — идентификация и использование устойчивых трендовых движений, так называемых <span className="text-purple-400">"истинных трендов"</span>, на различных таймфреймах с особым акцентом на дисциплинированном управлении рисками.
-                        </p>
-                        <p>
-                            Система создана для того, чтобы дать трейдеру четкое преимущество за счет своевременного входа в зарождающийся тренд и грамотного сопровождения позиции до его завершения.
-                        </p>
-
-                        <div className="grid grid-cols-1 md:grid-cols-2 gap-4 pt-4">
-                            <div className="flex items-start space-x-3 bg-white/5 p-4 rounded-lg border border-white/10">
-                                <Target className="w-6 h-6 text-purple-400 mt-1 flex-shrink-0" />
-                                <p className="text-sm">Торговля по тренду</p>
-                            </div>
-                            <div className="flex items-start space-x-3 bg-white/5 p-4 rounded-lg border border-white/10">
-                                <TrendingUp className="w-6 h-6 text-green-400 mt-1 flex-shrink-0" />
-                                <p className="text-sm">Максимизация прибыли</p>
-                            </div>
+                {/* Discipline & Risk Badge - Featured Card */}
+                <div className="bg-black/60 backdrop-blur-xl border border-white/10 rounded-2xl p-6 md:p-8 mb-12 shadow-2xl animate-fade-in-up">
+                    <div className="flex flex-col md:flex-row items-center justify-center space-y-4 md:space-y-0 md:space-x-8 text-center md:text-left">
+                        <div className="p-4 bg-yellow-500/10 rounded-full">
+                            <Shield className="w-12 h-12 text-yellow-500" />
                         </div>
-
-                        <p>
-                            Ключевая философия системы заключается в торговле исключительно по направлению основного тренда, отказе от предопределенных целей по прибыли и стремлении захватить значительную часть трендового движения, каким бы длинным оно ни оказалось.
-                        </p>
-                        <p>
-                            Вместо того чтобы пытаться предсказать, где развернется цена, система предлагает набор инструментов и правил для динамического управления позицией, позволяя прибыли расти и своевременно фиксируя ее при появлении признаков ослабления тренда.
-                        </p>
+                        <div>
+                            <h4 className="text-2xl font-bold text-white mb-2">Дисциплина и Риск-менеджмент</h4>
+                            <p className="text-gray-300 text-lg">Основа стабильного успеха и долгосрочного роста капитала</p>
+                        </div>
                     </div>
                 </div>
 
-                {/* Image/Visual */}
-                <div className="relative animate-fade-in-left group">
-                    <div className="absolute -inset-1 bg-gradient-to-r from-purple-600 to-blue-600 rounded-2xl blur opacity-25 group-hover:opacity-50 transition duration-1000 group-hover:duration-200"></div>
-                    <div className="relative rounded-2xl overflow-hidden shadow-2xl border border-white/10">
-                        <img
-                            src="/images/philosophy_vintage.jpg"
-                            alt="Trading Philosophy - Compass and Discipline"
-                            className="w-full h-auto object-cover transform hover:scale-105 transition duration-700"
-                        />
-                        <div className="absolute inset-0 bg-gradient-to-t from-trading-dark/80 via-transparent to-transparent" />
+                {/* Main Philosophy Text */}
+                <div className="space-y-12 animate-fade-in-up" style={{ animationDelay: '0.2s' }}>
 
-                        {/* Floating Badge */}
-                        <div className="absolute bottom-8 left-8 right-8 bg-black/40 backdrop-blur-md p-6 rounded-xl border border-white/10">
-                            <div className="flex items-center space-x-4">
-                                <Shield className="w-8 h-8 text-yellow-500" />
-                                <div>
-                                    <h4 className="text-white font-semibold">Дисциплина и Риск-менеджмент</h4>
-                                    <p className="text-sm text-gray-400">Основа стабильного успеха</p>
+                    {/* Header */}
+                    <div className="text-center space-y-4">
+                        <h2 className="text-3xl md:text-5xl font-bold text-white leading-tight">
+                            Философия и цели <br />
+                            <span className="bg-clip-text text-transparent bg-gradient-to-r from-purple-400 to-blue-400">
+                                системы ProTrader Systems
+                            </span>
+                        </h2>
+                        <div className="h-1 w-24 bg-purple-500 rounded-full mx-auto" />
+                    </div>
+
+                    {/* Text Blocks */}
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-8 text-lg text-gray-300 leading-relaxed font-light">
+                        <div className="space-y-6">
+                            <p>
+                                Торговая система <span className="text-white font-medium">ProTrader Systems</span> представляет собой комплексный, основанный на строгих правилах подход к трейдингу. Ее основная цель — идентификация и использование устойчивых трендовых движений, так называемых <span className="text-purple-400">"истинных трендов"</span>.
+                            </p>
+                            <p>
+                                Система создана для того, чтобы дать трейдеру четкое преимущество за счет своевременного входа в зарождающийся тренд и грамотного сопровождения позиции до его завершения, используя динамические правила управления.
+                            </p>
+                        </div>
+                        <div className="space-y-6">
+                            <p>
+                                Ключевая философия системы заключается в торговле исключительно по направлению основного тренда. Мы отказываемся от предопределенных целей по прибыли в пользу стремления захватить значительную часть движения, каким бы длинным оно ни оказалось.
+                            </p>
+
+                            {/* Icons within text column */}
+                            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 pt-2">
+                                <div className="flex items-center space-x-3 bg-white/5 p-3 rounded-lg border border-white/10">
+                                    <Target className="w-5 h-5 text-purple-400" />
+                                    <span className="text-sm font-medium">Торговля по тренду</span>
+                                </div>
+                                <div className="flex items-center space-x-3 bg-white/5 p-3 rounded-lg border border-white/10">
+                                    <TrendingUp className="w-5 h-5 text-green-400" />
+                                    <span className="text-sm font-medium">Максимизация прибыли</span>
                                 </div>
                             </div>
                         </div>
                     </div>
-                </div>
 
+                </div>
             </div>
         </section>
     );
