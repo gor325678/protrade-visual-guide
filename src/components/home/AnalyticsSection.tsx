@@ -4,6 +4,33 @@ import { Card, CardContent } from '@/components/ui/card';
 import { BarChart3, PieChart, Activity, Calculator } from 'lucide-react';
 
 const AnalyticsSection = () => {
+  const analyticsData = [
+    {
+      icon: <BarChart3 className="h-6 w-6 text-blue-400" />,
+      title: "Технический анализ",
+      description: "Комплексный анализ графиков и паттернов",
+      value: "15+ индикаторов"
+    },
+    {
+      icon: <PieChart className="h-6 w-6 text-green-400" />,
+      title: "Портфельный анализ",
+      description: "Диверсификация и оптимизация портфеля",
+      value: "5-8 валютных пар"
+    },
+    {
+      icon: <Activity className="h-6 w-6 text-purple-400" />,
+      title: "Рыночная активность",
+      description: "Мониторинг волатильности и объемов",
+      value: "24/7 мониторинг"
+    },
+    {
+      icon: <Calculator className="h-6 w-6 text-yellow-400" />,
+      title: "Расчет позиций",
+      description: "Автоматический расчет размера позиций",
+      value: "1-3% риск"
+    }
+  ];
+
   return (
     <div className="w-full py-16 px-4 no-select">
       <div className="max-w-7xl mx-auto">
@@ -20,32 +47,7 @@ const AnalyticsSection = () => {
           {/* Left side - Content */}
           <div className="space-y-6">
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-              {[
-                {
-                  icon: <BarChart3 className="h-6 w-6 text-blue-400" />,
-                  title: "Технический анализ",
-                  description: "Комплексный анализ графиков и паттернов",
-                  value: "15+ индикаторов"
-                },
-                {
-                  icon: <PieChart className="h-6 w-6 text-green-400" />,
-                  title: "Портфельный анализ",
-                  description: "Диверсификация и оптимизация портфеля",
-                  value: "5-8 валютных пар"
-                },
-                {
-                  icon: <Activity className="h-6 w-6 text-purple-400" />,
-                  title: "Рыночная активность",
-                  description: "Мониторинг волатильности и объемов",
-                  value: "24/7 мониторинг"
-                },
-                {
-                  icon: <Calculator className="h-6 w-6 text-yellow-400" />,
-                  title: "Расчет позиций",
-                  description: "Автоматический расчет размера позиций",
-                  value: "1-3% риск"
-                }
-              ].map((item, index) => (
+              {analyticsData.map((item, index) => (
                 <Card key={index} className="bg-trading-card border-gray-800 hover:border-gray-700 transition-colors">
                   <CardContent className="p-6">
                     <div className="flex items-start space-x-4">

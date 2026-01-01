@@ -12,6 +12,7 @@ import QuizSection from '../components/home/QuizSection';
 import ProblemSolutionSection from '../components/home/ProblemSolutionSection';
 import FAQSection from '../components/home/FAQSection';
 import InfoSection from '../components/home/InfoSection';
+import PhilosophySection from '../components/home/PhilosophySection';
 
 const Index = () => {
   return (
@@ -23,6 +24,7 @@ const Index = () => {
         <HeroSection />
         <QuizSection />
         <TradingSection />
+        <PhilosophySection />
         <CourseOverview />
         <AnalyticsSection />
         <ProblemSolutionSection />
