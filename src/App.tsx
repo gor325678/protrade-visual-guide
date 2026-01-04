@@ -21,6 +21,9 @@ import Account from "./pages/Account";
 import PublicOffer from "./pages/PublicOffer";
 import PrivacyPolicy from "./pages/PrivacyPolicy";
 import EligibleClients from "./pages/EligibleClients";
+import Login from "./pages/Login";
+import Admin from "./pages/Admin";
+import ProtectedRoute from "./components/auth/ProtectedRoute";
 import ScrollToTop from "./components/utils/ScrollToTop";
 
 // Create a client
@@ -49,12 +52,14 @@ const App = () => {
               <Route path="/psychology" element={<Psychology />} />
               <Route path="/risk-management" element={<RiskManagement />} />
               <Route path="/about" element={<About />} />
-              <Route path="/materials-manager" element={<MaterialsManager />} />
-              <Route path="/course-structure" element={<CourseStructure />} />
+              <Route path="/materials-manager" element={<ProtectedRoute><MaterialsManager /></ProtectedRoute>} />
+              <Route path="/course-structure" element={<ProtectedRoute><CourseStructure /></ProtectedRoute>} />
               <Route path="/courses" element={<Courses />} />
               <Route path="/checkout" element={<Checkout />} />
               <Route path="/payment-success" element={<PaymentSuccess />} />
               <Route path="/account" element={<Account />} />
+              <Route path="/login" element={<Login />} />
+              <Route path="/admin" element={<ProtectedRoute><Admin /></ProtectedRoute>} />
 
               {/* Legal Pages */}
               <Route path="/public-offer" element={<PublicOffer />} />

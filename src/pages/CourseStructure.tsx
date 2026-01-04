@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Header from '@/components/layout/Header';
 import Footer from '@/components/layout/Footer';
 import { Button } from '@/components/ui/button';
@@ -9,67 +9,132 @@ import ModuleCard from '@/components/course/ModuleCard';
 import ModuleForm from '@/components/course/ModuleForm';
 import ModuleHistoryDialog from '@/components/course/ModuleHistoryDialog';
 import { useLanguage } from '@/contexts/LanguageContext';
-import {
-  getAllModules,
-  addModule,
-  updateModule,
-  deleteModule
-} from '@/services/courseService';
+// Імпортуємо наш клієнт Supabase
+import { supabase } from '@/lib/supabaseClient';
 
 const CourseStructure = () => {
   const { t } = useLanguage();
-  const [modules, setModules] = useState<CourseModule[]>(getAllModules());
+  // Початковий стан - порожній масив, чекаємо завантаження
+  const [modules, setModules] = useState<CourseModule[]>([]);
+  const [loading, setLoading] = useState(true);
+
   const [isFormOpen, setIsFormOpen] = useState(false);
   const [editingModule, setEditingModule] = useState<CourseModule | undefined>(undefined);
   const [historyModule, setHistoryModule] = useState<CourseModule | undefined>(undefined);
   const [isHistoryOpen, setIsHistoryOpen] = useState(false);
   const { toast } = useToast();
 
-  const handleAddModule = (moduleData: Omit<CourseModule, 'id'>) => {
-    const newModule = addModule(moduleData);
-    setModules(getAllModules());
-    toast({
-      title: t('course-structure.module-added'),
-      description: `"${newModule.title}" ${t('course-structure.module-added-desc')}`,
-    });
+  // 1. ЗАВАНТАЖЕННЯ ДАНИХ З SUPABASE
+  const fetchModules = async () => {
+    try {
+      setLoading(true);
+      // Запит до таблиці 'courses' (припускаємо, що модулі це курси)
+      const { data, error } = await supabase
+        .from('modules')
+        .select('*')
+        .order('created_at', { ascending: true });
+
+      if (error) throw error;
+
+      // Мапимо дані з БД у формат твого інтерфейсу
+      setModules(data as CourseModule[]);
+    } catch (error: any) {
+      console.error('Error fetching modules:', error);
+      toast({
+        title: "Помилка",
+        description: "Не вдалося завантажити модулі",
+        variant: "destructive"
+      });
+    } finally {
+      setLoading(false);
+    }
   };
 
-  const handleUpdateModule = (moduleData: Omit<CourseModule, 'id'>) => {
-    if (!editingModule) return;
+  // Викликаємо завантаження при старті
+  useEffect(() => {
+    fetchModules();
+  }, []);
 
-    const updatedModule = updateModule(editingModule.id, moduleData);
-    if (updatedModule) {
-      setModules(getAllModules());
+  // 2. ДОДАВАННЯ МОДУЛЯ
+  const handleAddModule = async (moduleData: Omit<CourseModule, 'id'>) => {
+    try {
+      const { data, error } = await supabase
+        .from('modules')
+        .insert([{
+          course_id: 'a0eebc99-9c0b-4ef8-bb6d-6bb9bd380a11',
+          title: moduleData.title,
+          description: moduleData.description,
+          is_published: true
+        }])
+        .select();
 
-      // Special message for the Forex basics module
-      if (updatedModule.id === '1' || updatedModule.title === "Основы торговли на Форекс") {
+      if (error) throw error;
+
+      if (data) {
+        setModules([...modules, data[0] as CourseModule]);
         toast({
-          title: t('course-structure.module-updated'),
-          description: `"${updatedModule.title}" ${t('course-structure.module-updated-history')}`,
-        });
-      } else {
-        toast({
-          title: t('course-structure.module-updated'),
-          description: `"${updatedModule.title}" ${t('course-structure.module-updated-desc')}`,
+          title: t('course-structure.module-added'),
+          description: `"${data[0].title}" ${t('course-structure.module-added-desc')}`,
         });
       }
+    } catch (error: any) {
+      toast({ title: "Помилка", description: error.message, variant: "destructive" });
+    }
+  };
+
+  // 3. ОНОВЛЕННЯ МОДУЛЯ
+  const handleUpdateModule = async (moduleData: Omit<CourseModule, 'id'>) => {
+    if (!editingModule) return;
+
+    try {
+      const { data, error } = await supabase
+        .from('modules')
+        .update({
+          title: moduleData.title,
+          description: moduleData.description,
+        })
+        .eq('id', editingModule.id)
+        .select();
+
+      if (error) throw error;
+
+      if (data) {
+        // Оновлюємо список локально
+        setModules(modules.map(m => m.id === editingModule.id ? (data[0] as CourseModule) : m));
+
+        toast({
+          title: t('course-structure.module-updated'),
+          description: `"${data[0].title}" оновлено успішно`,
+        });
+      }
+    } catch (error: any) {
+      toast({ title: "Помилка", description: error.message, variant: "destructive" });
+    }
+  };
+
+  // 4. ВИДАЛЕННЯ МОДУЛЯ
+  const handleDeleteModule = async (id: string) => {
+    try {
+      const { error } = await supabase
+        .from('modules')
+        .delete()
+        .eq('id', id);
+
+      if (error) throw error;
+
+      setModules(modules.filter(m => m.id !== id));
+      toast({
+        title: t('course-structure.module-deleted'),
+        description: t('course-structure.module-deleted-desc'),
+      });
+    } catch (error: any) {
+      toast({ title: "Помилка", description: error.message, variant: "destructive" });
     }
   };
 
   const handleEditModule = (module: CourseModule) => {
     setEditingModule(module);
     setIsFormOpen(true);
-  };
-
-  const handleDeleteModule = (id: string) => {
-    const success = deleteModule(id);
-    if (success) {
-      setModules(getAllModules());
-      toast({
-        title: t('course-structure.module-deleted'),
-        description: t('course-structure.module-deleted-desc'),
-      });
-    }
   };
 
   const handleViewHistory = (module: CourseModule) => {
@@ -99,51 +164,42 @@ const CourseStructure = () => {
     <div className="min-h-screen flex flex-col bg-trading-dark text-white">
       <Header />
 
-      <main className="flex-grow w-full bg-trading-dark text-white">
-        <div className="container mx-auto px-4 py-8">
-          <div className="flex justify-between items-center mb-8">
-            <h1 className="text-2xl font-bold">{t('course-structure.title')}</h1>
-            <Button onClick={() => setIsFormOpen(true)}>
+      <main className="flex-grow container mx-auto px-4 py-8">
+        <div className="flex justify-between items-center mb-8">
+          <h1 className="text-2xl font-bold">{t('course-structure.title')}</h1>
+          <Button onClick={() => setIsFormOpen(true)}>
+            <Plus className="mr-2 h-4 w-4" /> {t('course-structure.add')}
+          </Button>
+        </div>
+
+        {loading ? (
+          <div className="text-center py-10">Завантаження...</div>
+        ) : modules.length === 0 ? (
+          <div className="text-center p-10 border border-dashed border-gray-700 rounded-lg">
+            <p className="text-gray-400">{t('course-structure.no-modules')}</p>
+            <Button className="mt-4" onClick={() => setIsFormOpen(true)}>
               <Plus className="mr-2 h-4 w-4" /> {t('course-structure.add')}
             </Button>
           </div>
-
-          {modules.length === 0 ? (
-            <div className="text-center p-10 border border-dashed border-gray-700 rounded-lg">
-              <p className="text-gray-400">{t('course-structure.no-modules')}</p>
-              <Button className="mt-4" onClick={() => setIsFormOpen(true)}>
-                <Plus className="mr-2 h-4 w-4" /> {t('course-structure.add')}
-              </Button>
-            </div>
-          ) : (
-            <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-              {modules.map(module => (
-                <ModuleCard
-                  key={module.id}
-                  module={module}
-                  onEdit={handleEditModule}
-                  onDelete={handleDeleteModule}
-                  onViewHistory={handleViewHistory}
-                />
-              ))}
-            </div>
-          )}
-        </div>
-
-        <section className="w-full relative min-h-[500px] flex items-center justify-center py-20 bg-cover bg-center bg-no-repeat bg-fixed mt-12 border-t border-gray-800"
-          style={{
-            backgroundImage: 'url("/vintage-office.jpg")',
-          }}>
-          <div className="absolute inset-0 bg-black/60" />
-
-          <div className="container mx-auto px-4 relative z-10 text-center">
-            <blockquote className="max-w-4xl mx-auto">
-              <p className="text-xl md:text-3xl text-gray-100 leading-relaxed italic font-serif">
-                "Обучение в этой системе напоминает сборку высокоточного механизма: сначала вы изучаете каждую деталь (индикаторы), затем понимаете среду, в которой он работает (режимы цены), и только после этого приступаете к запуску (входам) сопровождению и управлению процессом (выходам)."
-              </p>
-            </blockquote>
+        ) : (
+          <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+            {modules.map(module => (
+              <ModuleCard
+                key={module.id}
+                module={module}
+                onEdit={handleEditModule}
+                onDelete={handleDeleteModule}
+                onViewHistory={handleViewHistory}
+              />
+            ))}
           </div>
-        </section>
+        )}
+
+        <div className="mt-12 max-w-4xl mx-auto text-center">
+          <p className="text-lg text-gray-300 leading-relaxed italic">
+            "Обучение в этой системе напоминает сборку высокоточного механизма..."
+          </p>
+        </div>
 
         <ModuleForm
           open={isFormOpen}
@@ -160,7 +216,7 @@ const CourseStructure = () => {
       </main>
 
       <Footer />
-    </div >
+    </div>
   );
 };
 
