@@ -10,8 +10,21 @@ const TradingSection = () => {
   const { t } = useLanguage();
 
   return (
-    <div className="w-full py-16 px-4 bg-gradient-to-b from-trading-dark to-gray-900 no-select">
-      <div className="max-w-4xl mx-auto">
+    <div className="w-full py-16 px-4 relative no-select overflow-hidden bg-gray-900">
+      {/* Background Image */}
+      <div
+        className="absolute inset-0 z-0 opacity-20"
+        style={{
+          backgroundImage: 'url("/vintage_trading_bg.png")',
+          backgroundSize: 'cover',
+          backgroundPosition: 'center',
+        }}
+      />
+
+      {/* Gradient Overlay */}
+      <div className="absolute inset-0 bg-gradient-to-b from-trading-dark/95 via-trading-dark/80 to-gray-900/95 z-0" />
+
+      <div className="max-w-4xl mx-auto relative z-10">
         {/* Descriptive Text */}
         <div className="text-gray-400 text-sm leading-relaxed border-l-2 border-purple-500 pl-4 mb-8">
           {t('trading.effectiveness')}

@@ -99,40 +99,51 @@ const CourseStructure = () => {
     <div className="min-h-screen flex flex-col bg-trading-dark text-white">
       <Header />
 
-      <main className="flex-grow container mx-auto px-4 py-8">
-        <div className="flex justify-between items-center mb-8">
-          <h1 className="text-2xl font-bold">{t('course-structure.title')}</h1>
-          <Button onClick={() => setIsFormOpen(true)}>
-            <Plus className="mr-2 h-4 w-4" /> {t('course-structure.add')}
-          </Button>
-        </div>
-
-        {modules.length === 0 ? (
-          <div className="text-center p-10 border border-dashed border-gray-700 rounded-lg">
-            <p className="text-gray-400">{t('course-structure.no-modules')}</p>
-            <Button className="mt-4" onClick={() => setIsFormOpen(true)}>
+      <main className="flex-grow w-full bg-trading-dark text-white">
+        <div className="container mx-auto px-4 py-8">
+          <div className="flex justify-between items-center mb-8">
+            <h1 className="text-2xl font-bold">{t('course-structure.title')}</h1>
+            <Button onClick={() => setIsFormOpen(true)}>
               <Plus className="mr-2 h-4 w-4" /> {t('course-structure.add')}
             </Button>
           </div>
-        ) : (
-          <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-            {modules.map(module => (
-              <ModuleCard
-                key={module.id}
-                module={module}
-                onEdit={handleEditModule}
-                onDelete={handleDeleteModule}
-                onViewHistory={handleViewHistory}
-              />
-            ))}
-          </div>
-        )}
 
-        <div className="mt-12 max-w-4xl mx-auto text-center">
-          <p className="text-lg text-gray-300 leading-relaxed italic">
-            "Обучение в этой системе напоминает сборку высокоточного механизма: сначала вы изучаете каждую деталь (индикаторы), затем понимаете среду, в которой он работает (режимы цены), и только после этого приступаете к запуску (входам) сопровождению и управлению процессом (выходам)."
-          </p>
+          {modules.length === 0 ? (
+            <div className="text-center p-10 border border-dashed border-gray-700 rounded-lg">
+              <p className="text-gray-400">{t('course-structure.no-modules')}</p>
+              <Button className="mt-4" onClick={() => setIsFormOpen(true)}>
+                <Plus className="mr-2 h-4 w-4" /> {t('course-structure.add')}
+              </Button>
+            </div>
+          ) : (
+            <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+              {modules.map(module => (
+                <ModuleCard
+                  key={module.id}
+                  module={module}
+                  onEdit={handleEditModule}
+                  onDelete={handleDeleteModule}
+                  onViewHistory={handleViewHistory}
+                />
+              ))}
+            </div>
+          )}
         </div>
+
+        <section className="w-full relative min-h-[500px] flex items-center justify-center py-20 bg-cover bg-center bg-no-repeat bg-fixed mt-12 border-t border-gray-800"
+          style={{
+            backgroundImage: 'url("/vintage-office.jpg")',
+          }}>
+          <div className="absolute inset-0 bg-black/60" />
+
+          <div className="container mx-auto px-4 relative z-10 text-center">
+            <blockquote className="max-w-4xl mx-auto">
+              <p className="text-xl md:text-3xl text-gray-100 leading-relaxed italic font-serif">
+                "Обучение в этой системе напоминает сборку высокоточного механизма: сначала вы изучаете каждую деталь (индикаторы), затем понимаете среду, в которой он работает (режимы цены), и только после этого приступаете к запуску (входам) сопровождению и управлению процессом (выходам)."
+              </p>
+            </blockquote>
+          </div>
+        </section>
 
         <ModuleForm
           open={isFormOpen}
@@ -146,7 +157,7 @@ const CourseStructure = () => {
           isOpen={isHistoryOpen}
           onClose={handleHistoryClose}
         />
-      </main >
+      </main>
 
       <Footer />
     </div >
