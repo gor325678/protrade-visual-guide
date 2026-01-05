@@ -25,6 +25,7 @@ import Login from "./pages/Login";
 import Admin from "./pages/Admin";
 import ProtectedRoute from "./components/auth/ProtectedRoute";
 import ScrollToTop from "./components/utils/ScrollToTop";
+import BackToTopButton from "./components/layout/BackToTopButton";
 
 // Create a client
 const queryClient = new QueryClient({
@@ -45,6 +46,7 @@ const App = () => {
           <Sonner />
           <BrowserRouter>
             <ScrollToTop />
+            <BackToTopButton />
             <Routes>
               <Route path="/" element={<Index />} />
               <Route path="/beginner-training" element={<BeginnerTraining />} />

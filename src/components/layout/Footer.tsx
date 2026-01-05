@@ -1,15 +1,13 @@
 import React from 'react';
 import { useLanguage } from '@/contexts/LanguageContext';
-import { Phone, ArrowUp, Youtube, Instagram, Send, X as XIcon } from 'lucide-react';
+import { Phone, Youtube, Instagram, Send, X as XIcon } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Link } from 'react-router-dom';
 
 const Footer = () => {
   const { t } = useLanguage();
 
-  const scrollToTop = () => {
-    window.scrollTo({ top: 0, behavior: 'smooth' });
-  };
+
 
   // Social Media Links (Mocked for now mostly, except Telegram from previous context)
   const socialLinks = [
@@ -62,12 +60,7 @@ const Footer = () => {
           </div>
 
           {/* Scroll to Top (Right) */}
-          <Button
-            onClick={scrollToTop}
-            className="rounded-full w-12 h-12 bg-zinc-900 text-white hover:bg-zinc-800 border border-zinc-800 flex items-center justify-center transition-all p-0"
-          >
-            <ArrowUp size={20} />
-          </Button>
+
         </div>
 
         {/* Bottom Row: Legal Links */}
