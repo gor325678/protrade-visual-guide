@@ -16,7 +16,7 @@ const ChartPreview = () => {
 
 
           {/* Chart image */}
-          <div className="mt-12 relative">
+          <div className="relative">
             <img
               src="/lovable-uploads/e3150010-676f-47ab-90d7-681f3065484a.png"
               alt="GBP/USD торговый график с отмеченными точками входа"

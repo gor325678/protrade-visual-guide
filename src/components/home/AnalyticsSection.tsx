@@ -2,32 +2,35 @@
 import React from 'react';
 import { Card, CardContent } from '@/components/ui/card';
 import { BarChart3, PieChart, Activity, Calculator } from 'lucide-react';
+import { useLanguage } from '@/contexts/LanguageContext';
 
 const AnalyticsSection = () => {
+  const { t } = useLanguage();
+
   const analyticsData = [
     {
       icon: <BarChart3 className="h-6 w-6 text-blue-400" />,
-      title: "Технический анализ",
-      description: "Комплексный анализ графиков и паттернов",
-      value: "15+ индикаторов"
+      title: t('analytics.technical.title'),
+      description: t('analytics.technical.desc'),
+      value: t('analytics.technical.value')
     },
     {
       icon: <PieChart className="h-6 w-6 text-green-400" />,
-      title: "Портфельный анализ",
-      description: "Диверсификация и оптимизация портфеля",
-      value: "5-8 валютных пар"
+      title: t('analytics.portfolio.title'),
+      description: t('analytics.portfolio.desc'),
+      value: t('analytics.portfolio.value')
     },
     {
       icon: <Activity className="h-6 w-6 text-purple-400" />,
-      title: "Рыночная активность",
-      description: "Мониторинг волатильности и объемов",
-      value: "24/7 мониторинг"
+      title: t('analytics.activity.title'),
+      description: t('analytics.activity.desc'),
+      value: t('analytics.activity.value')
     },
     {
       icon: <Calculator className="h-6 w-6 text-yellow-400" />,
-      title: "Расчет позиций",
-      description: "Автоматический расчет размера позиций",
-      value: "1-3% риск"
+      title: t('analytics.position.title'),
+      description: t('analytics.position.desc'),
+      value: t('analytics.position.value')
     }
   ];
 
@@ -36,10 +39,10 @@ const AnalyticsSection = () => {
       <div className="max-w-7xl mx-auto">
         <div className="text-center mb-12">
           <h2 className="text-3xl md:text-4xl font-bold mb-4 bg-clip-text text-transparent bg-gradient-to-r from-blue-400 to-purple-500">
-            Глубокая аналитика рынка
+            {t('analytics.title')}
           </h2>
           <p className="text-lg text-gray-300 max-w-3xl mx-auto">
-            Используйте профессиональные инструменты анализа для принятия обоснованных торговых решений
+            {t('analytics.subtitle')}
           </p>
         </div>
 
@@ -76,9 +79,6 @@ const AnalyticsSection = () => {
               />
               <div className="absolute inset-0 bg-gradient-to-t from-purple-900/30 to-transparent"></div>
             </div>
-
-            {/* Floating info card */}
-
           </div>
         </div>
       </div>

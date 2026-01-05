@@ -13,6 +13,7 @@ import { ProfileTab } from '@/components/account/ProfileTab';
 import { OrdersTab } from '@/components/account/OrdersTab';
 import { SettingsTab } from '@/components/account/SettingsTab';
 import PaymentModal from '@/components/payment/PaymentModal';
+import SupportButton from '@/components/shared/SupportButton';
 
 interface Enrollment {
   id: string;
@@ -35,6 +36,9 @@ const Account = () => {
   const [user, setUser] = useState<any>(null);
   const [loading, setLoading] = useState(true);
   const [courses, setCourses] = useState<CourseWithAccess[]>([]);
+  const [orders, setOrders] = useState<any[]>([]);
+  const [ordersLoading, setOrdersLoading] = useState(false);
+  const [userAvatar, setUserAvatar] = useState('bull');
   const [userInfo, setUserInfo] = useState({
     firstName: '',
     lastName: '',
@@ -65,12 +69,16 @@ const Account = () => {
       }
 
       setUser(user);
+      setUserAvatar(user.user_metadata?.avatar || 'bull');
       setUserInfo({
         firstName: user.user_metadata?.full_name?.split(' ')[0] || '',
         lastName: user.user_metadata?.full_name?.split(' ')[1] || '',
         email: user.email || '',
         phone: user.user_metadata?.phone || ''
       });
+
+      // Fetch orders for this user
+      fetchOrders(user.id);
 
       // 2. Отримуємо всі доступні курси
       const { data: coursesData, error: coursesError } = await supabase
@@ -118,6 +126,43 @@ const Account = () => {
     await supabase.auth.signOut();
     toast({ title: "Вихід виконано", description: "До побачення!" });
     navigate('/');
+  };
+
+  const fetchOrders = async (userId: string) => {
+    setOrdersLoading(true);
+    try {
+      const { data: ordersData, error } = await supabase
+        .from('orders')
+        .select(`
+          id,
+          course_id,
+          amount,
+          tx_hash,
+          status,
+          created_at,
+          courses ( title )
+        `)
+        .eq('user_id', userId)
+        .order('created_at', { ascending: false });
+
+      if (error) throw error;
+
+      // Transform data to include course title
+      const transformedOrders = (ordersData || []).map((order: any) => ({
+        ...order,
+        course_title: (order.courses as any)?.title || 'Курс'
+      }));
+
+      setOrders(transformedOrders);
+    } catch (error) {
+      console.error('Error fetching orders:', error);
+    } finally {
+      setOrdersLoading(false);
+    }
+  };
+
+  const handleAvatarChange = (avatarId: string) => {
+    setUserAvatar(avatarId);
   };
 
   const handleSaveProfile = async () => {
@@ -355,11 +400,14 @@ const Account = () => {
             </TabsContent>
 
             <TabsContent value="orders">
-              <OrdersTab orders={[]} />
+              <OrdersTab orders={orders} loading={ordersLoading} />
             </TabsContent>
 
             <TabsContent value="settings">
-              <SettingsTab />
+              <SettingsTab
+                currentAvatar={userAvatar}
+                onAvatarChange={handleAvatarChange}
+              />
             </TabsContent>
           </Tabs>
         </div>
@@ -383,6 +431,9 @@ const Account = () => {
           userId={user.id}
         />
       )}
+
+      {/* Floating Support Button */}
+      <SupportButton />
     </div>
   );
 };

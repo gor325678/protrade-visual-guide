@@ -84,7 +84,17 @@ const ProblemSolutionSection = () => {
             className="bg-trading-dark relative"
             style={{ height: `${problemsSolutions.length * 80 + 100}vh` }}
         >
-            <div className="sticky top-0 h-screen overflow-hidden flex flex-col justify-center">
+            {/* Background Image */}
+            <div
+                className="absolute inset-0 z-0"
+                style={{
+                    backgroundImage: 'url(/images/trading-background.png)',
+                    backgroundSize: 'cover',
+                    backgroundPosition: 'center',
+                    backgroundRepeat: 'no-repeat'
+                }}
+            />
+            <div className="sticky top-0 h-screen overflow-hidden flex flex-col justify-center relative z-10">
 
                 {/* Header - Stays at top */}
                 <div className="absolute top-8 left-0 right-0 z-30 transition-opacity duration-300"

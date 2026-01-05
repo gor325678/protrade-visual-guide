@@ -44,8 +44,8 @@ const Courses = () => {
 
     setCart([...cart, courseId]);
     toast({
-      title: 'Курс добавлен в корзину',
-      description: 'Теперь вы можете перейти к оплате',
+      title: t('courses.added-to-cart'),
+      description: t('courses.proceed-to-checkout'),
     });
   };
 
@@ -106,8 +106,8 @@ const Courses = () => {
       console.error('Full format error:', error);
 
       toast({
-        title: 'Ошибка оплаты',
-        description: error?.message || 'Не удалось создать платеж. Попробуйте еще раз.',
+        title: t('courses.payment-error'),
+        description: error?.message || t('courses.payment-error-desc'),
         variant: 'destructive',
       });
     } finally {
@@ -121,10 +121,9 @@ const Courses = () => {
 
       <main className="flex-grow container mx-auto px-4 py-8">
         <div className="text-center mb-12">
-          <h1 className="text-4xl font-bold mb-4">Каталог курсов трейдинга</h1>
+          <h1 className="text-4xl font-bold mb-4">{t('courses.catalog-title')}</h1>
           <p className="text-xl text-gray-300 max-w-3xl mx-auto">
-            Выберите курс, который поможет вам стать успешным трейдером.
-            Все курсы включают практические задания и пожизненный доступ к материалам.
+            {t('courses.catalog-description')}
           </p>
         </div>
 

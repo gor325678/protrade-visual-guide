@@ -1,6 +1,7 @@
 export const ru = {
     // Header
     'nav.overview': 'Обзор',
+    'nav.courses': 'Каталог курсов',
     'nav.beginner-training': 'Обучение для начинающих',
     'nav.psychology': 'Психология',
     'nav.risk-management': 'Риск-менеджмент',
@@ -8,6 +9,102 @@ export const ru = {
     'nav.course-structure': 'Структура курса',
     'nav.protected-view': 'Protected View',
     'nav.pre-registration': 'Предварительная запись',
+    'nav.account': 'Аккаунт',
+    'nav.login': 'Вход',
+    'nav.logout': 'Выход',
+    'nav.logout-success': 'Выход выполнен',
+    'nav.goodbye': 'До свидания!',
+
+    // Trading Results Section
+    'results.title': 'Реальные результаты системы',
+    'results.subtitle': 'Статистика торговли по нашей методологии за последние 12 месяцев',
+    'results.winrate': 'Винрейт',
+    'results.max_risk': 'Макс. риск на сделку',
+    'results.trades_day': 'Сделок в день',
+    'results.hours_content': 'Часов контента',
+    'results.what_you_get': 'Что вы получите',
+    'results.feature1': 'Четкие правила входа и выхода из сделки',
+    'results.feature2': 'Систему управления капиталом с фиксированным риском',
+    'results.feature3': 'Индикаторы для определения силы тренда',
+    'results.feature4': 'Понимание психологии рынка и толпы',
+
+    // Analytics Section
+    'analytics.title': 'Глубокая аналитика рынка',
+    'analytics.subtitle': 'Используйте профессиональные инструменты анализа для принятия обоснованных торговых решений',
+    'analytics.technical.title': 'Технический анализ',
+    'analytics.technical.desc': 'Комплексный анализ графиков и паттернов',
+    'analytics.technical.value': '15+ индикаторов',
+    'analytics.portfolio.title': 'Портфельный анализ',
+    'analytics.portfolio.desc': 'Диверсификация и оптимизация портфеля',
+    'analytics.portfolio.value': '5-8 валютных пар',
+    'analytics.activity.title': 'Рыночная активность',
+    'analytics.activity.desc': 'Мониторинг волатильности и объемов',
+    'analytics.activity.value': '24/7 мониторинг',
+    'analytics.position.title': 'Расчет позиций',
+    'analytics.position.desc': 'Автоматический расчет размера позиций',
+    'analytics.position.value': '1-3% риск',
+
+    // Countdown Timer
+    'countdown.offer_ends': 'До конца акции',
+    'countdown.days': 'дн',
+    'countdown.hours': 'час',
+    'countdown.mins': 'мин',
+    'countdown.secs': 'сек',
+
+    // Testimonials
+    'testimonials.title': 'Отзывы студентов',
+    'testimonials.subtitle': 'Что говорят те, кто уже прошел обучение',
+    'testimonials.1.name': 'Александр К.',
+    'testimonials.1.role': 'Начинающий трейдер',
+    'testimonials.1.text': 'После 3 месяцев обучения вышел на стабильный плюс. Система действительно работает, главное — следовать правилам.',
+    'testimonials.2.name': 'Мария В.',
+    'testimonials.2.role': 'Опытный трейдер',
+    'testimonials.2.text': 'Наконец-то понял, почему сливал депозиты. Психология и риск-менеджмент — это основа, которую я раньше игнорировал.',
+    'testimonials.3.name': 'Дмитрий П.',
+    'testimonials.3.role': 'Full-time трейдер',
+    'testimonials.3.text': 'Курс окупился за первый месяц. Четкая система без воды. Рекомендую всем, кто устал терять деньги.',
+    'testimonials.4.name': 'Елена С.',
+    'testimonials.4.role': 'Инвестор',
+    'testimonials.4.text': 'Отличный подход к обучению. Все разложено по полочкам, от простого к сложному. Поддержка на высшем уровне.',
+
+    // Referral
+    'referral.title': 'Пригласи друга',
+    'referral.subtitle': 'Получи скидку за каждого приглашенного',
+    'referral.friends_invited': 'Друзей приглашено',
+    'referral.discount_earned': 'Скидка заработана',
+    'referral.copy': 'Копировать',
+    'referral.share': 'Поделиться',
+    'referral.copied': 'Скопировано!',
+    'referral.copied_desc': 'Ссылка скопирована в буфер обмена',
+    'referral.share_text': 'Присоединяйся к ProTrader Systems — лучшая система обучения трейдингу!',
+    'referral.how_it_works': 'Как это работает:',
+    'referral.step1': 'Поделись своей ссылкой с друзьями',
+    'referral.step2': 'Друг регистрируется по твоей ссылке',
+    'referral.step3': 'Вы оба получаете 10% скидку',
+
+    // Certificate
+    'certificate.title': 'СЕРТИФИКАТ',
+    'certificate.subtitle': 'об успешном прохождении курса',
+    'certificate.presented_to': 'Настоящий сертификат выдан',
+    'certificate.for_completing': 'за успешное прохождение курса',
+    'certificate.completed': 'Курс завершен',
+    'certificate.date': 'Дата выдачи',
+    'certificate.instructor': 'Инструктор',
+    'certificate.download': 'Скачать сертификат',
+
+    // Comments
+    'comments.title': 'Обсуждение',
+    'comments.placeholder': 'Напишите ваш вопрос или комментарий...',
+    'comments.send': 'Отправить',
+    'comments.posted': 'Отправлено',
+    'comments.posted_desc': 'Ваш комментарий добавлен',
+    'comments.error': 'Ошибка',
+    'comments.error_desc': 'Не удалось отправить комментарий',
+    'comments.login_required': 'Войдите, чтобы оставить комментарий',
+    'comments.no_comments': 'Пока нет комментариев. Будьте первым!',
+    'comments.just_now': 'Только что',
+    'comments.hours_ago': 'ч. назад',
+    'comments.yesterday': 'Вчера',
 
     // Pre-registration Modal
     'modal.title': 'Заполни данные ниже и мы свяжемся с тобой как можно скорее',
@@ -148,6 +245,7 @@ export const ru = {
 
     // BeginnerTraining page
     'beginner.title': 'Обучение для начинающих',
+    'beginner.playlist-title': 'Программа обучения',
     'beginner.subtitle': 'Базовые знания и концепции для тех, кто только начинает знакомство с торговлей на Форекс',
     'beginner.add-topic': 'Добавить тему',
     'beginner.video-materials': 'Видео материалы:',
@@ -271,6 +369,16 @@ export const ru = {
     'orders.status': 'Статус',
     'orders.completed': 'Выполнен',
     'orders.items': 'Товары:',
+    'orders.history': 'История транзакций',
+    'orders.total': 'всего',
+    'orders.course': 'Курс',
+    'orders.no_orders': 'Заказов пока нет',
+    'orders.no_orders_desc': 'Здесь будут отображаться ваши заказы после оплаты курсов',
+    'orders.view_on_tronscan': 'Посмотреть на Tronscan',
+    'orders.pending_hint': 'Ожидает подтверждения. Обычно это занимает до 24 часов.',
+    'orders.status.paid': 'Оплачено',
+    'orders.status.pending': 'На проверке',
+    'orders.status.rejected': 'Отклонено',
 
     // Settings
     'settings.notifications': 'Уведомления',
@@ -281,12 +389,34 @@ export const ru = {
     'settings.security': 'Безопасность',
     'settings.change_password': 'Изменить пароль',
     'settings.2fa': 'Настроить двухфакторную аутентификацию',
+    'settings.avatar': 'Аватар',
+    'settings.choose_avatar': 'Выберите иконку которая будет отображаться в вашем профиле',
+    'settings.new_password': 'Новый пароль',
+    'settings.confirm_password': 'Подтвердите пароль',
+    'settings.cancel': 'Отмена',
+    'settings.save': 'Сохранить',
+    'settings.error': 'Ошибка',
+    'settings.success': 'Успешно',
+    'settings.passwords_not_match': 'Пароли не совпадают',
+    'settings.password_too_short': 'Пароль должен быть минимум 6 символов',
+    'settings.password_changed': 'Пароль успешно изменен',
+    'settings.avatar_changed': 'Аватар обновлен',
+
+    // Support
+    'support.title': 'Нужна помощь?',
+    'support.description': 'Напишите нам в Telegram — ответим быстро!',
 
     // Courses Tab
     'courses.purchased': 'Куплен:',
     'courses.active': 'Активен',
     'courses.progress_label': 'Прогресс:',
     'courses.continue': 'Продолжить обучение',
+    'courses.catalog-title': 'Каталог курсов трейдинга',
+    'courses.catalog-description': 'Выберите курс, который поможет вам стать успешным трейдером. Все курсы включают практические задания и пожизненный доступ к материалам.',
+    'courses.added-to-cart': 'Курс добавлен в корзину',
+    'courses.proceed-to-checkout': 'Теперь вы можете перейти к оплате',
+    'courses.payment-error': 'Ошибка оплаты',
+    'courses.payment-error-desc': 'Не удалось создать платеж. Попробуйте еще раз.',
 
 
     // Trading Report
