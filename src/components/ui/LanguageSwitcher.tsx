@@ -14,9 +14,9 @@ const LanguageSwitcher = () => {
     <Button
       onClick={toggleLanguage}
       variant="outline"
-      className="bg-transparent border-2 border-blue-500 text-blue-400 hover:bg-blue-500 hover:text-white transition-all duration-300 font-bold px-6 py-2 text-lg"
+      className="bg-transparent border-2 border-blue-500 text-blue-400 hover:bg-blue-500 hover:text-white transition-all duration-300 font-bold px-4 py-2 text-sm"
     >
-      {language === 'ru' ? '🇺🇦 УКР' : '🇷🇺 РУС'}
+      {language === 'ru' ? 'УКР' : 'РУС'}
     </Button>
   );
 };

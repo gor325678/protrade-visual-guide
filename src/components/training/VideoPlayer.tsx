@@ -243,17 +243,19 @@ const VideoPlayer: React.FC<VideoPlayerProps> = ({ video, isOpen, onClose, autoP
             }`}
           style={{ pointerEvents: showControls ? 'auto' : 'none' }}
         >
-          {/* Center Play/Pause Button (only visible when paused or hovering) */}
-          <div className={`absolute inset-0 flex items-center justify-center pointer-events-none ${isPlaying && !showControls ? 'hidden' : 'flex'}`}>
-            <Button
-              variant="ghost"
-              size="lg"
-              onClick={togglePlayPause}
-              className="bg-white/10 hover:bg-white/20 backdrop-blur-sm text-white rounded-full p-6 w-20 h-20 pointer-events-auto transition-transform hover:scale-110"
-            >
-              {isPlaying ? <Pause size={40} fill="currentColor" /> : <Play size={40} fill="currentColor" className="ml-1" />}
-            </Button>
-          </div>
+          {/* Center Play Button (only visible when paused) */}
+          {!isPlaying && (
+            <div className="absolute inset-0 flex items-center justify-center">
+              <Button
+                variant="ghost"
+                size="lg"
+                onClick={togglePlayPause}
+                className="bg-white/10 hover:bg-white/20 backdrop-blur-sm text-white rounded-full p-6 w-20 h-20 pointer-events-auto transition-transform hover:scale-110"
+              >
+                <Play size={40} fill="currentColor" className="ml-1" />
+              </Button>
+            </div>
+          )}
 
           {/* Bottom Controls Bar */}
           <div className="p-4 space-y-2">
