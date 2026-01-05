@@ -1,5 +1,6 @@
 
 import React from 'react';
+import { Link } from 'react-router-dom';
 import { useLanguage } from '@/contexts/LanguageContext';
 import StartTrainingButton from '@/components/shared/StartTrainingButton';
 import {
@@ -10,7 +11,7 @@ import {
 } from "@/components/ui/accordion"
 
 const FAQSection = () => {
-    const { t } = useLanguage();
+    const { t, language } = useLanguage();
     const totalQuestions = 30;
 
     return (
@@ -40,7 +41,19 @@ const FAQSection = () => {
                                     {t(`faq.q${i + 1}`)}
                                 </AccordionTrigger>
                                 <AccordionContent className="text-gray-400 text-base md:text-xl leading-relaxed mt-2">
-                                    {t(`faq.a${i + 1}`)}
+                                    {i === 29 ? (
+                                        language === 'uk' ? (
+                                            <span>
+                                                <a href="#quiz" className="text-trading-accent hover:underline">Пройдіть тест на головній</a> або <a href="https://t.me/forexgbpgpy" target="_blank" rel="noopener noreferrer" className="text-trading-accent hover:underline">підпишіться на Telegram</a>.
+                                            </span>
+                                        ) : (
+                                            <span>
+                                                <a href="#quiz" className="text-trading-accent hover:underline">Пройдите тест на главной</a>, посмотрите <Link to="/beginner-training" className="text-trading-accent hover:underline">бесплатные материалы в разделе "Новичкам"</Link> или подпишитесь на наш <a href="https://t.me/forexgbpgpy" target="_blank" rel="noopener noreferrer" className="text-trading-accent hover:underline">Telegram канал</a>.
+                                            </span>
+                                        )
+                                    ) : (
+                                        t(`faq.a${i + 1}`)
+                                    )}
                                 </AccordionContent>
                             </AccordionItem>
                         ))}

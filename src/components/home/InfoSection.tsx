@@ -1,10 +1,13 @@
-import React from 'react';
+
+import React, { useState } from 'react';
 import { useLanguage } from '@/contexts/LanguageContext';
 import { Separator } from "@/components/ui/separator";
 import StartTrainingButton from '@/components/shared/StartTrainingButton';
+import PreRegistrationModal from '@/components/layout/PreRegistrationModal';
 
 const InfoSection = () => {
-    const { t } = useLanguage();
+    const { t, language } = useLanguage();
+    const [isModalOpen, setIsModalOpen] = useState(false);
 
     return (
         <section className="py-20 bg-[#0A0A0A] text-white overflow-hidden relative">
@@ -86,11 +89,22 @@ const InfoSection = () => {
                     <h2 className="text-3xl md:text-5xl font-bold mb-8 text-white">
                         {t('info.title4')}
                     </h2>
+
                     <p className="text-xl md:text-2xl text-gray-400 leading-relaxed max-w-4xl mx-auto mb-10">
-                        {t('info.text4')}
+                        {language === 'uk' ? (
+                            <>
+                                Трейдинг — це ваш шлях до фінансової незалежності. Pro Trader Systems дає не просто знання, а готовий алгоритм дій. Якщо ви початківець — почніть із <button onClick={() => setIsModalOpen(true)} className="text-trading-accent hover:underline focus:outline-none bg-transparent border-none p-0 inline font-medium">безкоштовної консультації</button>. Якщо вже маєте досвід — обирайте інтенсив, щоб масштабувати свій прибуток.
+                            </>
+                        ) : (
+                            <>
+                                Трейдинг — это ваш путь к финансовой независимости. Pro Trader Systems дает не просто знания, а готовый алгоритм действий. Если вы новичок — начните с <button onClick={() => setIsModalOpen(true)} className="text-trading-accent hover:underline focus:outline-none bg-transparent border-none p-0 inline font-medium">бесплатной консультации</button>. Если уже имеете опыт — выбирайте интенсив, чтобы масштабировать свою прибыль.
+                            </>
+                        )}
                     </p>
                     <StartTrainingButton />
                 </div>
+
+                <PreRegistrationModal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)} />
 
             </div>
         </section>

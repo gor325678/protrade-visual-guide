@@ -90,7 +90,7 @@ const QuizSection = () => {
     }
 
     return (
-        <section className="py-20 bg-gradient-to-b from-trading-dark to-trading-card/30 relative overflow-hidden">
+        <section id="quiz" className="py-20 bg-gradient-to-b from-trading-dark to-trading-card/30 relative overflow-hidden">
             {/* Background decoration */}
             <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-trading-accent/5 rounded-full blur-[120px] -z-10" />
 
