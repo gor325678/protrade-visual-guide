@@ -48,7 +48,7 @@ const FAQSection = () => {
                                             </span>
                                         ) : (
                                             <span>
-                                                <a href="#quiz" className="text-trading-accent hover:underline">Пройдите тест на главной</a>, посмотрите <Link to="/beginner-training" className="text-trading-accent hover:underline">бесплатные материалы в разделе "Новичкам"</Link> или подпишитесь на наш <a href="https://t.me/forexgbpgpy" target="_blank" rel="noopener noreferrer" className="text-trading-accent hover:underline">Telegram канал</a>.
+                                                <a href="#quiz" className="text-trading-accent hover:underline">Пройдите тест на главной</a>, посмотрите <Link to="/beginner-training" className="text-trading-accent hover:underline">бесплатные материалы для начинающих</Link> или подпишитесь на наш <a href="https://t.me/forexgbpgpy" target="_blank" rel="noopener noreferrer" className="text-trading-accent hover:underline">телеграм-канал</a>.
                                             </span>
                                         )
                                     ) : (
