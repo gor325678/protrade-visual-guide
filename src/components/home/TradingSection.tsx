@@ -3,6 +3,7 @@ import React from 'react';
 import { Card, CardContent } from '@/components/ui/card';
 import { TrendingUp, Target, Brain, Shield } from 'lucide-react';
 import TradingReport from './TradingReport';
+import StartTrainingButton from '@/components/shared/StartTrainingButton';
 
 import { useLanguage } from '@/contexts/LanguageContext';
 
@@ -41,6 +42,10 @@ const TradingSection = () => {
 
         {/* Trading Report */}
         <TradingReport />
+
+        <div className="mt-12 text-center">
+          <StartTrainingButton />
+        </div>
       </div>
     </div>
   );

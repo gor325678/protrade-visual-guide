@@ -5,6 +5,7 @@ import ChartLine from '@/components/icons/ChartLine';
 import LanguageSwitcher from '@/components/ui/LanguageSwitcher';
 import { useLanguage } from '@/contexts/LanguageContext';
 import { Button } from '@/components/ui/button';
+import StartTrainingButton from '@/components/shared/StartTrainingButton';
 import PreRegistrationModal from './PreRegistrationModal';
 import { supabase } from '@/lib/supabaseClient';
 import { useToast } from '@/components/ui/use-toast';
@@ -105,6 +106,7 @@ const Header = () => {
               </>
             ) : (
               <>
+                <StartTrainingButton size="sm" className="hidden md:flex px-6 py-2 text-sm" />
                 <Button
                   variant="outline"
                   size="sm"
@@ -148,8 +150,8 @@ const Header = () => {
         {/* Mobile Menu */}
         <div
           className={`md:hidden absolute left-0 right-0 top-full bg-trading-card border-b border-gray-800 transition-all duration-300 ease-in-out ${isMobileMenuOpen
-              ? 'opacity-100 translate-y-0 pointer-events-auto'
-              : 'opacity-0 -translate-y-4 pointer-events-none'
+            ? 'opacity-100 translate-y-0 pointer-events-auto'
+            : 'opacity-0 -translate-y-4 pointer-events-none'
             }`}
         >
           <nav className="flex flex-col p-4 space-y-2">
@@ -158,8 +160,8 @@ const Header = () => {
                 key={item.path}
                 to={item.path}
                 className={`px-4 py-3 rounded-lg text-sm font-medium transition-colors ${isActive(item.path)
-                    ? 'bg-blue-600/20 text-blue-400'
-                    : 'text-gray-300 hover:bg-gray-800'
+                  ? 'bg-blue-600/20 text-blue-400'
+                  : 'text-gray-300 hover:bg-gray-800'
                   }`}
               >
                 {t(item.labelKey)}
@@ -186,6 +188,7 @@ const Header = () => {
                 </>
               ) : (
                 <>
+                  <StartTrainingButton className="w-full mb-2" size="sm" />
                   <button
                     onClick={() => {
                       setIsModalOpen(true);

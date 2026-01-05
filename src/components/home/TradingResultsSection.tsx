@@ -1,5 +1,6 @@
 import React from 'react';
 import { TrendingUp, Target, Shield, Clock, CheckCircle } from 'lucide-react';
+import StartTrainingButton from '@/components/shared/StartTrainingButton';
 import { useLanguage } from '@/contexts/LanguageContext';
 
 const TradingResultsSection = () => {
@@ -82,6 +83,10 @@ const TradingResultsSection = () => {
                                 <span className="text-gray-300">{feature}</span>
                             </div>
                         ))}
+                    </div>
+
+                    <div className="mt-12 text-center">
+                        <StartTrainingButton />
                     </div>
                 </div>
             </div>

@@ -1,6 +1,7 @@
 
 import React from 'react';
 import { useLanguage } from '@/contexts/LanguageContext';
+import StartTrainingButton from '@/components/shared/StartTrainingButton';
 import {
     Accordion,
     AccordionContent,
@@ -44,6 +45,10 @@ const FAQSection = () => {
                             </AccordionItem>
                         ))}
                     </Accordion>
+
+                    <div className="mt-12 text-center">
+                        <StartTrainingButton />
+                    </div>
                 </div>
             </div>
         </section>

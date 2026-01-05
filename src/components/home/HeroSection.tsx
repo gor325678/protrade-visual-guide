@@ -1,6 +1,7 @@
 import React from 'react';
 import { ChartBar, TrendingUp, LineChart } from 'lucide-react';
 import { Button } from '@/components/ui/button';
+import StartTrainingButton from '@/components/shared/StartTrainingButton';
 import { useNavigate } from 'react-router-dom';
 import { useLanguage } from '@/contexts/LanguageContext';
 
@@ -52,13 +53,7 @@ const HeroSection = () => {
         </p>
 
         <div className="flex flex-col sm:flex-row justify-center space-y-4 sm:space-y-0 sm:space-x-4 mb-12">
-          <Button
-            onClick={handleStartLearning}
-            size="lg"
-            className="bg-lime-500 hover:bg-lime-400 text-black font-black text-lg border-none px-10 py-6 shadow-[0_0_20px_rgba(132,204,22,0.6)] transition-all duration-300 hover:scale-105 hover:shadow-[0_0_30px_rgba(132,204,22,0.8)]"
-          >
-            {t('hero.start')}
-          </Button>
+          <StartTrainingButton />
 
           <Button
             onClick={() => navigate('/about')}

@@ -88,10 +88,11 @@ const ProblemSolutionSection = () => {
             <div
                 className="absolute inset-0 z-0"
                 style={{
-                    backgroundImage: 'url(/images/trading-background.png)',
+                    backgroundImage: 'url(/vintage_trading_bg.png)',
                     backgroundSize: 'cover',
                     backgroundPosition: 'center',
-                    backgroundRepeat: 'no-repeat'
+                    backgroundRepeat: 'no-repeat',
+                    backgroundAttachment: 'fixed'
                 }}
             />
             <div className="sticky top-0 h-screen overflow-hidden flex flex-col justify-center relative z-10">

@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { ChevronLeft, ChevronRight, Star, Quote } from 'lucide-react';
 import { useLanguage } from '@/contexts/LanguageContext';
 import { Button } from '@/components/ui/button';
+import StartTrainingButton from '@/components/shared/StartTrainingButton';
 
 interface Testimonial {
     id: number;
@@ -100,8 +101,8 @@ const TestimonialsSection: React.FC = () => {
                                 <Star
                                     key={i}
                                     className={`h-5 w-5 ${i < currentTestimonial.rating
-                                            ? 'text-yellow-400 fill-yellow-400'
-                                            : 'text-gray-600'
+                                        ? 'text-yellow-400 fill-yellow-400'
+                                        : 'text-gray-600'
                                         }`}
                                 />
                             ))}
@@ -131,8 +132,8 @@ const TestimonialsSection: React.FC = () => {
                                     key={index}
                                     onClick={() => setCurrentIndex(index)}
                                     className={`w-2 h-2 rounded-full transition-all ${index === currentIndex
-                                            ? 'bg-blue-500 w-6'
-                                            : 'bg-gray-600 hover:bg-gray-500'
+                                        ? 'bg-blue-500 w-6'
+                                        : 'bg-gray-600 hover:bg-gray-500'
                                         }`}
                                 />
                             ))}
@@ -146,6 +147,10 @@ const TestimonialsSection: React.FC = () => {
                         >
                             <ChevronRight className="h-5 w-5" />
                         </Button>
+                    </div>
+
+                    <div className="mt-12 text-center">
+                        <StartTrainingButton />
                     </div>
                 </div>
             </div>

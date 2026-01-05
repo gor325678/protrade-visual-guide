@@ -1,6 +1,7 @@
 import React from 'react';
 import { useLanguage } from '@/contexts/LanguageContext';
 import { Separator } from "@/components/ui/separator";
+import StartTrainingButton from '@/components/shared/StartTrainingButton';
 
 const InfoSection = () => {
     const { t } = useLanguage();
@@ -85,9 +86,10 @@ const InfoSection = () => {
                     <h2 className="text-3xl md:text-5xl font-bold mb-8 text-white">
                         {t('info.title4')}
                     </h2>
-                    <p className="text-xl md:text-2xl text-gray-400 leading-relaxed">
+                    <p className="text-xl md:text-2xl text-gray-400 leading-relaxed max-w-4xl mx-auto mb-10">
                         {t('info.text4')}
                     </p>
+                    <StartTrainingButton />
                 </div>
 
             </div>

@@ -4,6 +4,7 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { CheckCircle, BookOpen } from 'lucide-react';
 import { getAllModules } from '@/services/courseService';
 import { useLanguage } from '@/contexts/LanguageContext';
+import StartTrainingButton from '@/components/shared/StartTrainingButton';
 
 const CourseOverview = () => {
   const { t } = useLanguage();
@@ -18,7 +19,7 @@ const CourseOverview = () => {
             {t('home.course-description')}
           </p>
         </div>
-        
+
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {modules.map((module, index) => (
             <Card key={module.id} className="bg-trading-card border-gray-800 shadow-lg hover:shadow-blue-900/10 transition-shadow animate-fade-in" style={{ animationDelay: `${index * 100}ms` }}>
@@ -40,9 +41,14 @@ const CourseOverview = () => {
               </CardContent>
             </Card>
           ))}
+
+        </div>
+
+        <div className="mt-12 text-center">
+          <StartTrainingButton />
         </div>
       </div>
-    </div>
+    </div >
   );
 };
 
