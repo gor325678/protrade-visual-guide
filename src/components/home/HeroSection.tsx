@@ -20,14 +20,18 @@ const HeroSection = () => {
 
       {/* Hero image */}
       {/* Hero image */}
-      <div className="absolute inset-0 w-full h-full opacity-60 z-0">
-        <img
-          src="/hero-mansion.jpg"
-          alt="Luxury Trading Lifestyle"
-          className="w-full h-full object-cover object-center"
-        />
-        <div className="absolute inset-0 bg-gradient-to-t from-trading-dark via-trading-dark/80 to-transparent"></div>
-      </div>
+      {/* Hero image with fixed background styling */}
+      <div
+        className="absolute inset-0 w-full h-full z-0 opacity-60"
+        style={{
+          backgroundImage: 'url(/hero-mansion.jpg)',
+          backgroundSize: 'cover',
+          backgroundPosition: 'center',
+          backgroundRepeat: 'no-repeat',
+          backgroundAttachment: 'fixed'
+        }}
+      />
+      <div className="absolute inset-0 bg-gradient-to-t from-trading-dark via-trading-dark/80 to-transparent z-0"></div>
 
       {/* Animated grid lines */}
       <div className="absolute inset-0 bg-[linear-gradient(rgba(86,70,252,0.05)_1px,transparent_1px),linear-gradient(90deg,rgba(86,70,252,0.05)_1px,transparent_1px)] bg-[size:24px_24px] [mask-image:radial-gradient(ellipse_50%_50%_at_50%_50%,#000_70%,transparent_100%)]" />
@@ -68,7 +72,8 @@ const HeroSection = () => {
 
 
       </div>
-      );
+    </div>
+  );
 };
 
-      export default HeroSection;
+export default HeroSection;
