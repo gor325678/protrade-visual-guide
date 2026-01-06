@@ -20,7 +20,7 @@ const HeroSection = () => {
 
       {/* Hero image */}
       {/* Hero image */}
-      <div className="absolute inset-0 w-full h-full opacity-30 z-0">
+      <div className="absolute inset-0 w-full h-full opacity-60 z-0">
         <img
           src="/hero-mansion.jpg"
           alt="Luxury Trading Lifestyle"
