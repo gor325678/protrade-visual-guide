@@ -4,7 +4,7 @@ import { supabase } from '@/lib/supabaseClient';
 import Header from '@/components/layout/Header';
 import Footer from '@/components/layout/Footer';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { User, CreditCard, Book, Settings, LogOut, ShieldCheck, Lock, BookOpen } from 'lucide-react';
+import { User, CreditCard, Book, Settings, LogOut, ShieldCheck, Lock, BookOpen, GraduationCap } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
@@ -46,6 +46,7 @@ const Account = () => {
     phone: ''
   });
   const [isEditing, setIsEditing] = useState(false);
+
   const [isPaymentOpen, setIsPaymentOpen] = useState(false);
   const [selectedCourse, setSelectedCourse] = useState<CourseWithAccess | null>(null);
 
@@ -84,7 +85,7 @@ const Account = () => {
       const { data: coursesData, error: coursesError } = await supabase
         .from('courses')
         .select('*')
-        .eq('is_published', true);
+        .order('position', { ascending: true });
 
       if (coursesError) throw coursesError;
 
@@ -243,23 +244,23 @@ const Account = () => {
             <TabsList className="grid grid-cols-2 md:grid-cols-4 w-full bg-trading-card border-gray-800">
               <TabsTrigger value="courses" className="flex items-center gap-2">
                 <Book className="h-4 w-4" />
-                <span className="hidden sm:inline">Мої курси</span>
-                <span className="sm:hidden">Курси</span>
+                <span className="hidden sm:inline">Мои курсы</span>
+                <span className="sm:hidden">Курсы</span>
               </TabsTrigger>
               <TabsTrigger value="profile" className="flex items-center gap-2">
                 <User className="h-4 w-4" />
-                <span className="hidden sm:inline">Профіль</span>
-                <span className="sm:hidden">Профіль</span>
+                <span className="hidden sm:inline">Профиль</span>
+                <span className="sm:hidden">Профиль</span>
               </TabsTrigger>
               <TabsTrigger value="orders" className="flex items-center gap-2">
                 <CreditCard className="h-4 w-4" />
-                <span className="hidden sm:inline">Замовлення</span>
-                <span className="sm:hidden">Замовл.</span>
+                <span className="hidden sm:inline">Заказы</span>
+                <span className="sm:hidden">Заказы</span>
               </TabsTrigger>
               <TabsTrigger value="settings" className="flex items-center gap-2">
                 <Settings className="h-4 w-4" />
-                <span className="hidden sm:inline">Налаштування</span>
-                <span className="sm:hidden">Налашт.</span>
+                <span className="hidden sm:inline">Настройки</span>
+                <span className="sm:hidden">Настр.</span>
               </TabsTrigger>
             </TabsList>
 
@@ -284,7 +285,7 @@ const Account = () => {
                     </CardContent>
                   </Card>
                 ) : (
-                  <div className="grid gap-6">
+                  <div className="grid gap-6 md:grid-cols-2">
                     {courses.map((course) => (
                       <Card key={course.id} className={`border-2 transition-all ${course.hasAccess
                         ? 'bg-green-900/10 border-green-800/50 hover:border-green-700'
@@ -304,7 +305,7 @@ const Account = () => {
                                   <p className="text-gray-400 text-sm mb-2">{course.description}</p>
                                   {course.hasAccess && course.enrollment && (
                                     <p className="text-xs text-green-400">
-                                      Доступ отримано: {new Date(course.enrollment.enrolled_at).toLocaleDateString('uk-UA')}
+                                      Доступ получен: {new Date(course.enrollment.enrolled_at).toLocaleDateString('ru-RU')}
                                     </p>
                                   )}
                                 </div>
@@ -312,11 +313,11 @@ const Account = () => {
 
                               {course.hasAccess ? (
                                 <Badge className="bg-green-600 hover:bg-green-700 mb-3">
-                                  ✓ Доступ активний
+                                  ✓ Доступ активен
                                 </Badge>
                               ) : (
                                 <Badge variant="outline" className="border-gray-700 text-gray-400 mb-3">
-                                  🔒 Немає доступу
+                                  🔒 Нет доступа
                                 </Badge>
                               )}
 
@@ -324,7 +325,7 @@ const Account = () => {
                               {course.hasAccess && course.enrollment?.progress !== undefined && (
                                 <div className="mt-3">
                                   <div className="flex justify-between text-sm mb-2">
-                                    <span className="text-gray-400">Прогрес</span>
+                                    <span className="text-gray-400">Прогресс</span>
                                     <span className="text-gray-300">{course.enrollment.progress}%</span>
                                   </div>
                                   <div className="w-full bg-gray-700 rounded-full h-2">
@@ -342,17 +343,17 @@ const Account = () => {
                                 <>
                                   <Button
                                     className="bg-green-600 hover:bg-green-700 w-full"
-                                    onClick={() => navigate('/course-structure')}
+                                    onClick={() => navigate(`/course/${course.id}`)}
                                   >
                                     <BookOpen className="mr-2 h-4 w-4" />
-                                    Продовжити навчання
+                                    Продолжить обучение
                                   </Button>
                                   <Button
                                     variant="outline"
                                     className="w-full border-gray-700"
-                                    onClick={() => navigate('/beginner-training')}
+                                    onClick={() => navigate(`/course/${course.id}`)}
                                   >
-                                    Матеріали курсу
+                                    Материалы курса
                                   </Button>
                                 </>
                               ) : (
@@ -389,6 +390,8 @@ const Account = () => {
               </div>
             </TabsContent>
 
+
+
             <TabsContent value="profile">
               <ProfileTab
                 userInfo={userInfo}
@@ -411,30 +414,32 @@ const Account = () => {
             </TabsContent>
           </Tabs>
         </div>
-      </main>
+      </main >
 
       <Footer />
 
       {/* Payment Modal */}
-      {user && selectedCourse && (
-        <PaymentModal
-          isOpen={isPaymentOpen}
-          onClose={() => {
-            setIsPaymentOpen(false);
-            setSelectedCourse(null);
-            // Refresh enrollments after payment submission
-            checkUserAndEnrollments();
-          }}
-          courseId={selectedCourse.id}
-          courseTitle={selectedCourse.title}
-          price={selectedCourse.price_usdt}
-          userId={user.id}
-        />
-      )}
+      {
+        user && selectedCourse && (
+          <PaymentModal
+            isOpen={isPaymentOpen}
+            onClose={() => {
+              setIsPaymentOpen(false);
+              setSelectedCourse(null);
+              // Refresh enrollments after payment submission
+              checkUserAndEnrollments();
+            }}
+            courseId={selectedCourse.id}
+            courseTitle={selectedCourse.title}
+            price={selectedCourse.price_usdt}
+            userId={user.id}
+          />
+        )
+      }
 
       {/* Floating Support Button */}
       <SupportButton />
-    </div>
+    </div >
   );
 };
 

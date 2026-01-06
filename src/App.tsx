@@ -18,6 +18,7 @@ import Courses from "./pages/Courses";
 import Checkout from "./pages/Checkout";
 import PaymentSuccess from "./pages/PaymentSuccess";
 import Account from "./pages/Account";
+import CoursePage from "./pages/CoursePage";
 import PublicOffer from "./pages/PublicOffer";
 import PrivacyPolicy from "./pages/PrivacyPolicy";
 import EligibleClients from "./pages/EligibleClients";
@@ -60,6 +61,7 @@ const App = () => {
               <Route path="/checkout" element={<Checkout />} />
               <Route path="/payment-success" element={<PaymentSuccess />} />
               <Route path="/account" element={<Account />} />
+              <Route path="/course/:id" element={<ProtectedRoute><CoursePage /></ProtectedRoute>} />
               <Route path="/login" element={<Login />} />
               <Route path="/admin" element={<ProtectedRoute><Admin /></ProtectedRoute>} />
 
