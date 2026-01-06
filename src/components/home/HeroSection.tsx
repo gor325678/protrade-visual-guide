@@ -21,8 +21,8 @@ const HeroSection = () => {
       {/* Hero image */}
       <div className="absolute right-0 top-0 w-1/2 h-full opacity-20 z-0">
         <img
-          src="/lovable-uploads/a7a07a1f-0f0d-453b-8d07-32767312672d.png"
-          alt="Professional trader"
+          src="/hero-mansion.jpg"
+          alt="Luxury Trading Lifestyle"
           className="w-full h-full object-cover object-left"
         />
         <div className="absolute inset-0 bg-gradient-to-l from-transparent to-trading-dark"></div>
