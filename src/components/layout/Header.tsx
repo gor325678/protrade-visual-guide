@@ -37,19 +37,39 @@ const Header = () => {
     }
   };
 
+  const fetchUserProfile = async (userId: string) => {
+    const { data } = await supabase
+      .from('users')
+      .select('first_name')
+      .eq('id', userId)
+      .single();
+
+    if (data?.first_name) {
+      setFirstName(data.first_name);
+    }
+  };
+
   // Check auth state on mount and listen for changes
   useEffect(() => {
     supabase.auth.getSession().then(({ data: { session } }) => {
       setUser(session?.user ?? null);
-      if (session?.user?.user_metadata?.first_name) {
-        setFirstName(session.user.user_metadata.first_name);
+      if (session?.user) {
+        if (session.user.user_metadata?.first_name) {
+          setFirstName(session.user.user_metadata.first_name);
+        } else {
+          fetchUserProfile(session.user.id);
+        }
       }
     });
 
     const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, session) => {
       setUser(session?.user ?? null);
-      if (session?.user?.user_metadata?.first_name) {
-        setFirstName(session.user.user_metadata.first_name);
+      if (session?.user) {
+        if (session.user.user_metadata?.first_name) {
+          setFirstName(session.user.user_metadata.first_name);
+        } else {
+          fetchUserProfile(session.user.id);
+        }
       } else {
         setFirstName(null);
       }

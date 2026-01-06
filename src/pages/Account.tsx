@@ -197,7 +197,7 @@ const Account = () => {
       <div className="min-h-screen bg-trading-dark flex items-center justify-center text-white">
         <div className="text-center">
           <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-500 mx-auto mb-4"></div>
-          <p className="text-gray-400">Завантаження профілю...</p>
+          <p className="text-gray-400">Загрузка профиля...</p>
         </div>
       </div>
     );
@@ -219,14 +219,15 @@ const Account = () => {
                 </div>
                 <div>
                   <h1 className="text-2xl md:text-3xl font-bold mb-1">
+
                     {userInfo.firstName || userInfo.lastName
                       ? `${userInfo.firstName} ${userInfo.lastName}`.trim()
-                      : 'Студент курсу'}
+                      : 'Студент курса'}
                   </h1>
                   <p className="text-gray-400 text-sm md:text-base">{user?.email}</p>
                   <div className="flex items-center gap-2 mt-2">
                     <ShieldCheck className="h-4 w-4 text-green-500" />
-                    <span className="text-xs text-green-400">Верифікований акаунт</span>
+                    <span className="text-xs text-green-400">Верифицированный аккаунт</span>
                   </div>
                 </div>
               </div>
@@ -235,7 +236,7 @@ const Account = () => {
                 onClick={handleSignOut}
                 className="border-red-800/50 text-red-400 hover:bg-red-900/20 hover:border-red-700"
               >
-                <LogOut className="mr-2 h-4 w-4" /> Вийти
+                <LogOut className="mr-2 h-4 w-4" /> Выйти
               </Button>
             </div>
           </div>
@@ -264,13 +265,13 @@ const Account = () => {
               </TabsTrigger>
             </TabsList>
 
-            {/* Вкладка "Мої курси" */}
+            {/* Вкладка "Мои курси" */}
             <TabsContent value="courses">
               <div className="space-y-6">
                 <div className="flex justify-between items-center">
-                  <h2 className="text-2xl font-bold">Мої курси та доступ</h2>
+                  <h2 className="text-2xl font-bold">Мои курсы и доступ</h2>
                   <Badge variant="outline" className="border-blue-500 text-blue-400">
-                    {courses.filter(c => c.hasAccess).length} активних
+                    {courses.filter(c => c.hasAccess).length} активных
                   </Badge>
                 </div>
 
@@ -278,9 +279,9 @@ const Account = () => {
                   <Card className="bg-trading-card border-gray-800">
                     <CardContent className="p-12 text-center">
                       <BookOpen className="h-16 w-16 text-gray-600 mx-auto mb-4" />
-                      <p className="text-gray-400 mb-4">Курсів не знайдено</p>
+                      <p className="text-gray-400 mb-4">Курсы не найдены</p>
                       <Button onClick={() => navigate('/courses')}>
-                        Переглянути каталог
+                        Просмотреть каталог
                       </Button>
                     </CardContent>
                   </Card>
