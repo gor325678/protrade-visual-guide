@@ -161,6 +161,20 @@ const Header = () => {
                 >
                   {t('nav.pre-registration')}
                 </Button>
+                <a
+                  href="https://form.jotform.com/260054920631045"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="hidden md:flex"
+                >
+                  <Button
+                    variant="outline"
+                    size="sm"
+                    className="bg-purple-900/20 text-purple-400 border-purple-800 hover:bg-purple-900/30"
+                  >
+                    Анкета
+                  </Button>
+                </a>
                 <Link to="/login">
                   <Button
                     variant="outline"
@@ -244,6 +258,19 @@ const Header = () => {
                   >
                     {t('nav.pre-registration')}
                   </button>
+                  <a
+                    href="https://form.jotform.com/260054920631045"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="w-full"
+                  >
+                    <button
+                      className="flex w-full items-center px-4 py-3 rounded-lg text-sm font-medium text-purple-400 hover:bg-purple-900/20"
+                    >
+                      <span className="mr-3">📋</span>
+                      Анкета
+                    </button>
+                  </a>
                   <Link
                     to="/login"
                     className="flex items-center px-4 py-3 rounded-lg text-sm font-medium text-blue-400 hover:bg-blue-900/20"
