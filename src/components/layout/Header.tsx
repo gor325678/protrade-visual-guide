@@ -37,17 +37,7 @@ const Header = () => {
     }
   };
 
-  const fetchUserProfile = async (userId: string) => {
-    const { data } = await supabase
-      .from('users')
-      .select('first_name')
-      .eq('id', userId)
-      .single();
 
-    if (data?.first_name) {
-      setFirstName(data.first_name);
-    }
-  };
 
   // Check auth state on mount and listen for changes
   useEffect(() => {
@@ -153,14 +143,6 @@ const Header = () => {
             ) : (
               <>
                 <StartTrainingButton size="sm" className="hidden md:flex px-6 py-2 text-sm" />
-                <Button
-                  variant="outline"
-                  size="sm"
-                  className="hidden md:flex bg-trading-accent/10 text-trading-accent border-trading-accent/20 hover:bg-trading-accent/20"
-                  onClick={() => setIsModalOpen(true)}
-                >
-                  {t('nav.pre-registration')}
-                </Button>
                 <a
                   href="https://form.jotform.com/260054920631045"
                   target="_blank"
@@ -170,9 +152,9 @@ const Header = () => {
                   <Button
                     variant="outline"
                     size="sm"
-                    className="bg-purple-900/20 text-purple-400 border-purple-800 hover:bg-purple-900/30"
+                    className="bg-trading-accent/10 text-trading-accent border-trading-accent/20 hover:bg-trading-accent/20"
                   >
-                    Анкета
+                    {t('nav.pre-registration')}
                   </Button>
                 </a>
                 <Link to="/login">
@@ -249,15 +231,6 @@ const Header = () => {
               ) : (
                 <>
                   <StartTrainingButton className="w-full mb-2" size="sm" />
-                  <button
-                    onClick={() => {
-                      setIsModalOpen(true);
-                      setIsMobileMenuOpen(false);
-                    }}
-                    className="flex w-full items-center px-4 py-3 rounded-lg text-sm font-medium text-trading-accent hover:bg-trading-accent/10"
-                  >
-                    {t('nav.pre-registration')}
-                  </button>
                   <a
                     href="https://form.jotform.com/260054920631045"
                     target="_blank"
@@ -265,10 +238,10 @@ const Header = () => {
                     className="w-full"
                   >
                     <button
-                      className="flex w-full items-center px-4 py-3 rounded-lg text-sm font-medium text-purple-400 hover:bg-purple-900/20"
+                      className="flex w-full items-center px-4 py-3 rounded-lg text-sm font-medium text-trading-accent hover:bg-trading-accent/10"
                     >
                       <span className="mr-3">📋</span>
-                      Анкета
+                      {t('nav.pre-registration')}
                     </button>
                   </a>
                   <Link
