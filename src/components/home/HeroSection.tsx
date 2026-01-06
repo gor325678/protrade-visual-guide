@@ -19,13 +19,14 @@ const HeroSection = () => {
       <div className="absolute inset-0 bg-gradient-to-br from-trading-dark via-trading-dark to-purple-900/20 z-0" />
 
       {/* Hero image */}
-      <div className="absolute right-0 top-0 w-1/2 h-full opacity-20 z-0">
+      {/* Hero image */}
+      <div className="absolute inset-0 w-full h-full opacity-30 z-0">
         <img
           src="/hero-mansion.jpg"
           alt="Luxury Trading Lifestyle"
-          className="w-full h-full object-cover object-left"
+          className="w-full h-full object-cover object-center"
         />
-        <div className="absolute inset-0 bg-gradient-to-l from-transparent to-trading-dark"></div>
+        <div className="absolute inset-0 bg-gradient-to-t from-trading-dark via-trading-dark/80 to-transparent"></div>
       </div>
 
       {/* Animated grid lines */}
