@@ -66,40 +66,9 @@ const HeroSection = () => {
           </Button>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-4xl mx-auto">
-          {[
-            {
-              icon: <ChartBar className="h-6 w-6 text-blue-400" />,
-              title: t('hero.features.strategies.title'),
-              description: t('hero.features.strategies.desc')
-            },
-            {
-              icon: <TrendingUp className="h-6 w-6 text-green-400" />,
-              title: t('hero.features.indicators.title'),
-              description: t('hero.features.indicators.desc')
-            },
-            {
-              icon: <LineChart className="h-6 w-6 text-purple-400" />,
-              title: t('hero.features.risk.title'),
-              description: t('hero.features.risk.desc')
-            }
-          ].map((feature, index) => (
-            <div
-              key={index}
-              className="flex flex-col items-center p-6 bg-white/5 backdrop-blur-md border border-white/10 rounded-2xl animate-fade-in group hover:border-cyan-400/50 hover:shadow-[0_0_30px_rgba(34,211,238,0.15)] transition-all duration-300 hover:-translate-y-2"
-              style={{ animationDelay: `${index * 150}ms` }}
-            >
-              <div className="p-4 mb-4 rounded-xl bg-gradient-to-br from-white/10 to-transparent border border-white/5 group-hover:scale-110 group-hover:rotate-3 transition-transform duration-300">
-                {feature.icon}
-              </div>
-              <h3 className="text-xl font-bold mb-3 text-gray-100 group-hover:text-cyan-400 transition-colors">{feature.title}</h3>
-              <p className="text-sm text-gray-400 text-center leading-relaxed font-light">{feature.description}</p>
-            </div>
-          ))}
-        </div>
+
       </div>
-    </div>
-  );
+      );
 };
 
-export default HeroSection;
+      export default HeroSection;
