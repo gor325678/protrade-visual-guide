@@ -18,15 +18,41 @@ const Header = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [user, setUser] = useState<any>(null);
+  const [firstName, setFirstName] = useState<string | null>(null);
+
+  const fetchUserProfile = async (userId: string) => {
+    console.log('Fetching profile for:', userId);
+    const { data, error } = await supabase
+      .from('users')
+      .select('first_name')
+      .eq('id', userId)
+      .single();
+
+    if (error) {
+      console.error('Error fetching profile:', error);
+    }
+
+    if (data?.first_name) {
+      setFirstName(data.first_name);
+    }
+  };
 
   // Check auth state on mount and listen for changes
   useEffect(() => {
     supabase.auth.getSession().then(({ data: { session } }) => {
       setUser(session?.user ?? null);
+      if (session?.user?.user_metadata?.first_name) {
+        setFirstName(session.user.user_metadata.first_name);
+      }
     });
 
     const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, session) => {
       setUser(session?.user ?? null);
+      if (session?.user?.user_metadata?.first_name) {
+        setFirstName(session.user.user_metadata.first_name);
+      } else {
+        setFirstName(null);
+      }
     });
 
     return () => subscription.unsubscribe();
@@ -91,7 +117,7 @@ const Header = () => {
                     className="hidden md:flex bg-gray-800 border-gray-700 hover:bg-gray-700"
                   >
                     <User className="mr-2 h-4 w-4" />
-                    {t('nav.account')}
+                    {firstName ? `Здравствуйте, ${firstName}` : t('nav.account')}
                   </Button>
                 </Link>
                 <Button
@@ -176,7 +202,7 @@ const Header = () => {
                     className="flex items-center px-4 py-3 rounded-lg text-sm font-medium text-gray-300 hover:bg-gray-800"
                   >
                     <User className="mr-3 h-4 w-4" />
-                    {t('nav.account')}
+                    {firstName ? `Здравствуйте, ${firstName}` : t('nav.account')}
                   </Link>
                   <button
                     onClick={handleLogout}
