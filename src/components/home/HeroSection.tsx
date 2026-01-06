@@ -22,7 +22,7 @@ const HeroSection = () => {
       {/* Hero image */}
       {/* Hero image with fixed background styling */}
       <div
-        className="absolute inset-0 w-full h-full z-0 opacity-60"
+        className="absolute inset-0 w-full h-full z-0"
         style={{
           backgroundImage: 'url(/hero-mansion.jpg)',
           backgroundSize: 'cover',
@@ -31,7 +31,6 @@ const HeroSection = () => {
           backgroundAttachment: 'fixed'
         }}
       />
-      <div className="absolute inset-0 bg-gradient-to-t from-trading-dark via-trading-dark/80 to-transparent z-0"></div>
 
       {/* Animated grid lines */}
       <div className="absolute inset-0 bg-[linear-gradient(rgba(86,70,252,0.05)_1px,transparent_1px),linear-gradient(90deg,rgba(86,70,252,0.05)_1px,transparent_1px)] bg-[size:24px_24px] [mask-image:radial-gradient(ellipse_50%_50%_at_50%_50%,#000_70%,transparent_100%)]" />
@@ -49,11 +48,11 @@ const HeroSection = () => {
           </span>
         </div>
 
-        <h1 className="text-6xl md:text-8xl lg:text-9xl font-black mb-10 tracking-tight bg-clip-text text-transparent bg-gradient-to-r from-white via-white to-cyan-400 text-3d-cyan pb-4 drop-shadow-[0_0_25px_rgba(34,211,238,0.3)]">
+        <h1 className="text-6xl md:text-8xl lg:text-9xl font-black mb-10 tracking-tight bg-clip-text text-transparent bg-gradient-to-r from-white via-white to-cyan-400 text-3d-cyan pb-4 drop-shadow-[0_4px_4px_rgba(0,0,0,0.8)] filter">
           {t('hero.title')}
         </h1>
 
-        <p className="text-xl md:text-2xl mb-8 text-gray-300 max-w-3xl mx-auto">
+        <p className="text-xl md:text-2xl mb-8 text-white font-medium max-w-3xl mx-auto drop-shadow-[0_2px_4px_rgba(0,0,0,0.9)]">
           {t('hero.subtitle')}
         </p>
 
