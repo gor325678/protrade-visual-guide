@@ -42,8 +42,8 @@ const HeroSection = () => {
           <div className="absolute top-1/4 left-0 w-full h-1/2 bg-purple-500/10 blur-[60px] animate-fog-flow animation-delay-2000 rounded-full mix-blend-screen" />
         </div>
 
-        <div className="inline-block mb-4 px-4 py-1.5 rounded-full bg-white/5 border border-white/10 backdrop-blur-sm animate-fade-in">
-          <span className="text-trading-accent font-medium text-sm md:text-base">
+        <div className="inline-block mb-4 px-4 py-1.5 rounded-full bg-white/5 border border-white/10 backdrop-blur-sm animate-fade-in shadow-[0_2px_4px_rgba(0,0,0,0.4)]">
+          <span className="text-white font-medium text-sm md:text-base drop-shadow-[0_2px_2px_rgba(0,0,0,0.8)]">
             {t('hero.badge')}
           </span>
         </div>
