@@ -8,13 +8,12 @@ const PhilosophySection = () => {
     return (
         <section className="w-full bg-trading-dark pb-20 relative overflow-hidden">
             {/* 1. Full Width Image Banner */}
-            <div className="w-full h-[65vh] md:h-[90vh] relative">
-                <img
-                    src="/images/philosophy_vintage.jpg"
-                    alt="Trading Philosophy - Compass and Discipline"
-                    className="w-full h-full object-cover"
-                />
-            </div>
+            <div
+                className="w-full h-[80vh] md:h-[100vh] relative bg-black bg-fixed bg-center bg-cover bg-no-repeat"
+                style={{ backgroundImage: 'url(/images/philosophy_vintage.jpg)' }}
+                aria-label="Trading Philosophy - Compass and Discipline"
+                role="img"
+            />
 
             {/* 2. Content Container - Centered */}
             <div className="max-w-5xl mx-auto px-4 relative z-20 -mt-20 md:-mt-32">
