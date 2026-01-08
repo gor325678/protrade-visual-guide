@@ -66,6 +66,13 @@ const Footer = () => {
         {/* Bottom Row: Legal Links */}
         <div className="flex flex-col md:flex-row justify-center items-center gap-4 md:gap-8 text-sm text-zinc-500 pt-8 border-t border-zinc-900/50">
           <Link
+            to="/about"
+            className="hover:text-zinc-300 transition-colors"
+          >
+            {t('footer.about')}
+          </Link>
+          <span className="hidden md:inline text-zinc-800">•</span>
+          <Link
             to="/public-offer"
             className="hover:text-zinc-300 transition-colors"
           >
@@ -86,6 +93,7 @@ const Footer = () => {
             {t('footer.admissible')}
           </Link>
         </div>
+
 
       </div>
     </footer>
