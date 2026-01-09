@@ -2,10 +2,10 @@ import React, { useState } from 'react';
 import { supabase } from '@/lib/supabaseClient';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
-import { Checkbox } from '@/components/ui/checkbox';
+
 import { Textarea } from '@/components/ui/textarea';
 import { useToast } from '@/hooks/use-toast';
-import { Loader2, CheckCircle, Send, Sparkles } from 'lucide-react';
+import { Loader2, CheckCircle, Send, Sparkles, Check } from 'lucide-react';
 import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
 import { Label } from '@/components/ui/label';
 
@@ -348,13 +348,10 @@ const PreRegistrationForm: React.FC<PreRegistrationFormProps> = ({ onSuccess }) 
                                 onClick={() => toggleProblem(problem)}
                                 className={`flex items-center space-x-2 px-3 py-2 rounded-xl border transition-all cursor-pointer ${formData.problems.includes(problem) ? 'border-indigo-400 bg-indigo-500/10' : 'border-white/10 hover:border-white/20'}`}
                             >
-                                <Checkbox
-                                    id={problem}
-                                    checked={formData.problems.includes(problem)}
-                                    // Removed onCheckedChange to prevent double triggering with div onClick
-                                    className="border-white/30 data-[state=checked]:bg-indigo-500 data-[state=checked]:border-indigo-500 pointer-events-none"
-                                />
-                                <Label className="text-gray-200 cursor-pointer text-sm flex-1 pointer-events-none">{problem}</Label>
+                                <div className={`w-4 h-4 rounded-sm border flex items-center justify-center transition-colors ${formData.problems.includes(problem) ? 'bg-indigo-500 border-indigo-500 text-white' : 'border-white/30'}`}>
+                                    {formData.problems.includes(problem) && <Check className="w-3 h-3" />}
+                                </div>
+                                <span className="text-gray-200 cursor-pointer text-sm flex-1 select-none">{problem}</span>
                             </div>
                         ))}
                     </div>
