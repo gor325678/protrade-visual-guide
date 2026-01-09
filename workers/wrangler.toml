@@ -1,0 +1,9 @@
+name = "protrade-calculators"
+main = "src/index.ts"
+compatibility_date = "2024-01-01"
+
+[vars]
+ENVIRONMENT = "production"
+
+# Routes - будет настроено после деплоя
+# routes = [{ pattern = "api.yourdomain.com/*", zone_name = "yourdomain.com" }]

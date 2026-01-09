@@ -88,6 +88,7 @@ const Header = () => {
     { path: '/', labelKey: 'nav.overview' },
     { path: '/courses', labelKey: 'nav.courses' },
     { path: '/beginner-training', labelKey: 'nav.beginner-training' },
+    { path: '/calculators', labelKey: 'nav.calculators' },
     { path: '/psychology', labelKey: 'nav.psychology' }
   ];
 

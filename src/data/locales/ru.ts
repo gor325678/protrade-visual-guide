@@ -6,6 +6,7 @@ export const ru = {
     'nav.psychology': 'Психология',
     'nav.risk-management': 'Риск-менеджмент',
     'nav.materials': 'Материалы',
+    'nav.calculators': 'Инструменты PRO',
     'nav.course-structure': 'Структура курса',
     'nav.protected-view': 'Protected View',
     'nav.pre-registration': 'Предварительная запись',
