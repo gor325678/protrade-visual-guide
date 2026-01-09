@@ -351,10 +351,10 @@ const PreRegistrationForm: React.FC<PreRegistrationFormProps> = ({ onSuccess }) 
                                 <Checkbox
                                     id={problem}
                                     checked={formData.problems.includes(problem)}
-                                    onCheckedChange={() => toggleProblem(problem)}
-                                    className="border-white/30 data-[state=checked]:bg-indigo-500 data-[state=checked]:border-indigo-500"
+                                    // Removed onCheckedChange to prevent double triggering with div onClick
+                                    className="border-white/30 data-[state=checked]:bg-indigo-500 data-[state=checked]:border-indigo-500 pointer-events-none"
                                 />
-                                <Label htmlFor={problem} className="text-gray-200 cursor-pointer text-sm flex-1">{problem}</Label>
+                                <Label className="text-gray-200 cursor-pointer text-sm flex-1 pointer-events-none">{problem}</Label>
                             </div>
                         ))}
                     </div>
