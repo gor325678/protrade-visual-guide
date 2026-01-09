@@ -8,6 +8,12 @@ import { useToast } from '@/hooks/use-toast';
 import { Loader2, CheckCircle, Send, Sparkles } from 'lucide-react';
 import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
 import { Label } from '@/components/ui/label';
+import emailjs from '@emailjs/browser';
+
+// EmailJS Configuration
+const EMAILJS_SERVICE_ID = 'service_3z77klw';
+const EMAILJS_TEMPLATE_ID = 'template_6logue5';
+const EMAILJS_PUBLIC_KEY = 'EEdjk1k1IGXqp8wkn';
 
 interface PreRegistrationFormProps {
     onSuccess?: () => void;
@@ -79,27 +85,56 @@ const PreRegistrationForm: React.FC<PreRegistrationFormProps> = ({ onSuccess }) 
         setIsSubmitting(true);
 
         try {
-            const { error } = await supabase
-                .from('pre_registrations')
-                .insert([{
-                    first_name: formData.firstName.trim(),
-                    last_name: formData.lastName.trim(),
-                    email: formData.email.trim().toLowerCase(),
-                    messenger: formData.messenger,
-                    phone: formData.phone.trim(),
-                    telegram: formData.telegram.trim() || null,
-                    instagram: formData.instagram.trim() || null,
-                    income: formData.income,
-                    problems: formData.problems,
-                    expected_result: formData.expectedResult.trim(),
-                    key_factor: formData.keyFactor.trim(),
-                    main_request: formData.mainRequest.trim(),
-                    why_choose_you: formData.whyChooseYou.trim(),
-                    ready_to_invest: formData.readyToInvest,
-                    created_at: new Date().toISOString()
-                }]);
+            // Prepare email template parameters
+            const emailParams = {
+                from_name: `${formData.firstName} ${formData.lastName}`.trim(),
+                from_email: formData.email,
+                phone: formData.phone,
+                messenger: formData.messenger,
+                telegram: formData.telegram || 'Не указан',
+                instagram: formData.instagram || 'Не указан',
+                income: formData.income,
+                problems: formData.problems.join(', '),
+                expected_result: formData.expectedResult,
+                key_factor: formData.keyFactor,
+                main_request: formData.mainRequest,
+                why_choose_you: formData.whyChooseYou,
+                ready_to_invest: formData.readyToInvest === 'ready' ? 'Готов платить сейчас' : 'Нужна консультация',
+                date: new Date().toLocaleString('ru-RU')
+            };
 
-            if (error) throw error;
+            // Send email via EmailJS
+            await emailjs.send(
+                EMAILJS_SERVICE_ID,
+                EMAILJS_TEMPLATE_ID,
+                emailParams,
+                EMAILJS_PUBLIC_KEY
+            );
+
+            // Also save to Supabase (optional - can comment out if not needed)
+            try {
+                await supabase
+                    .from('pre_registrations')
+                    .insert([{
+                        first_name: formData.firstName.trim(),
+                        last_name: formData.lastName.trim(),
+                        email: formData.email.trim().toLowerCase(),
+                        messenger: formData.messenger,
+                        phone: formData.phone.trim(),
+                        telegram: formData.telegram.trim() || null,
+                        instagram: formData.instagram.trim() || null,
+                        income: formData.income,
+                        problems: formData.problems,
+                        expected_result: formData.expectedResult.trim(),
+                        key_factor: formData.keyFactor.trim(),
+                        main_request: formData.mainRequest.trim(),
+                        why_choose_you: formData.whyChooseYou.trim(),
+                        ready_to_invest: formData.readyToInvest,
+                        created_at: new Date().toISOString()
+                    }]);
+            } catch (dbError) {
+                console.log('Supabase save failed (email was sent):', dbError);
+            }
 
             setIsSubmitted(true);
             toast({
