@@ -1,19 +1,30 @@
--- Pre-registrations table for ProTrader Systems
+-- Pre-registrations table for Healer Registration
 -- Run this in Supabase SQL Editor: https://supabase.com/dashboard/project/YOUR_PROJECT/sql
 
 CREATE TABLE IF NOT EXISTS pre_registrations (
     id UUID DEFAULT gen_random_uuid() PRIMARY KEY,
-    name TEXT NOT NULL,
+    first_name TEXT NOT NULL,
+    last_name TEXT,
     email TEXT NOT NULL,
+    messenger TEXT NOT NULL,
     phone TEXT NOT NULL,
     telegram TEXT,
-    created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW(),
-    status TEXT DEFAULT 'pending' CHECK (status IN ('pending', 'contacted', 'converted', 'rejected'))
+    instagram TEXT,
+    income TEXT,
+    problems TEXT[],
+    expected_result TEXT,
+    key_factor TEXT,
+    main_request TEXT,
+    why_choose_you TEXT,
+    ready_to_invest TEXT,
+    status TEXT DEFAULT 'pending' CHECK (status IN ('pending', 'contacted', 'converted', 'rejected')),
+    created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW()
 );
 
--- Create index for faster lookups
+-- Create indexes
 CREATE INDEX IF NOT EXISTS idx_pre_registrations_email ON pre_registrations(email);
 CREATE INDEX IF NOT EXISTS idx_pre_registrations_created_at ON pre_registrations(created_at DESC);
+CREATE INDEX IF NOT EXISTS idx_pre_registrations_status ON pre_registrations(status);
 
 -- Enable Row Level Security (RLS)
 ALTER TABLE pre_registrations ENABLE ROW LEVEL SECURITY;
