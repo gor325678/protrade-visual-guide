@@ -1,6 +1,0 @@
-# Cloudflare Pages configuration
-name = "protrade-visual-guide"
-pages_build_output_dir = "dist"
-
-[build]
-command = "npm run build"
