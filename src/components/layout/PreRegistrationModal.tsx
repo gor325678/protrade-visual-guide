@@ -12,8 +12,14 @@ interface PreRegistrationModalProps {
 }
 
 const PreRegistrationModal: React.FC<PreRegistrationModalProps> = ({ isOpen, onClose }) => {
+    const handleOpenChange = (open: boolean) => {
+        if (!open) {
+            onClose();
+        }
+    };
+
     return (
-        <Dialog open={isOpen} onOpenChange={onClose}>
+        <Dialog open={isOpen} onOpenChange={handleOpenChange}>
             <DialogContent
                 className="bg-gray-900/95 backdrop-blur-xl text-white border-gray-800 sm:max-w-xl max-h-[90vh] overflow-y-auto"
                 aria-describedby={undefined}
