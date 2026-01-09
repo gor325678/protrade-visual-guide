@@ -6,6 +6,7 @@ export const uk = {
     'nav.psychology': 'Психологія',
     'nav.risk-management': 'Ризик-менеджмент',
     'nav.materials': 'Матеріали',
+    'nav.calculators': 'Інструменти PRO',
     'nav.course-structure': 'Структура курсу',
     'nav.protected-view': 'Захищений вигляд',
     'nav.pre-registration': 'Попередній запис',
