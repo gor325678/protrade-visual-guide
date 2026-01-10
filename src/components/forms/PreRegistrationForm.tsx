@@ -203,7 +203,7 @@ const PreRegistrationForm: React.FC<PreRegistrationFormProps> = ({ onSuccess }) 
                     <div className="relative">
                         <div className="absolute inset-0 bg-indigo-500/20 blur-xl rounded-full"></div>
                         <img
-                            src="/logo-healer.png"
+                            src="/emblem_new.png"
                             alt="Logo"
                             className="relative w-24 h-24 object-contain drop-shadow-2xl"
                             onError={(e) => { e.currentTarget.style.display = 'none'; }}
