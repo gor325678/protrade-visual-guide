@@ -99,7 +99,10 @@ const CoursePage = () => {
                 .order('position', { ascending: true });
 
             if (modulesError) throw modulesError;
-            setModules(modulesData || []);
+            setModules(modulesData?.filter(m =>
+                !m.title.toLowerCase().includes('templates') &&
+                !m.title.toLowerCase().includes('session 2 - materials')
+            ) || []);
 
         } catch (error) {
             console.error('Error fetching course data:', error);
@@ -240,6 +243,20 @@ const CoursePage = () => {
                                                         <Button
                                                             onClick={() => navigate('/session-1', { state: { fromCourse: id } })}
                                                             className="w-full md:w-auto bg-blue-600 hover:bg-blue-500 text-white font-semibold py-6 px-8 text-lg shadow-lg shadow-blue-900/50 transition-all hover:scale-105"
+                                                        >
+                                                            <Play className="mr-3 h-6 w-6 fill-current" />
+                                                            Начать обучение
+                                                        </Button>
+                                                    </div>
+                                                ) : (module.title.toLowerCase().includes('session 2') || module.title.toLowerCase().includes('сессия 2')) ? (
+                                                    <div className="p-6 bg-gradient-to-br from-purple-900/30 to-pink-900/30 rounded-xl border border-purple-500/30 text-center">
+                                                        <h4 className="text-xl font-bold text-white mb-3">Интерактивный модуль: {module.title}</h4>
+                                                        <p className="text-gray-300 mb-6">
+                                                            Углубленное изучение анализа тренда, ценовых режимов и техник выхода.
+                                                        </p>
+                                                        <Button
+                                                            onClick={() => navigate('/session-2', { state: { fromCourse: id } })}
+                                                            className="w-full md:w-auto bg-purple-600 hover:bg-purple-500 text-white font-semibold py-6 px-8 text-lg shadow-lg shadow-purple-900/50 transition-all hover:scale-105"
                                                         >
                                                             <Play className="mr-3 h-6 w-6 fill-current" />
                                                             Начать обучение

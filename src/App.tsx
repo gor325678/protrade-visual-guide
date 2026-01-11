@@ -26,6 +26,7 @@ import EligibleClients from "./pages/EligibleClients";
 import Login from "./pages/Login";
 import Admin from "./pages/Admin";
 import SessionOne from "./pages/SessionOne";
+import SessionTwo from "./pages/SessionTwo";
 import ProtectedRoute from "./components/auth/ProtectedRoute";
 import ScrollToTop from "./components/utils/ScrollToTop";
 import BackToTopButton from "./components/layout/BackToTopButton";
@@ -68,6 +69,7 @@ const App = () => {
               <Route path="/login" element={<Login />} />
               <Route path="/admin" element={<ProtectedRoute><Admin /></ProtectedRoute>} />
               <Route path="/session-1" element={<SessionOne />} />
+              <Route path="/session-2" element={<SessionTwo />} />
 
               {/* Legal Pages */}
               <Route path="/public-offer" element={<PublicOffer />} />
