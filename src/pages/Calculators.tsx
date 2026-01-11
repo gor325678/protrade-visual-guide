@@ -4,9 +4,10 @@ import LotCalculator from '@/components/calculators/LotCalculator';
 import MarginCalculator from '@/components/calculators/MarginCalculator';
 import SwapCalculator from '@/components/calculators/SwapCalculator';
 import CompoundCalculator from '@/components/calculators/CompoundCalculator';
+import RiskOfRuinCalculator from '@/components/calculators/RiskOfRuinCalculator';
 import Header from '@/components/layout/Header';
 import Footer from '@/components/layout/Footer';
-import { Calculator, Wallet, TrendingUp, Moon } from 'lucide-react';
+import { Calculator, Wallet, TrendingUp, Moon, ShieldAlert } from 'lucide-react';
 
 export default function Calculators() {
     const [activeTab, setActiveTab] = useState('lot');
@@ -31,7 +32,7 @@ export default function Calculators() {
                     </div>
 
                     <Tabs defaultValue="lot" value={activeTab} onValueChange={setActiveTab} className="w-full">
-                        <TabsList className="grid w-full grid-cols-2 md:grid-cols-4 bg-gray-900/50 p-1 border border-gray-800 mb-8 rounded-xl h-auto">
+                        <TabsList className="grid w-full grid-cols-2 md:grid-cols-5 bg-gray-900/50 p-1 border border-gray-800 mb-8 rounded-xl h-auto">
                             <TabsTrigger
                                 value="lot"
                                 className="data-[state=active]:bg-blue-600 data-[state=active]:text-white py-3 rounded-lg flex items-center gap-2 transition-all"
@@ -64,6 +65,14 @@ export default function Calculators() {
                                 <span className="hidden md:inline">Сложный %</span>
                                 <span className="md:hidden">Доход</span>
                             </TabsTrigger>
+                            <TabsTrigger
+                                value="ruin"
+                                className="data-[state=active]:bg-rose-600 data-[state=active]:text-white py-3 rounded-lg flex items-center gap-2 transition-all"
+                            >
+                                <ShieldAlert className="h-4 w-4" />
+                                <span className="hidden md:inline">Риск</span>
+                                <span className="md:hidden">Риск</span>
+                            </TabsTrigger>
                         </TabsList>
 
                         <div className="animate-in fade-in duration-300">
@@ -81,6 +90,10 @@ export default function Calculators() {
 
                             <TabsContent value="compound" className="mt-0">
                                 <CompoundCalculator apiUrl={API_URL} />
+                            </TabsContent>
+
+                            <TabsContent value="ruin" className="mt-0">
+                                <RiskOfRuinCalculator apiUrl={API_URL} />
                             </TabsContent>
                         </div>
                     </Tabs>

@@ -180,8 +180,8 @@ export default function CompoundCalculator({ apiUrl = '' }: CompoundCalculatorPr
                                     size="sm"
                                     onClick={() => handleInputChange('ratePerIteration', r.toString())}
                                     className={`text-xs border-gray-600 ${formData.ratePerIteration === r.toString()
-                                            ? 'bg-emerald-600 text-white'
-                                            : 'bg-gray-800 text-gray-300'
+                                        ? 'bg-emerald-600 text-white'
+                                        : 'bg-gray-800 text-gray-300'
                                         }`}
                                 >
                                     {r}%
@@ -208,8 +208,8 @@ export default function CompoundCalculator({ apiUrl = '' }: CompoundCalculatorPr
                                     size="sm"
                                     onClick={() => handleInputChange('iterations', i.toString())}
                                     className={`text-xs border-gray-600 ${formData.iterations === i.toString()
-                                            ? 'bg-emerald-600 text-white'
-                                            : 'bg-gray-800 text-gray-300'
+                                        ? 'bg-emerald-600 text-white'
+                                        : 'bg-gray-800 text-gray-300'
                                         }`}
                                 >
                                     {i}
@@ -236,8 +236,8 @@ export default function CompoundCalculator({ apiUrl = '' }: CompoundCalculatorPr
                                     size="sm"
                                     onClick={() => handleInputChange('initialAmount', a.toString())}
                                     className={`text-xs border-gray-600 ${formData.initialAmount === a.toString()
-                                            ? 'bg-emerald-600 text-white'
-                                            : 'bg-gray-800 text-gray-300'
+                                        ? 'bg-emerald-600 text-white'
+                                        : 'bg-gray-800 text-gray-300'
                                         }`}
                                 >
                                     ${a}
@@ -306,8 +306,8 @@ export default function CompoundCalculator({ apiUrl = '' }: CompoundCalculatorPr
                                 <p className="text-3xl font-bold text-emerald-400">${result.finalAmount}</p>
                             </div>
                             <div className={`p-4 rounded-lg border ${result.totalProfit >= 0
-                                    ? 'bg-green-900/30 border-green-700'
-                                    : 'bg-red-900/30 border-red-700'
+                                ? 'bg-green-900/30 border-green-700'
+                                : 'bg-red-900/30 border-red-700'
                                 }`}>
                                 <p className={`text-sm ${result.totalProfit >= 0 ? 'text-green-300' : 'text-red-300'}`}>
                                     Размер дохода
@@ -375,6 +375,20 @@ export default function CompoundCalculator({ apiUrl = '' }: CompoundCalculatorPr
                         )}
                     </div>
                 )}
+
+                {/* Info Box */}
+                <div className="mt-6 p-4 bg-gray-800/50 rounded-lg border border-gray-700 text-sm text-gray-400">
+                    <p className="font-semibold text-gray-300 mb-2">📖 Что такое сложный процент?</p>
+                    <p className="mb-3">
+                        Сложный процент — это начисление прибыли на прибыль. Вместо вывода прибыли, вы реинвестируете её, что ускоряет рост капитала.
+                    </p>
+                    <p className="font-medium text-gray-300 mb-1">Пример:</p>
+                    <ul className="list-disc list-inside space-y-1 text-gray-500">
+                        <li>Стартовая сумма: $100, Доходность: 5% за итерацию, Итераций: 12</li>
+                        <li>После 12 итераций: $100 × (1.05)^12 = <strong className="text-emerald-400">$179.59</strong></li>
+                        <li>Прибыль: +$79.59 (+79.6%)</li>
+                    </ul>
+                </div>
             </CardContent>
         </Card>
     );

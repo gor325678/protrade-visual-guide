@@ -344,6 +344,20 @@ export default function LotCalculator({ apiUrl = '' }: LotCalculatorProps) {
                         )}
                     </div>
                 )}
+
+                {/* Info Box */}
+                <div className="mt-6 p-4 bg-gray-800/50 rounded-lg border border-gray-700 text-sm text-gray-400">
+                    <p className="font-semibold text-gray-300 mb-2">📖 Как использовать калькулятор лота?</p>
+                    <p className="mb-3">
+                        Калькулятор помогает определить оптимальный размер позиции (лот) на основе вашего допустимого риска и размера стоп-лосса.
+                    </p>
+                    <p className="font-medium text-gray-300 mb-1">Пример:</p>
+                    <ul className="list-disc list-inside space-y-1 text-gray-500">
+                        <li>Счёт: $10,000, Риск: 2% ($200), Стоп-лосс: 50 pips</li>
+                        <li>Pip Value для EUR/USD ≈ $10 за лот</li>
+                        <li>Лот = $200 / (50 × $10) = <strong className="text-blue-400">0.40 лота</strong></li>
+                    </ul>
+                </div>
             </CardContent>
         </Card>
     );

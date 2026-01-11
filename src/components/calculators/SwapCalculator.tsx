@@ -189,8 +189,8 @@ export default function SwapCalculator({ apiUrl = '' }: SwapCalculatorProps) {
 
                         <div className="grid grid-cols-2 gap-4">
                             <div className={`p-4 rounded-lg border col-span-2 ${result.swapCost >= 0
-                                    ? 'bg-green-900/30 border-green-700'
-                                    : 'bg-red-900/30 border-red-700'
+                                ? 'bg-green-900/30 border-green-700'
+                                : 'bg-red-900/30 border-red-700'
                                 }`}>
                                 <p className={`text-sm ${result.swapCost >= 0 ? 'text-green-300' : 'text-red-300'}`}>
                                     Общий своп
@@ -218,6 +218,20 @@ export default function SwapCalculator({ apiUrl = '' }: SwapCalculatorProps) {
                         </Alert>
                     </div>
                 )}
+
+                {/* Info Box */}
+                <div className="mt-6 p-4 bg-gray-800/50 rounded-lg border border-gray-700 text-sm text-gray-400">
+                    <p className="font-semibold text-gray-300 mb-2">📖 Что такое своп?</p>
+                    <p className="mb-3">
+                        Своп — это плата за перенос позиции через ночь. Может быть положительным (вам платят) или отрицательным (вы платите). Зависит от разницы процентных ставок валют.
+                    </p>
+                    <p className="font-medium text-gray-300 mb-1">Пример:</p>
+                    <ul className="list-disc list-inside space-y-1 text-gray-500">
+                        <li>Пара: EUR/USD, Направление: Buy (Long), Объём: 0.1 лота</li>
+                        <li>Ставка свопа: -6.5 points, Ночей: 5</li>
+                        <li>Своп = 0.1 × (-6.5) × 5 = <strong className="text-red-400">-$3.25</strong></li>
+                    </ul>
+                </div>
             </CardContent>
         </Card>
     );

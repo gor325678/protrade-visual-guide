@@ -228,6 +228,20 @@ export default function MarginCalculator({ apiUrl = '' }: MarginCalculatorProps)
                         </div>
                     </div>
                 )}
+
+                {/* Info Box */}
+                <div className="mt-6 p-4 bg-gray-800/50 rounded-lg border border-gray-700 text-sm text-gray-400">
+                    <p className="font-semibold text-gray-300 mb-2">📖 Что такое маржа?</p>
+                    <p className="mb-3">
+                        Маржа — это залог, который брокер блокирует на вашем счёте для открытия позиции. Чем выше плечо, тем меньше маржа.
+                    </p>
+                    <p className="font-medium text-gray-300 mb-1">Пример:</p>
+                    <ul className="list-disc list-inside space-y-1 text-gray-500">
+                        <li>Пара: EUR/USD, Курс: 1.0850, Объём: 1 лот (100,000 единиц)</li>
+                        <li>Плечо: 1:100</li>
+                        <li>Маржа = (100,000 × 1.0850) / 100 = <strong className="text-purple-400">$1,085</strong></li>
+                    </ul>
+                </div>
             </CardContent>
         </Card>
     );
