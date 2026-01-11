@@ -231,29 +231,45 @@ const CoursePage = () => {
 
                                         <AccordionContent className="pt-2 pb-6 border-t border-gray-800/50 mt-2">
                                             <div className="space-y-4">
-                                                <div className="p-4 bg-gray-900/50 rounded-lg border border-gray-800">
-                                                    <p className="text-gray-300 mb-4">{module.description}</p>
-
-                                                    {/* Lesson Item / Video Trigger */}
-                                                    <div className="flex items-center justify-between p-3 bg-trading-card rounded border border-gray-700 hover:border-blue-500/50 transition-colors group cursor-pointer"
-                                                        onClick={() => handlePlayVideo(module)}
-                                                    >
-                                                        <div className="flex items-center gap-3">
-                                                            <div className="p-2 bg-blue-500/10 rounded-full group-hover:bg-blue-500/20">
-                                                                <Play className="h-4 w-4 text-blue-400 fill-blue-400" />
-                                                            </div>
-                                                            <span className="font-medium">Видео-урок</span>
-                                                        </div>
-                                                        <Button size="sm" variant="ghost" className="text-blue-400">
-                                                            Смотреть
+                                                {(module.title.toLowerCase().includes('session 1') || module.title.toLowerCase().includes('сессия 1')) ? (
+                                                    <div className="p-6 bg-gradient-to-br from-blue-900/30 to-purple-900/30 rounded-xl border border-blue-500/30 text-center">
+                                                        <h4 className="text-xl font-bold text-white mb-3">Интерактивный модуль: {module.title}</h4>
+                                                        <p className="text-gray-300 mb-6">
+                                                            Этот модуль содержит расширенные интерактивные материалы, видео и структуру для глубокого изучения.
+                                                        </p>
+                                                        <Button
+                                                            onClick={() => navigate('/session-1', { state: { fromCourse: id } })}
+                                                            className="w-full md:w-auto bg-blue-600 hover:bg-blue-500 text-white font-semibold py-6 px-8 text-lg shadow-lg shadow-blue-900/50 transition-all hover:scale-105"
+                                                        >
+                                                            <Play className="mr-3 h-6 w-6 fill-current" />
+                                                            Начать обучение
                                                         </Button>
                                                     </div>
+                                                ) : (
+                                                    <div className="p-4 bg-gray-900/50 rounded-lg border border-gray-800">
+                                                        <p className="text-gray-300 mb-4">{module.description}</p>
 
-                                                    <div className="mt-3 flex items-center gap-2 text-xs text-gray-500">
-                                                        <CheckCircle className="h-3 w-3" />
-                                                        <span>Доступно в рамках вашего пакета</span>
+                                                        {/* Lesson Item / Video Trigger */}
+                                                        <div className="flex items-center justify-between p-3 bg-trading-card rounded border border-gray-700 hover:border-blue-500/50 transition-colors group cursor-pointer"
+                                                            onClick={() => handlePlayVideo(module)}
+                                                        >
+                                                            <div className="flex items-center gap-3">
+                                                                <div className="p-2 bg-blue-500/10 rounded-full group-hover:bg-blue-500/20">
+                                                                    <Play className="h-4 w-4 text-blue-400 fill-blue-400" />
+                                                                </div>
+                                                                <span className="font-medium">Видео-урок</span>
+                                                            </div>
+                                                            <Button size="sm" variant="ghost" className="text-blue-400">
+                                                                Смотреть
+                                                            </Button>
+                                                        </div>
+
+                                                        <div className="mt-3 flex items-center gap-2 text-xs text-gray-500">
+                                                            <CheckCircle className="h-3 w-3" />
+                                                            <span>Доступно в рамках вашего пакета</span>
+                                                        </div>
                                                     </div>
-                                                </div>
+                                                )}
                                             </div>
                                         </AccordionContent>
                                     </AccordionItem>

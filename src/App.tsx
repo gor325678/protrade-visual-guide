@@ -25,6 +25,7 @@ import PrivacyPolicy from "./pages/PrivacyPolicy";
 import EligibleClients from "./pages/EligibleClients";
 import Login from "./pages/Login";
 import Admin from "./pages/Admin";
+import SessionOne from "./pages/SessionOne";
 import ProtectedRoute from "./components/auth/ProtectedRoute";
 import ScrollToTop from "./components/utils/ScrollToTop";
 import BackToTopButton from "./components/layout/BackToTopButton";
@@ -66,6 +67,7 @@ const App = () => {
               <Route path="/course/:id" element={<ProtectedRoute><CoursePage /></ProtectedRoute>} />
               <Route path="/login" element={<Login />} />
               <Route path="/admin" element={<ProtectedRoute><Admin /></ProtectedRoute>} />
+              <Route path="/session-1" element={<SessionOne />} />
 
               {/* Legal Pages */}
               <Route path="/public-offer" element={<PublicOffer />} />

@@ -93,11 +93,11 @@ const InfoSection = () => {
                     <p className="text-xl md:text-2xl text-gray-400 leading-relaxed max-w-4xl mx-auto mb-10">
                         {language === 'uk' ? (
                             <>
-                                Трейдинг — це ваш шлях до фінансової незалежності. Pro Trader Systems дає не просто знання, а готовий алгоритм дій. Якщо ви початківець — почніть із <button onClick={() => setIsModalOpen(true)} className="text-trading-accent hover:underline focus:outline-none bg-transparent border-none p-0 inline font-medium">безкоштовної консультації</button>. Якщо вже маєте досвід — обирайте інтенсив, щоб масштабувати свій прибуток.
+                                Трейдинг — це ваш шлях до фінансової незалежності. ProTrader Systems дає не просто знання, а готовий алгоритм дій. Якщо ви початківець — почніть із <button onClick={() => setIsModalOpen(true)} className="text-trading-accent hover:underline focus:outline-none bg-transparent border-none p-0 inline font-medium">безкоштовної консультації</button>. Якщо вже маєте досвід — обирайте інтенсив, щоб масштабувати свій прибуток.
                             </>
                         ) : (
                             <>
-                                Трейдинг — это ваш путь к финансовой независимости. Pro Trader Systems дает не просто знания, а готовый алгоритм действий. Если вы новичок — начните с <button onClick={() => setIsModalOpen(true)} className="text-trading-accent hover:underline focus:outline-none bg-transparent border-none p-0 inline font-medium">бесплатной консультации</button>. Если уже имеете опыт — выбирайте интенсив, чтобы масштабировать свою прибыль.
+                                Трейдинг — это ваш путь к финансовой независимости. ProTrader Systems дает не просто знания, а готовый алгоритм действий. Если вы новичок — начните с <button onClick={() => setIsModalOpen(true)} className="text-trading-accent hover:underline focus:outline-none bg-transparent border-none p-0 inline font-medium">бесплатной консультации</button>. Если уже имеете опыт — выбирайте интенсив, чтобы масштабировать свою прибыль.
                             </>
                         )}
                     </p>
