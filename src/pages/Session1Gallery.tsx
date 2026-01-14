@@ -304,23 +304,29 @@ const Session1Gallery = () => {
                 >
                     {/* Close Button */}
                     <button
-                        className="absolute top-4 right-4 p-2 text-white/70 hover:text-white transition-colors z-50"
-                        onClick={() => setLightboxImage(null)}
+                        type="button"
+                        className="absolute top-4 right-4 p-2 text-white/70 hover:text-white transition-colors z-50 pointer-events-auto cursor-pointer"
+                        onClick={(e) => { e.stopPropagation(); setLightboxImage(null); }}
+                        aria-label="Закрыть"
                     >
                         <X className="h-8 w-8" />
                     </button>
 
                     {/* Navigation Buttons */}
                     <button
-                        className="absolute left-4 top-1/2 -translate-y-1/2 p-3 bg-white/10 hover:bg-white/20 rounded-full transition-colors"
+                        type="button"
+                        className="absolute left-4 top-1/2 -translate-y-1/2 p-3 bg-white/10 hover:bg-white/20 rounded-full transition-colors pointer-events-auto cursor-pointer"
                         onClick={(e) => { e.stopPropagation(); handlePrevImage(); }}
+                        aria-label="Предыдущее"
                     >
                         <ChevronLeft className="h-8 w-8 text-white" />
                     </button>
 
                     <button
-                        className="absolute right-4 top-1/2 -translate-y-1/2 p-3 bg-white/10 hover:bg-white/20 rounded-full transition-colors"
+                        type="button"
+                        className="absolute right-4 top-1/2 -translate-y-1/2 p-3 bg-white/10 hover:bg-white/20 rounded-full transition-colors pointer-events-auto cursor-pointer"
                         onClick={(e) => { e.stopPropagation(); handleNextImage(); }}
+                        aria-label="Следующее"
                     >
                         <ChevronRight className="h-8 w-8 text-white" />
                     </button>

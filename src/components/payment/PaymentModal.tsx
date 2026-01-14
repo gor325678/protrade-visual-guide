@@ -139,7 +139,9 @@ export default function PaymentModal({
                 {/* Кнопка закриття */}
                 <button
                     onClick={handleClose}
-                    className="absolute top-4 right-4 z-10 text-gray-400 hover:text-white transition-colors p-2 hover:bg-gray-800 rounded-lg"
+                    className="absolute top-4 right-4 z-50 text-gray-400 hover:text-white transition-colors p-2 hover:bg-gray-800 rounded-lg cursor-pointer pointer-events-auto"
+                    type="button"
+                    aria-label="Закрити"
                 >
                     <X className="w-5 h-5" />
                 </button>

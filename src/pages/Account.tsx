@@ -38,7 +38,7 @@ const Account = () => {
   const [courses, setCourses] = useState<CourseWithAccess[]>([]);
   const [orders, setOrders] = useState<any[]>([]);
   const [ordersLoading, setOrdersLoading] = useState(false);
-  const [userAvatar, setUserAvatar] = useState('bull');
+
   const [userInfo, setUserInfo] = useState({
     firstName: '',
     lastName: '',
@@ -70,7 +70,7 @@ const Account = () => {
       }
 
       setUser(user);
-      setUserAvatar(user.user_metadata?.avatar || 'bull');
+
       setUserInfo({
         firstName: user.user_metadata?.full_name?.split(' ')[0] || '',
         lastName: user.user_metadata?.full_name?.split(' ')[1] || '',
@@ -162,9 +162,7 @@ const Account = () => {
     }
   };
 
-  const handleAvatarChange = (avatarId: string) => {
-    setUserAvatar(avatarId);
-  };
+
 
   const handleSaveProfile = async () => {
     try {
@@ -408,10 +406,7 @@ const Account = () => {
             </TabsContent>
 
             <TabsContent value="settings">
-              <SettingsTab
-                currentAvatar={userAvatar}
-                onAvatarChange={handleAvatarChange}
-              />
+              <SettingsTab />
             </TabsContent>
           </Tabs>
         </div>

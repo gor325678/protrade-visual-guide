@@ -2,30 +2,12 @@ import React, { useState } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
-import { Bell, Shield, User, Eye, EyeOff, Check } from 'lucide-react';
+import { Bell, Shield, Eye, EyeOff } from 'lucide-react';
 import { useLanguage } from '@/contexts/LanguageContext';
 import { supabase } from '@/lib/supabaseClient';
 import { useToast } from '@/components/ui/use-toast';
 
-// Trader avatars
-const TRADER_AVATARS = [
-    { id: 'bull', emoji: '🐂', label: 'Бик' },
-    { id: 'bear', emoji: '🐻', label: 'Ведмідь' },
-    { id: 'candle', emoji: '📊', label: 'Свічка' },
-    { id: 'chart', emoji: '📈', label: 'Графік' },
-    { id: 'dollar', emoji: '💵', label: 'Долар' },
-    { id: 'rocket', emoji: '🚀', label: 'Ракета' },
-];
-
-interface SettingsTabProps {
-    currentAvatar?: string;
-    onAvatarChange?: (avatarId: string) => void;
-}
-
-export const SettingsTab: React.FC<SettingsTabProps> = ({
-    currentAvatar = 'bull',
-    onAvatarChange
-}) => {
+export const SettingsTab: React.FC = () => {
     const { t } = useLanguage();
     const { toast } = useToast();
 
@@ -38,9 +20,7 @@ export const SettingsTab: React.FC<SettingsTabProps> = ({
     const [showNewPassword, setShowNewPassword] = useState(false);
     const [passwordLoading, setPasswordLoading] = useState(false);
 
-    // Avatar state
-    const [selectedAvatar, setSelectedAvatar] = useState(currentAvatar);
-    const [avatarLoading, setAvatarLoading] = useState(false);
+
 
     const handlePasswordChange = async () => {
         if (newPassword !== confirmPassword) {
@@ -89,32 +69,7 @@ export const SettingsTab: React.FC<SettingsTabProps> = ({
         }
     };
 
-    const handleAvatarSelect = async (avatarId: string) => {
-        setSelectedAvatar(avatarId);
-        setAvatarLoading(true);
 
-        try {
-            const { error } = await supabase.auth.updateUser({
-                data: { avatar: avatarId }
-            });
-
-            if (error) throw error;
-
-            onAvatarChange?.(avatarId);
-            toast({
-                title: t('settings.success'),
-                description: t('settings.avatar_changed')
-            });
-        } catch (error: any) {
-            toast({
-                title: t('settings.error'),
-                description: error.message,
-                variant: 'destructive'
-            });
-        } finally {
-            setAvatarLoading(false);
-        }
-    };
 
     return (
         <div className="space-y-6">
@@ -150,41 +105,7 @@ export const SettingsTab: React.FC<SettingsTabProps> = ({
                 </CardContent>
             </Card>
 
-            {/* Вибір аватара */}
-            <Card className="bg-trading-card border-gray-800">
-                <CardHeader>
-                    <CardTitle className="flex items-center gap-2">
-                        <User className="h-5 w-5" />
-                        {t('settings.avatar')}
-                    </CardTitle>
-                </CardHeader>
-                <CardContent>
-                    <p className="text-sm text-gray-400 mb-4">{t('settings.choose_avatar')}</p>
-                    <div className="grid grid-cols-3 md:grid-cols-6 gap-3">
-                        {TRADER_AVATARS.map((avatar) => (
-                            <button
-                                key={avatar.id}
-                                onClick={() => handleAvatarSelect(avatar.id)}
-                                disabled={avatarLoading}
-                                className={`relative p-4 rounded-xl border-2 transition-all hover:scale-105 ${selectedAvatar === avatar.id
-                                        ? 'border-blue-500 bg-blue-900/20'
-                                        : 'border-gray-700 bg-gray-800/50 hover:border-gray-600'
-                                    }`}
-                            >
-                                <span className="text-3xl block text-center">{avatar.emoji}</span>
-                                <span className="text-xs text-gray-400 block text-center mt-1">
-                                    {avatar.label}
-                                </span>
-                                {selectedAvatar === avatar.id && (
-                                    <div className="absolute -top-1 -right-1 bg-blue-500 rounded-full p-0.5">
-                                        <Check className="h-3 w-3 text-white" />
-                                    </div>
-                                )}
-                            </button>
-                        ))}
-                    </div>
-                </CardContent>
-            </Card>
+
 
             {/* Безпека */}
             <Card className="bg-trading-card border-gray-800">
