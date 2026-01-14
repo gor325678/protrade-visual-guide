@@ -181,7 +181,7 @@ export const session1Content = [
         <div class="p-4 bg-trading-card rounded-lg border border-gray-700">
           <h3 class="font-bold text-purple-400 mb-2">Мировые</h3>
           <ul class="space-y-1 text-gray-300">
-            <li>• "Choppy" (неровный)</li>
+            <li>• "Choppy" (прерывистый)</li>
             <li>• "Spaghetti Zone" (зона спагетти)</li>
           </ul>
         </div>

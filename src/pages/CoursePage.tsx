@@ -235,32 +235,120 @@ const CoursePage = () => {
                                         <AccordionContent className="pt-2 pb-6 border-t border-gray-800/50 mt-2">
                                             <div className="space-y-4">
                                                 {(module.title.toLowerCase().includes('session 1') || module.title.toLowerCase().includes('сессия 1')) ? (
-                                                    <div className="p-6 bg-gradient-to-br from-blue-900/30 to-purple-900/30 rounded-xl border border-blue-500/30 text-center">
-                                                        <h4 className="text-xl font-bold text-white mb-3">Интерактивный модуль: {module.title}</h4>
-                                                        <p className="text-gray-300 mb-6">
+                                                    <div className="p-6 bg-gradient-to-br from-blue-900/30 to-purple-900/30 rounded-xl border border-blue-500/30">
+                                                        <h4 className="text-xl font-bold text-white mb-3 text-center">Интерактивный модуль: {module.title}</h4>
+                                                        <p className="text-gray-300 mb-6 text-center">
                                                             Этот модуль содержит расширенные интерактивные материалы, видео и структуру для глубокого изучения.
                                                         </p>
-                                                        <Button
-                                                            onClick={() => navigate('/session-1', { state: { fromCourse: id } })}
-                                                            className="w-full md:w-auto bg-blue-600 hover:bg-blue-500 text-white font-semibold py-6 px-8 text-lg shadow-lg shadow-blue-900/50 transition-all hover:scale-105"
-                                                        >
-                                                            <Play className="mr-3 h-6 w-6 fill-current" />
-                                                            Начать обучение
-                                                        </Button>
+                                                        <div className="flex flex-col gap-3 max-w-md mx-auto">
+                                                            <Button
+                                                                onClick={() => navigate('/session-1', { state: { fromCourse: id } })}
+                                                                className="w-full bg-blue-600 hover:bg-blue-500 text-white font-semibold py-4 px-6 text-base shadow-lg shadow-blue-900/50 transition-all hover:scale-105"
+                                                            >
+                                                                <Play className="mr-3 h-5 w-5 fill-current" />
+                                                                Содержание Session 1
+                                                            </Button>
+                                                            <Button
+                                                                onClick={() => navigate('/session-1-gallery', { state: { fromCourse: id } })}
+                                                                variant="outline"
+                                                                className="w-full border-blue-500/50 text-blue-400 hover:bg-blue-500/10 font-semibold py-4 px-6 text-base transition-all hover:scale-105"
+                                                            >
+                                                                <FileText className="mr-3 h-5 w-5" />
+                                                                Скриншоты графиков
+                                                            </Button>
+                                                            <Button
+                                                                onClick={() => navigate('/session-1-video', { state: { fromCourse: id } })}
+                                                                variant="outline"
+                                                                className="w-full border-purple-500/50 text-purple-400 hover:bg-purple-500/10 font-semibold py-4 px-6 text-base transition-all hover:scale-105"
+                                                            >
+                                                                <Video className="mr-3 h-5 w-5" />
+                                                                Видео
+                                                            </Button>
+                                                            <Button
+                                                                onClick={() => navigate('/session-1-templates', { state: { fromCourse: id } })}
+                                                                variant="outline"
+                                                                className="w-full border-green-500/50 text-green-400 hover:bg-green-500/10 font-semibold py-4 px-6 text-base transition-all hover:scale-105"
+                                                            >
+                                                                <FileText className="mr-3 h-5 w-5" />
+                                                                Индикаторы и шаблоны
+                                                            </Button>
+                                                            <Button
+                                                                onClick={() => navigate('/session-1-test', { state: { fromCourse: id } })}
+                                                                variant="outline"
+                                                                className="w-full border-orange-500/50 text-orange-400 hover:bg-orange-500/10 font-semibold py-4 px-6 text-base transition-all hover:scale-105"
+                                                            >
+                                                                <CheckCircle className="mr-3 h-5 w-5" />
+                                                                Тест
+                                                            </Button>
+                                                        </div>
+                                                        <div className="mt-4 text-center">
+                                                            <Button
+                                                                variant="ghost"
+                                                                onClick={() => navigate('/account')}
+                                                                className="text-gray-400 hover:text-white"
+                                                            >
+                                                                <ArrowLeft className="mr-2 h-4 w-4" />
+                                                                Назад
+                                                            </Button>
+                                                        </div>
                                                     </div>
                                                 ) : (module.title.toLowerCase().includes('session 2') || module.title.toLowerCase().includes('сессия 2')) ? (
-                                                    <div className="p-6 bg-gradient-to-br from-purple-900/30 to-pink-900/30 rounded-xl border border-purple-500/30 text-center">
-                                                        <h4 className="text-xl font-bold text-white mb-3">Интерактивный модуль: {module.title}</h4>
-                                                        <p className="text-gray-300 mb-6">
+                                                    <div className="p-6 bg-gradient-to-br from-purple-900/30 to-pink-900/30 rounded-xl border border-purple-500/30">
+                                                        <h4 className="text-xl font-bold text-white mb-3 text-center">Интерактивный модуль: {module.title}</h4>
+                                                        <p className="text-gray-300 mb-6 text-center">
                                                             Углубленное изучение анализа тренда, ценовых режимов и техник выхода.
                                                         </p>
-                                                        <Button
-                                                            onClick={() => navigate('/session-2', { state: { fromCourse: id } })}
-                                                            className="w-full md:w-auto bg-purple-600 hover:bg-purple-500 text-white font-semibold py-6 px-8 text-lg shadow-lg shadow-purple-900/50 transition-all hover:scale-105"
-                                                        >
-                                                            <Play className="mr-3 h-6 w-6 fill-current" />
-                                                            Начать обучение
-                                                        </Button>
+                                                        <div className="flex flex-col gap-3 max-w-md mx-auto">
+                                                            <Button
+                                                                onClick={() => navigate('/session-2', { state: { fromCourse: id } })}
+                                                                className="w-full bg-purple-600 hover:bg-purple-500 text-white font-semibold py-4 px-6 text-base shadow-lg shadow-purple-900/50 transition-all hover:scale-105"
+                                                            >
+                                                                <Play className="mr-3 h-5 w-5 fill-current" />
+                                                                Содержание Session 2
+                                                            </Button>
+                                                            <Button
+                                                                onClick={() => navigate('/session-2-gallery', { state: { fromCourse: id } })}
+                                                                variant="outline"
+                                                                className="w-full border-purple-500/50 text-purple-400 hover:bg-purple-500/10 font-semibold py-4 px-6 text-base transition-all hover:scale-105"
+                                                            >
+                                                                <FileText className="mr-3 h-5 w-5" />
+                                                                Скриншоты графиков
+                                                            </Button>
+                                                            <Button
+                                                                onClick={() => navigate('/session-2-video', { state: { fromCourse: id } })}
+                                                                variant="outline"
+                                                                className="w-full border-pink-500/50 text-pink-400 hover:bg-pink-500/10 font-semibold py-4 px-6 text-base transition-all hover:scale-105"
+                                                            >
+                                                                <Video className="mr-3 h-5 w-5" />
+                                                                Видео
+                                                            </Button>
+                                                            <Button
+                                                                onClick={() => navigate('/session-2-templates', { state: { fromCourse: id } })}
+                                                                variant="outline"
+                                                                className="w-full border-green-500/50 text-green-400 hover:bg-green-500/10 font-semibold py-4 px-6 text-base transition-all hover:scale-105"
+                                                            >
+                                                                <FileText className="mr-3 h-5 w-5" />
+                                                                Индикаторы и шаблоны
+                                                            </Button>
+                                                            <Button
+                                                                onClick={() => navigate('/session-2-test', { state: { fromCourse: id } })}
+                                                                variant="outline"
+                                                                className="w-full border-orange-500/50 text-orange-400 hover:bg-orange-500/10 font-semibold py-4 px-6 text-base transition-all hover:scale-105"
+                                                            >
+                                                                <CheckCircle className="mr-3 h-5 w-5" />
+                                                                Тест
+                                                            </Button>
+                                                        </div>
+                                                        <div className="mt-4 text-center">
+                                                            <Button
+                                                                variant="ghost"
+                                                                onClick={() => navigate('/account')}
+                                                                className="text-gray-400 hover:text-white"
+                                                            >
+                                                                <ArrowLeft className="mr-2 h-4 w-4" />
+                                                                Назад
+                                                            </Button>
+                                                        </div>
                                                     </div>
                                                 ) : (
                                                     <div className="p-4 bg-gray-900/50 rounded-lg border border-gray-800">

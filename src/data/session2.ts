@@ -97,7 +97,7 @@ export const session2Content = [
             Глобальные режимы
           </h3>
           <ul class="space-y-2 text-gray-300">
-            <li>• 🌪️ "Choppy" (неровный)</li>
+            <li>• 🌪️ "Choppy" (прерывистый)</li>
             <li>• 🍝 "Spaghetti Zone" (зона спагетти)</li>
           </ul>
         </div>

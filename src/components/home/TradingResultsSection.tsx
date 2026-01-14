@@ -15,7 +15,7 @@ const TradingResultsSection = () => {
         },
         {
             icon: Shield,
-            value: '0.5-2%',
+            value: '0.5-1%',
             label: t('results.max_risk'),
             color: 'text-yellow-400'
         },
