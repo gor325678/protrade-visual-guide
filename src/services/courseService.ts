@@ -2,6 +2,8 @@ import { CourseModule, ModuleChange } from '../types/material';
 
 // Ключи для localStorage
 const MODULE_STORAGE_KEY = 'course_modules';
+const MODULE_VERSION_KEY = 'course_modules_version';
+const CURRENT_VERSION = '2.0'; // Новая версия структуры - 6 этапов
 
 // Начальные данные для модулей курса
 const initialModules: CourseModule[] = [
@@ -76,6 +78,17 @@ const initialModules: CourseModule[] = [
 // Получение модулей из localStorage или использование начальных данных
 const getStoredModules = (): CourseModule[] => {
   try {
+    // Проверяем версию кэша - если устаревшая, сбрасываем на новую структуру
+    const storedVersion = localStorage.getItem(MODULE_VERSION_KEY);
+
+    if (storedVersion !== CURRENT_VERSION) {
+      // Версия не совпадает - используем новую структуру и сохраняем
+      console.log('Обновление структуры курса до версии', CURRENT_VERSION);
+      localStorage.setItem(MODULE_VERSION_KEY, CURRENT_VERSION);
+      localStorage.setItem(MODULE_STORAGE_KEY, JSON.stringify(initialModules));
+      return [...initialModules];
+    }
+
     const stored = localStorage.getItem(MODULE_STORAGE_KEY);
     if (stored) {
       const parsedModules = JSON.parse(stored);

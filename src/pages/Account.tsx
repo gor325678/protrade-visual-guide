@@ -4,7 +4,7 @@ import { supabase } from '@/lib/supabaseClient';
 import Header from '@/components/layout/Header';
 import Footer from '@/components/layout/Footer';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { User, CreditCard, Book, Settings, LogOut, ShieldCheck, Lock, BookOpen, GraduationCap } from 'lucide-react';
+import { User, CreditCard, Book, Settings, LogOut, ShieldCheck, Lock, BookOpen, GraduationCap, Gift } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
@@ -12,6 +12,7 @@ import { useToast } from '@/components/ui/use-toast';
 import { ProfileTab } from '@/components/account/ProfileTab';
 import { OrdersTab } from '@/components/account/OrdersTab';
 import { SettingsTab } from '@/components/account/SettingsTab';
+import { ReferralSection } from '@/components/account/ReferralSection';
 import PaymentModal from '@/components/payment/PaymentModal';
 import SupportButton from '@/components/shared/SupportButton';
 
@@ -240,11 +241,16 @@ const Account = () => {
           </div>
 
           <Tabs defaultValue="courses" className="space-y-6">
-            <TabsList className="grid grid-cols-2 md:grid-cols-4 w-full bg-trading-card border-gray-800">
+            <TabsList className="grid grid-cols-3 md:grid-cols-5 w-full bg-trading-card border-gray-800">
               <TabsTrigger value="courses" className="flex items-center gap-2">
                 <Book className="h-4 w-4" />
                 <span className="hidden sm:inline">Мои курсы</span>
                 <span className="sm:hidden">Курсы</span>
+              </TabsTrigger>
+              <TabsTrigger value="referral" className="flex items-center gap-2">
+                <Gift className="h-4 w-4" />
+                <span className="hidden sm:inline">Партнёрка</span>
+                <span className="sm:hidden">💰</span>
               </TabsTrigger>
               <TabsTrigger value="profile" className="flex items-center gap-2">
                 <User className="h-4 w-4" />
@@ -259,7 +265,7 @@ const Account = () => {
               <TabsTrigger value="settings" className="flex items-center gap-2">
                 <Settings className="h-4 w-4" />
                 <span className="hidden sm:inline">Настройки</span>
-                <span className="sm:hidden">Настр.</span>
+                <span className="sm:hidden">⚙️</span>
               </TabsTrigger>
             </TabsList>
 
@@ -407,6 +413,18 @@ const Account = () => {
 
             <TabsContent value="settings">
               <SettingsTab />
+            </TabsContent>
+
+            <TabsContent value="referral">
+              <div className="space-y-6">
+                <div className="flex justify-between items-center">
+                  <h2 className="text-2xl font-bold">Партнёрская программа</h2>
+                  <Badge variant="outline" className="border-green-500 text-green-400">
+                    💰 Зарабатывайте $170 за друга
+                  </Badge>
+                </div>
+                <ReferralSection userId={user?.id || ''} />
+              </div>
             </TabsContent>
           </Tabs>
         </div>

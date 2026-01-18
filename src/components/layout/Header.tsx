@@ -94,22 +94,24 @@ const Header = () => {
 
   return (
     <>
-      <header className="w-full bg-trading-card py-3 px-4 border-b border-gray-800 no-select sticky top-0 z-50 backdrop-blur-md bg-opacity-90">
+      <header className="w-full bg-trading-card py-4 px-4 border-b border-gray-800 no-select sticky top-0 z-50 backdrop-blur-md bg-opacity-95">
         <div className="max-w-7xl mx-auto flex justify-between items-center">
-          <div className="flex items-center space-x-2">
-            <ChartLine className="h-6 w-6 text-primary" />
-            <span className="text-xl font-bold bg-gradient-to-r from-blue-400 to-violet-500 bg-clip-text text-transparent">
+          <div className="flex items-center space-x-3">
+            <ChartLine className="h-7 w-7 text-primary" />
+            <span className="text-2xl font-bold bg-gradient-to-r from-blue-400 to-violet-500 bg-clip-text text-transparent">
               ProTrader Systems
             </span>
           </div>
 
           {/* Desktop Navigation */}
-          <nav className="hidden md:flex items-center space-x-6">
+          <nav className="hidden lg:flex items-center space-x-8">
             {navItems.map(item => (
               <Link
                 key={item.path}
                 to={item.path}
-                className={`text-sm font-medium hover:text-primary transition-colors ${isActive(item.path) ? 'text-primary border-b-2 border-primary pb-1' : 'text-gray-400'
+                className={`text-base font-semibold tracking-wide hover:text-primary transition-all duration-200 ${isActive(item.path)
+                  ? 'text-primary border-b-2 border-primary pb-1'
+                  : 'text-gray-300 hover:text-white'
                   }`}
               >
                 {t(item.labelKey)}
@@ -125,7 +127,7 @@ const Header = () => {
                   <Button
                     variant="outline"
                     size="sm"
-                    className="hidden md:flex bg-gray-800 border-gray-700 hover:bg-gray-700"
+                    className="hidden lg:flex bg-gray-800 border-gray-700 hover:bg-gray-700 text-sm font-medium"
                   >
                     <User className="mr-2 h-4 w-4" />
                     {firstName ? `Здравствуйте, ${firstName}` : t('nav.account')}
@@ -134,7 +136,7 @@ const Header = () => {
                 <Button
                   variant="outline"
                   size="sm"
-                  className="hidden md:flex bg-red-900/20 text-red-400 border-red-800 hover:bg-red-900/30"
+                  className="hidden lg:flex bg-red-900/20 text-red-400 border-red-800 hover:bg-red-900/30"
                   onClick={handleLogout}
                 >
                   <LogOut className="mr-2 h-4 w-4" />
@@ -143,12 +145,12 @@ const Header = () => {
               </>
             ) : (
               <>
-                <StartTrainingButton size="sm" className="hidden md:flex px-6 py-2 text-sm" />
+                <StartTrainingButton size="sm" className="hidden lg:flex px-6 py-2 text-sm font-semibold" />
                 <Button
                   onClick={() => setIsModalOpen(true)}
                   variant="outline"
                   size="sm"
-                  className="hidden md:flex bg-trading-accent/10 text-trading-accent border-trading-accent/20 hover:bg-trading-accent/20"
+                  className="hidden lg:flex bg-trading-accent/10 text-trading-accent border-trading-accent/20 hover:bg-trading-accent/20 font-medium"
                 >
                   {t('nav.pre-registration')}
                 </Button>
@@ -157,7 +159,7 @@ const Header = () => {
                   <Button
                     variant="outline"
                     size="sm"
-                    className="hidden md:flex bg-blue-900/20 text-blue-400 border-blue-800 hover:bg-blue-900/30"
+                    className="hidden lg:flex bg-blue-900/20 text-blue-400 border-blue-800 hover:bg-blue-900/30 font-medium"
                   >
                     <LogIn className="mr-2 h-4 w-4" />
                     {t('nav.login')}
@@ -168,7 +170,7 @@ const Header = () => {
 
             <LanguageSwitcher />
 
-            <div className="hidden md:flex items-center space-x-1">
+            <div className="hidden lg:flex items-center space-x-1">
               <Eye size={18} className="text-gray-400" />
               <span className="text-xs text-gray-400">{t('nav.protected-view')}</span>
               <Lock size={16} className="text-gray-400 ml-1" />
@@ -177,29 +179,29 @@ const Header = () => {
             {/* Mobile Menu Button */}
             <button
               onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-              className="md:hidden p-2 text-gray-400 hover:text-white transition-colors"
+              className="lg:hidden p-2 text-gray-300 hover:text-white transition-colors"
               aria-label="Toggle menu"
             >
-              {isMobileMenuOpen ? <X size={24} /> : <Menu size={24} />}
+              {isMobileMenuOpen ? <X size={28} /> : <Menu size={28} />}
             </button>
           </div>
         </div>
 
         {/* Mobile Menu */}
         <div
-          className={`md:hidden absolute left-0 right-0 top-full bg-trading-card border-b border-gray-800 transition-all duration-300 ease-in-out ${isMobileMenuOpen
+          className={`lg:hidden absolute left-0 right-0 top-full bg-trading-card border-b border-gray-800 transition-all duration-300 ease-in-out shadow-xl ${isMobileMenuOpen
             ? 'opacity-100 translate-y-0 pointer-events-auto'
             : 'opacity-0 -translate-y-4 pointer-events-none'
             }`}
         >
-          <nav className="flex flex-col p-4 space-y-2">
+          <nav className="flex flex-col p-4 space-y-1">
             {navItems.map(item => (
               <Link
                 key={item.path}
                 to={item.path}
-                className={`px-4 py-3 rounded-lg text-sm font-medium transition-colors ${isActive(item.path)
-                  ? 'bg-blue-600/20 text-blue-400'
-                  : 'text-gray-300 hover:bg-gray-800'
+                className={`px-4 py-4 rounded-lg text-base font-semibold transition-colors ${isActive(item.path)
+                  ? 'bg-blue-600/20 text-blue-400 border-l-4 border-blue-500'
+                  : 'text-gray-200 hover:bg-gray-800 hover:text-white'
                   }`}
               >
                 {t(item.labelKey)}
