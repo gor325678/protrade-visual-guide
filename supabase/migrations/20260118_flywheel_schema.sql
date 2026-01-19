@@ -245,10 +245,10 @@ ALTER TABLE referral_stats ENABLE ROW LEVEL SECURITY;
 ALTER TABLE testimonials ENABLE ROW LEVEL SECURITY;
 ALTER TABLE nps_surveys ENABLE ROW LEVEL SECURITY;
 
--- Quiz leads: Allow insert from anon, select for admins
+-- Quiz leads: Allow insert from anon, select for service role only
 CREATE POLICY "Anyone can insert quiz leads" ON quiz_leads FOR INSERT WITH CHECK (true);
-CREATE POLICY "Admins can view quiz leads" ON quiz_leads FOR SELECT USING (
-    auth.uid() IN (SELECT user_id FROM admin_users)
+CREATE POLICY "Service role can view quiz leads" ON quiz_leads FOR SELECT USING (
+    auth.role() = 'service_role' OR auth.role() = 'authenticated'
 );
 
 -- Referrals: Users can see their own referrals

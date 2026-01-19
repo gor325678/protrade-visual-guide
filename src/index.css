@@ -64,6 +64,15 @@
     @apply bg-gray-500;
   }
 
+  /* Hide scrollbar for horizontal scrolling tabs */
+  .scrollbar-hide {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+  .scrollbar-hide::-webkit-scrollbar {
+    display: none;
+  }
+
   /* Prevent selection */
   .no-select {
     -webkit-touch-callout: none;

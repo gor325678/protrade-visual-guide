@@ -241,7 +241,7 @@ const Account = () => {
           </div>
 
           <Tabs defaultValue="courses" className="space-y-6">
-            <TabsList className="grid grid-cols-3 md:grid-cols-5 w-full bg-trading-card border-gray-800">
+            <TabsList className="flex flex-nowrap overflow-x-auto w-full bg-trading-card border-gray-800 md:grid md:grid-cols-5 scrollbar-hide">
               <TabsTrigger value="courses" className="flex items-center gap-2">
                 <Book className="h-4 w-4" />
                 <span className="hidden sm:inline">Мои курсы</span>
