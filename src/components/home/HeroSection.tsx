@@ -60,6 +60,15 @@ const HeroSection = () => {
           <StartTrainingButton />
 
           <Button
+            onClick={() => navigate('/pre-registration')}
+            variant="outline"
+            size="lg"
+            className="border-cyan-500/50 text-cyan-400 hover:bg-cyan-500/10 hover:border-cyan-400 px-8"
+          >
+            {t('hero.preRegistration')}
+          </Button>
+
+          <Button
             onClick={() => navigate('/about')}
             variant="outline"
             size="lg"
