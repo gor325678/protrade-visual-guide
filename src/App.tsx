@@ -29,6 +29,7 @@ import SessionOne from "./pages/SessionOne";
 import SessionTwo from "./pages/SessionTwo";
 import Session1Gallery from "./pages/Session1Gallery";
 import Session2Gallery from "./pages/Session2Gallery";
+import PreRegistration from "./pages/PreRegistration";
 import ProtectedRoute from "./components/auth/ProtectedRoute";
 import ScrollToTop from "./components/utils/ScrollToTop";
 import BackToTopButton from "./components/layout/BackToTopButton";
@@ -74,6 +75,7 @@ const App = () => {
               <Route path="/session-2" element={<SessionTwo />} />
               <Route path="/session-1-gallery" element={<Session1Gallery />} />
               <Route path="/session-2-gallery" element={<Session2Gallery />} />
+              <Route path="/pre-registration" element={<PreRegistration />} />
 
               {/* Legal Pages */}
               <Route path="/public-offer" element={<PublicOffer />} />
