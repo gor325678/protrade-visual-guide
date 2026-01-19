@@ -91,7 +91,7 @@ const QuizSection = () => {
 
             // Trigger n8n webhook for Brevo integration
             try {
-                await fetch('https://your-n8n-url.com/webhook/quiz-lead', {
+                await fetch('https://n8n.protradersystems.com/webhook/quiz-lead', {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({

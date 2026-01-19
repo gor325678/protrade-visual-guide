@@ -146,14 +146,6 @@ const Header = () => {
             ) : (
               <>
                 <StartTrainingButton size="sm" className="hidden lg:flex px-6 py-2 text-sm font-semibold" />
-                <Button
-                  onClick={() => setIsModalOpen(true)}
-                  variant="outline"
-                  size="sm"
-                  className="hidden lg:flex bg-trading-accent/10 text-trading-accent border-trading-accent/20 hover:bg-trading-accent/20 font-medium"
-                >
-                  {t('nav.pre-registration')}
-                </Button>
 
                 <Link to="/login">
                   <Button
@@ -229,16 +221,6 @@ const Header = () => {
               ) : (
                 <>
                   <StartTrainingButton className="w-full mb-2" size="sm" />
-                  <button
-                    onClick={() => {
-                      setIsModalOpen(true);
-                      setIsMobileMenuOpen(false);
-                    }}
-                    className="flex w-full items-center px-4 py-3 rounded-lg text-sm font-medium text-trading-accent hover:bg-trading-accent/10"
-                  >
-                    <span className="mr-3">📋</span>
-                    {t('nav.pre-registration')}
-                  </button>
                   <Link
                     to="/login"
                     className="flex items-center px-4 py-3 rounded-lg text-sm font-medium text-blue-400 hover:bg-blue-900/20"
