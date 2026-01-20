@@ -1,6 +1,7 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { Elements } from '@stripe/react-stripe-js';
 import stripePromise from '@/lib/stripe';
+import type { Stripe } from '@stripe/stripe-js';
 
 interface StripeProviderProps {
   children: React.ReactNode;
@@ -9,12 +10,39 @@ interface StripeProviderProps {
   currency?: string;
 }
 
-const StripeProvider: React.FC<StripeProviderProps> = ({ 
-  children, 
+const StripeProvider: React.FC<StripeProviderProps> = ({
+  children,
   clientSecret,
   amount,
   currency = 'usd'
 }) => {
+  const [stripe, setStripe] = useState<Stripe | null>(null);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    stripePromise.then((s) => {
+      setStripe(s);
+      setLoading(false);
+    });
+  }, []);
+
+  // If Stripe is not configured, show a message instead of crashing
+  if (!loading && !stripe) {
+    return (
+      <div className="p-4 bg-yellow-900/20 border border-yellow-700 rounded-lg text-yellow-400 text-center">
+        Оплата временно недоступна. Пожалуйста, свяжитесь с поддержкой.
+      </div>
+    );
+  }
+
+  if (loading) {
+    return (
+      <div className="flex items-center justify-center p-8">
+        <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-500"></div>
+      </div>
+    );
+  }
+
   const options = {
     clientSecret,
     appearance: {
@@ -36,7 +64,7 @@ const StripeProvider: React.FC<StripeProviderProps> = ({
   };
 
   return (
-    <Elements stripe={stripePromise} options={options}>
+    <Elements stripe={stripe} options={options}>
       {children}
     </Elements>
   );
