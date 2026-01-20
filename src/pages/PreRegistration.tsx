@@ -4,7 +4,6 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
 import { Label } from '@/components/ui/label';
-import { Checkbox } from '@/components/ui/checkbox';
 import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
 import { useToast } from '@/hooks/use-toast';
 import Header from '@/components/layout/Header';
@@ -12,6 +11,7 @@ import Footer from '@/components/layout/Footer';
 import { Eye, Send, CheckCircle2, Sparkles, MessageCircle, Phone, User, Mail, DollarSign, Target, Heart, Check } from 'lucide-react';
 
 const PreRegistration = () => {
+    React.useEffect(() => console.log("PreRegistration Mounted"), []);
     const navigate = useNavigate();
     const { toast } = useToast();
     const [isSubmitting, setIsSubmitting] = useState(false);
