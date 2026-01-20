@@ -100,12 +100,17 @@ const PreRegistration = () => {
             console.error("Submission error:", error);
 
             let errorMessage = "Не удалось отправить заявку. Попробуйте позже.";
+
             if (error.name === 'AbortError') {
-                errorMessage = "Превышено время ожидания сервера. Пожалуйста, попробуйте еще раз.";
+                errorMessage = "Превышено время ожидания сервера (Timeout). Проверьте интернет.";
+            } else if (error.message === 'Failed to fetch' || error.name === 'TypeError') {
+                errorMessage = "Ошибка соединения. Возможно, проблема с DNS или блокировщиком рекламы.";
+            } else if (error.message) {
+                errorMessage = `Ошибка: ${error.message}`;
             }
 
             toast({
-                title: "Ошибка",
+                title: "Ошибка отправки",
                 description: errorMessage,
                 variant: "destructive"
             });
