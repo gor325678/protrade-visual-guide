@@ -11,7 +11,6 @@ import Footer from '@/components/layout/Footer';
 import { Eye, Send, CheckCircle2, Sparkles, MessageCircle, Phone, User, Mail, DollarSign, Target, Heart, Check } from 'lucide-react';
 
 const PreRegistration = () => {
-    React.useEffect(() => console.log("PreRegistration Mounted"), []);
     const navigate = useNavigate();
     const { toast } = useToast();
     const [isSubmitting, setIsSubmitting] = useState(false);

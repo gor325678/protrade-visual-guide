@@ -1,7 +1,16 @@
-import { loadStripe } from '@stripe/stripe-js';
+import { loadStripe, Stripe } from '@stripe/stripe-js';
 
-// Загружаем Stripe с публичным ключом
-const stripePromise = loadStripe(import.meta.env.VITE_STRIPE_PUBLISHABLE_KEY);
+// Загружаем Stripe с публичным ключом (только если ключ существует)
+const stripePublishableKey = import.meta.env.VITE_STRIPE_PUBLISHABLE_KEY;
+
+let stripePromise: Promise<Stripe | null>;
+
+if (stripePublishableKey && typeof stripePublishableKey === 'string') {
+  stripePromise = loadStripe(stripePublishableKey);
+} else {
+  console.warn('Stripe publishable key is missing. Payment features will be disabled.');
+  stripePromise = Promise.resolve(null);
+}
 
 export default stripePromise;
 
