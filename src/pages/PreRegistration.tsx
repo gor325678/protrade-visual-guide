@@ -318,30 +318,24 @@ const PreRegistration = () => {
                             </div>
 
                             <div className="grid md:grid-cols-2 gap-3">
-                                {problemOptions.map((problem) => {
-                                    const isSelected = formData.problems.includes(problem);
-                                    return (
-                                        <div
-                                            key={problem}
-                                            onClick={() => handleProblemToggle(problem)}
-                                            className={`flex items-center space-x-3 p-4 rounded-xl border transition-all cursor-pointer group ${isSelected
-                                                ? 'border-purple-500 bg-purple-500/10 shadow-[0_0_15px_rgba(168,85,247,0.15)]'
-                                                : 'border-gray-700 bg-gray-800/30 hover:border-gray-500 hover:bg-gray-800/50'
-                                                }`}
-                                        >
-                                            <div className={`w-5 h-5 rounded border flex items-center justify-center transition-colors ${isSelected
-                                                ? 'bg-purple-500 border-purple-500'
-                                                : 'border-gray-500 group-hover:border-gray-400 bg-transparent'
-                                                }`}>
-                                                {isSelected && <Check className="w-3.5 h-3.5 text-white" />}
-                                            </div>
-                                            <span className={`text-base flex-1 transition-colors ${isSelected ? 'text-white font-medium' : 'text-gray-300 group-hover:text-white'
-                                                }`}>
-                                                {problem}
-                                            </span>
-                                        </div>
-                                    );
-                                })}
+                                {problemOptions.map((problem) => (
+                                    <label
+                                        key={problem}
+                                        className={`flex items-center gap-3 p-4 rounded-xl border cursor-pointer transition-colors
+                                            ${formData.problems.includes(problem)
+                                                ? 'border-purple-500 bg-purple-500/10'
+                                                : 'border-gray-700 bg-gray-800/30 hover:border-gray-600'
+                                            }`}
+                                    >
+                                        <input
+                                            type="checkbox"
+                                            checked={formData.problems.includes(problem)}
+                                            onChange={() => handleProblemToggle(problem)}
+                                            className="w-5 h-5 rounded border-gray-500 bg-transparent text-purple-500 focus:ring-purple-500 focus:ring-offset-0"
+                                        />
+                                        <span className="text-gray-300">{problem}</span>
+                                    </label>
+                                ))}
                             </div>
                         </div>
 
