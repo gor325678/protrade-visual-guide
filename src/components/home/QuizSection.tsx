@@ -91,6 +91,9 @@ const QuizSection = () => {
 
             // Trigger n8n webhook for Brevo integration
             try {
+                const controller = new AbortController();
+                const timeoutId = setTimeout(() => controller.abort(), 5000); // 5 seconds timeout
+
                 await fetch('https://n8n.protradersystems.com/webhook/quiz-lead', {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
@@ -101,10 +104,13 @@ const QuizSection = () => {
                         segment,
                         refCode,
                         timestamp: new Date().toISOString()
-                    })
+                    }),
+                    signal: controller.signal
                 });
+
+                clearTimeout(timeoutId);
             } catch (webhookError) {
-                console.log('Webhook notification skipped');
+                console.log('Webhook notification skipped', webhookError);
             }
 
             setEmailSubmitted(true);

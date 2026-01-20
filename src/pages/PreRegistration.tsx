@@ -9,7 +9,7 @@ import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
 import { useToast } from '@/hooks/use-toast';
 import Header from '@/components/layout/Header';
 import Footer from '@/components/layout/Footer';
-import { Eye, Send, CheckCircle2, Sparkles, MessageCircle, Phone, User, Mail, DollarSign, Target, Heart } from 'lucide-react';
+import { Eye, Send, CheckCircle2, Sparkles, MessageCircle, Phone, User, Mail, DollarSign, Target, Heart, Check } from 'lucide-react';
 
 const PreRegistration = () => {
     const navigate = useNavigate();
@@ -67,13 +67,24 @@ const PreRegistration = () => {
         e.preventDefault();
         setIsSubmitting(true);
 
+        // Create an AbortController for timeout
+        const controller = new AbortController();
+        const timeoutId = setTimeout(() => controller.abort(), 15000); // 15 seconds timeout
+
         try {
             // Here you would send to your backend/n8n
+            // Using the new domain as per migration plan: n8n.protradersystems.com
             const response = await fetch('https://n8n.protradersystems.com/webhook/pre-registration', {
                 method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify(formData)
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Accept': 'application/json'
+                },
+                body: JSON.stringify(formData),
+                signal: controller.signal
             });
+
+            clearTimeout(timeoutId);
 
             if (response.ok) {
                 setIsSubmitted(true);
@@ -82,12 +93,20 @@ const PreRegistration = () => {
                     description: "Мы свяжемся с вами в ближайшее время.",
                 });
             } else {
-                throw new Error('Failed to submit');
+                throw new Error('Failed to submit: ' + response.statusText);
             }
-        } catch (error) {
+        } catch (error: any) {
+            clearTimeout(timeoutId);
+            console.error("Submission error:", error);
+
+            let errorMessage = "Не удалось отправить заявку. Попробуйте позже.";
+            if (error.name === 'AbortError') {
+                errorMessage = "Превышено время ожидания сервера. Пожалуйста, попробуйте еще раз.";
+            }
+
             toast({
                 title: "Ошибка",
-                description: "Не удалось отправить заявку. Попробуйте позже.",
+                description: errorMessage,
                 variant: "destructive"
             });
         } finally {
@@ -270,8 +289,8 @@ const PreRegistration = () => {
                                     <div
                                         key={option}
                                         className={`flex items-center space-x-3 p-4 rounded-xl border transition-all cursor-pointer ${formData.income === option
-                                                ? 'border-cyan-500 bg-cyan-500/10'
-                                                : 'border-gray-700 bg-gray-800/30 hover:border-gray-600'
+                                            ? 'border-cyan-500 bg-cyan-500/10'
+                                            : 'border-gray-700 bg-gray-800/30 hover:border-gray-600'
                                             }`}
                                     >
                                         <RadioGroupItem
@@ -295,22 +314,30 @@ const PreRegistration = () => {
                             </div>
 
                             <div className="grid md:grid-cols-2 gap-3">
-                                {problemOptions.map((problem) => (
-                                    <div
-                                        key={problem}
-                                        onClick={() => handleProblemToggle(problem)}
-                                        className={`flex items-center space-x-3 p-4 rounded-xl border transition-all cursor-pointer ${formData.problems.includes(problem)
-                                                ? 'border-purple-500 bg-purple-500/10'
-                                                : 'border-gray-700 bg-gray-800/30 hover:border-gray-600'
-                                            }`}
-                                    >
-                                        <Checkbox
-                                            checked={formData.problems.includes(problem)}
-                                            className="border-gray-500 data-[state=checked]:bg-purple-500 data-[state=checked]:border-purple-500"
-                                        />
-                                        <Label className="text-gray-300 cursor-pointer flex-1">{problem}</Label>
-                                    </div>
-                                ))}
+                                {problemOptions.map((problem) => {
+                                    const isSelected = formData.problems.includes(problem);
+                                    return (
+                                        <div
+                                            key={problem}
+                                            onClick={() => handleProblemToggle(problem)}
+                                            className={`flex items-center space-x-3 p-4 rounded-xl border transition-all cursor-pointer group ${isSelected
+                                                ? 'border-purple-500 bg-purple-500/10 shadow-[0_0_15px_rgba(168,85,247,0.15)]'
+                                                : 'border-gray-700 bg-gray-800/30 hover:border-gray-500 hover:bg-gray-800/50'
+                                                }`}
+                                        >
+                                            <div className={`w-5 h-5 rounded border flex items-center justify-center transition-colors ${isSelected
+                                                ? 'bg-purple-500 border-purple-500'
+                                                : 'border-gray-500 group-hover:border-gray-400 bg-transparent'
+                                                }`}>
+                                                {isSelected && <Check className="w-3.5 h-3.5 text-white" />}
+                                            </div>
+                                            <span className={`text-base flex-1 transition-colors ${isSelected ? 'text-white font-medium' : 'text-gray-300 group-hover:text-white'
+                                                }`}>
+                                                {problem}
+                                            </span>
+                                        </div>
+                                    );
+                                })}
                             </div>
                         </div>
 
@@ -375,8 +402,8 @@ const PreRegistration = () => {
                             >
                                 <div
                                     className={`flex items-center space-x-3 p-4 rounded-xl border transition-all cursor-pointer ${formData.readyToPay === 'ready'
-                                            ? 'border-cyan-500 bg-cyan-500/10'
-                                            : 'border-gray-700 bg-gray-800/30 hover:border-gray-600'
+                                        ? 'border-cyan-500 bg-cyan-500/10'
+                                        : 'border-gray-700 bg-gray-800/30 hover:border-gray-600'
                                         }`}
                                 >
                                     <RadioGroupItem
@@ -390,8 +417,8 @@ const PreRegistration = () => {
                                 </div>
                                 <div
                                     className={`flex items-center space-x-3 p-4 rounded-xl border transition-all cursor-pointer ${formData.readyToPay === 'need-consultation'
-                                            ? 'border-cyan-500 bg-cyan-500/10'
-                                            : 'border-gray-700 bg-gray-800/30 hover:border-gray-600'
+                                        ? 'border-cyan-500 bg-cyan-500/10'
+                                        : 'border-gray-700 bg-gray-800/30 hover:border-gray-600'
                                         }`}
                                 >
                                     <RadioGroupItem
